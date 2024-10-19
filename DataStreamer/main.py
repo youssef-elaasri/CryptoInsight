@@ -1,8 +1,12 @@
 import json
 import websocket
-import pandas as pd
+import os
+from kafka import KafkaProducer
 
-def on_message(ws, message):
+KAFKA_BROKER = os.getenv("KAFKA_BROKER")
+TOPIC = os.getenv("TOPIC")
+
+def on_message(ws, message, producer):
     data = json.loads(message)
 
     if not 's' in data:
@@ -10,8 +14,8 @@ def on_message(ws, message):
 
     cleaned = {
         'token': data['s'],
-        'start_time': data['k']['t'],
-        'end_time': data['k']['T'],
+        'start_time': data['k']['t'] * 1000000,
+        'end_time': data['k']['T'] * 1000000,
         'open_price': data['k']['o'],
         'close_price': data['k']['c'],
         'highest_price': data['k']['h'],
@@ -20,7 +24,13 @@ def on_message(ws, message):
         'trades': data['k']['n'],
     }
 
-    print(cleaned)
+    publish_data(producer, cleaned)
+
+def publish_data(producer, data):
+    try:
+        producer.send(TOPIC, json.dumps(data).encode('utf-8'))
+    except Exception as e:
+        print("Erro aqui")
 
 def on_error(ws, error):
     print(f"Error: {error}")
@@ -43,10 +53,14 @@ def on_ping(ws, message):
     print(f"Sent pong: {message}")
 
 if __name__ == "__main__":
+    producer = KafkaProducer(
+        bootstrap_servers=KAFKA_BROKER, 
+    )
+
     websocket.enableTrace(False)
     socket = 'wss://stream.binance.com:443/ws'
     ws = websocket.WebSocketApp(socket,
-                                on_message=on_message,
+                                on_message=lambda ws,msg: on_message(ws, msg, producer),
                                 on_error=on_error,
                                 on_close=on_close,
                                 on_open=on_open,

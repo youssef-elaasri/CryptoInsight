@@ -1,0 +1,72 @@
+services:
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    hostname: kafka
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://kafka_b:9094
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:9093
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - BITNAMI_DEBUG=yes
+      - KAFKA_CFG_NUM_PARTITIONS=2
+      - KAFKA_KRAFT_CLUSTER_ID=r4zt_wrqTRuT7W2NJsB_GA
+    healthcheck:
+      test: "exit 0"
+    networks:
+      - streaming
+
+  influxdb:
+    build: ./Database
+    container_name: database
+    restart: always
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password
+      - DOCKER_INFLUXDB_INIT_ORG=cryptoinsight
+      - DOCKER_INFLUXDB_INIT_BUCKET=assets
+      - DOCKER_INFLUXDB_INIT_RETENTION=1w
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=XMNJXH1Pk03gvYMcA62sD-XWGKrU-DDDiawkTfwZh4_qEYyjohfG5D2DK0RNrq3Mas1uw9Bk-bEe32-GPz0xPA==
+      - KAFKA_BROKER=kafka:9092
+      - TOPIC=assets
+    ports:
+      - '8086:8086'
+    depends_on:
+      kafka:
+        condition: service_healthy
+    healthcheck:
+      test: "exit 0"
+    volumes:
+      - ./Database/data:/var/lib/influxdb
+    networks:
+      - streaming
+
+  datastreaming:
+    build:
+      context: ./DataStreamer
+    container_name: datastreaming
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: "kafka:9092"
+      TOPIC: "assets"
+    networks:
+      - streaming
+
+networks:
+  streaming:
+    driver: bridge
