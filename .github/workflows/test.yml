@@ -39,8 +39,8 @@ jobs:
       run: docker-compose up -d
 
     - name: Run tests
-      run: 
-        run: python -m unittest discover -s tests
+      run: |
+        python -m unittest discover -s tests
 
     - name: Stop services
       if: always()
