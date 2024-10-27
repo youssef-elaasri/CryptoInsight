@@ -5,7 +5,7 @@ name: Run Tests
 on:
   push:
     branches:
-      # - main
+      - main
       - CI/CD
 
 jobs:
