@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+        - name: influxdb
+          image: cryptoinsight-influxdb:latest
+          imagePullPolicy: Never
+          env:
+            - name: DOCKER_INFLUXDB_INIT_MODE
+              value: "setup"
+            - name: DOCKER_INFLUXDB_INIT_USERNAME
+              value: "admin"
+            - name: DOCKER_INFLUXDB_INIT_PASSWORD
+              value: "password"
+            - name: DOCKER_INFLUXDB_INIT_ORG
+              value: "cryptoinsight"
+            - name: DOCKER_INFLUXDB_INIT_BUCKET
+              value: "assets"
+            - name: DOCKER_INFLUXDB_INIT_RETENTION
+              value: "1w"
+            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+              value: "XMNJXH1Pk03gvYMcA62sD-XWGKrU-DDDiawkTfwZh4_qEYyjohfG5D2DK0RNrq3Mas1uw9Bk-bEe32-GPz0xPA=="
+            - name: KAFKA_BROKER
+              value: "kafka-service:9092"
+            - name: TOPIC
+              value: "assets"
+          ports:
+            - containerPort: 8086
+          volumeMounts:
+            - name: influxdb-storage
+              mountPath: /var/lib/influxdb
+      volumes:
+        - name: influxdb-storage
+          hostPath:
+            path: /Database/data
