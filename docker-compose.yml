@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: bitnami/kafka:latest
+    image: kafka
     container_name: kafka
     hostname: kafka
     ports:
@@ -28,6 +28,7 @@ services:
 
   influxdb:
     build: ./Database
+    image: influxdb
     container_name: database
     restart: always
     environment:
@@ -53,6 +54,7 @@ services:
       - streaming
 
   datastreaming:
+    image: datastreaming
     build:
       context: ./DataStreamer
     container_name: datastreaming
@@ -68,6 +70,7 @@ services:
       - streaming
 
   backend:
+    image: backend
     build:
       context: ./Backend
     container_name: backend
@@ -79,6 +82,7 @@ services:
     networks:
       - streaming
   frontend:
+    image: frontend
     build:
       context: ./Frontend
     container_name: frontend
@@ -90,6 +94,7 @@ services:
     networks:
       - streaming
   dataops:
+    image: dataops
     build:
       context: ./Dataops
     container_name: dataops

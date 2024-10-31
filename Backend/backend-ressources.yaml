@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: cryptoinsight-backend:latest # Replace with your actual backend image name
-          imagePullPolicy: Never
+          image: backend:latest # Replace with your actual backend image name
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           resources:

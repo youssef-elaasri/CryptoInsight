@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - name: dataops
-          image: cryptoinsight-dataops:latest # Replace with your actual data operation image name
-          imagePullPolicy: Never
+          image: dataops:latest # Replace with your actual data operation image name
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3002
           resources:
