@@ -11,4 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
 
 COPY . .
 
+EXPOSE 8080
+
 CMD ["./start.sh"]
