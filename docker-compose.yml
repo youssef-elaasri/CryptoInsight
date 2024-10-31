@@ -41,7 +41,7 @@ services:
       - KAFKA_BROKER=kafka:9092
       - TOPIC=assets
     ports:
-      - '8086:8086'
+      - "8086:8086"
     depends_on:
       kafka:
         condition: service_healthy
@@ -64,6 +64,40 @@ services:
     environment:
       KAFKA_BROKER: "kafka:9092"
       TOPIC: "assets"
+    networks:
+      - streaming
+
+  backend:
+    build:
+      context: ./Backend
+    container_name: backend
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    networks:
+      - streaming
+  frontend:
+    build:
+      context: ./Frontend
+    container_name: frontend
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    networks:
+      - streaming
+  dataops:
+    build:
+      context: ./Dataops
+    container_name: dataops
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
     networks:
       - streaming
 

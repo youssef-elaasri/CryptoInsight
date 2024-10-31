@@ -11,6 +11,10 @@ spec:
     metadata:
       labels:
         app: kafka
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: kafka
@@ -48,3 +52,45 @@ spec:
               value: "2"
             - name: KAFKA_KRAFT_CLUSTER_ID
               value: "r4zt_wrqTRuT7W2NJsB_GA"
+          livenessProbe: # This checks if the application within a container is healthy. If the Liveness Probe fails, Kubernetes will restart the container
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 7
+            failureThreshold: 3
+          readinessProbe: # This checks if the application within the container is ready to serve requests
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 7
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "2Gi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "1"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+  labels:
+    app: kafka
+spec:
+  selector:
+    app: kafka
+  ports:
+    - name: kafka-port-internal
+      protocol: TCP
+      port: 9092
+      targetPort: 9092
+    - name: kafka-port-external
+      protocol: TCP
+      port: 9094
+      targetPort: 9094
+  type: LoadBalancer
