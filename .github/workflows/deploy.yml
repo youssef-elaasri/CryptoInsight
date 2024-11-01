@@ -25,4 +25,5 @@ jobs:
 
       - name: Run Deployment Script
         run: |
-          ./deploy.sh
+          chmod +x ./apply.sh
+          ./apply.sh
