@@ -14,9 +14,9 @@ kubectl delete service kafka-service
 # Apply the resources for InfluxDB and Kafka
 
 echo "Applying Kafka resources..."
-kubectl apply -f kafka-ressources.yaml
+kubectl apply -f Database/kafka-ressources.yaml
 
 echo "Applying InfluxDB resources..."
-kubectl apply -f influxdb-ressources.yaml
+kubectl apply -f Database/influxdb-ressources.yaml
 
 echo "Deployment and service operations completed successfully."
