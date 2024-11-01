@@ -13,13 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Google Cloud
+      - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          export_default_credentials: true
 
-      - name: Deploy InfluxDB
+      - name: Authenticate with GKE
         run: |
-          ./apply.sh
+          gcloud container clusters get-credentials cryptoinsights --region europe-southwest1
+
+      - name: Run Deployment Script
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh
