@@ -1,0 +1,93 @@
+# Create a deployment with Liveness and Readiness Probes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: influxdb
+          image: cryptoinsight-influxdb:latest
+          imagePullPolicy: Never
+          env:
+            - name: DOCKER_INFLUXDB_INIT_MODE
+              value: "setup"
+            - name: DOCKER_INFLUXDB_INIT_USERNAME
+              value: "admin"
+            - name: DOCKER_INFLUXDB_INIT_PASSWORD
+              value: "password"
+            - name: DOCKER_INFLUXDB_INIT_ORG
+              value: "cryptoinsight"
+            - name: DOCKER_INFLUXDB_INIT_BUCKET
+              value: "assets"
+            - name: DOCKER_INFLUXDB_INIT_RETENTION
+              value: "1w"
+            - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+              value: "XMNJXH1Pk03gvYMcA62sD-XWGKrU-DDDiawkTfwZh4_qEYyjohfG5D2DK0RNrq3Mas1uw9Bk-bEe32-GPz0xPA=="
+            - name: KAFKA_BROKER
+              value: "kafka-service:9092"
+            - name: TOPIC
+              value: "assets"
+          ports:
+            - containerPort: 8086
+          volumeMounts:
+            - name: influxdb-storage
+              mountPath: /var/lib/influxdb
+          livenessProbe: # This checks if the application within a container is healthy. If the Liveness Probe fails, Kubernetes will restart the container
+            tcpSocket:
+              port: 8086
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 7
+            failureThreshold: 3
+          readinessProbe: # This checks if the application within the container is ready to serve requests
+            tcpSocket:
+              port: 8086
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 7
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "2Gi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "1"
+      volumes:
+        - name: influxdb-storage
+
+---
+# Create a service
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-service
+  labels:
+    app: influxdb
+spec:
+  selector:
+    app: influxdb
+  ports:
+    - protocol: TCP
+      name: db
+      port: 8086 # Port exposed to the outside world
+      targetPort: 8086 # Port that the application is listening on
+
+    - protocol: TCP
+      name: metrics
+      port: 8080 # Port for metrics
+      targetPort: 8080
+  type: LoadBalancer
