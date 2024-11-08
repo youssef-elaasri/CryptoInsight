@@ -15,4 +15,4 @@ WORKDIR /app
 EXPOSE 3002
 
 # Run an infinite loop to keep the container running
-CMD ["bash", "-c", "while true; do sleep 1000; done"]
+CMD ["bash", "-c", "while true"]
