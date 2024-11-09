@@ -5,3 +5,6 @@ terraform.tfvars
 
 .terraform/
 .terraform.lock.hcls
+
+.vscode/
+temp_tests/
