@@ -1,6 +1,3 @@
-Here is the complete `README.md` in a single code block for easy copying:
-
-````markdown
 # Kubernetes Setup Guide
 
 This document provides the necessary commands to deploy the resources in the Kubernetes cluster using the YAML configurations provided in the project directory.
@@ -26,7 +23,6 @@ docker-compose build
 ```bash
 kubectl apply -f database/influxdb-ressources.yaml
 ```
-````
 
 ### Kafka
 
