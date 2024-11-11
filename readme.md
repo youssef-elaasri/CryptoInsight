@@ -56,7 +56,7 @@ kubectl apply -f dataStreamer/datastreamer-ressources.yaml
 
 ## Creating Cluster Roles and Role Bindings
 
-### 1. Cluster Role for Kube-State-Metrics
+### 1. Cluster Role and role bindings for Kube-State-Metrics
 
 To create the necessary cluster role for `kube-state-metrics`, run the following command:
 
@@ -64,17 +64,13 @@ To create the necessary cluster role for `kube-state-metrics`, run the following
 kubectl apply -f sre/cluster-role-kube-state-metrics.yaml
 ```
 
-### 2. Cluster Role for Prometheus
+### 2. Cluster Role and Role bindings for Prometheus
 
 To create the necessary cluster role for `prometheus`, run the following command:
 
 ```bash
 kubectl apply -f sre/cluster-role-prometheus.yaml
 ```
-
-### 3. Role Bindings (if required)
-
-Role bindings are usually used in a namespace to associate the roles with service accounts. If you need to create any, you can apply them similarly using `kubectl apply -f <path_to_role_binding_yaml>`.
 
 ## Creating Service Accounts
 
