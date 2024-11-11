@@ -27,7 +27,7 @@ services:
       - streaming
 
   influxdb:
-    build: ./Database
+    build: ./database
     container_name: database
     restart: always
     environment:
@@ -48,13 +48,13 @@ services:
     healthcheck:
       test: "exit 0"
     volumes:
-      - ./Database/data:/var/lib/influxdb
+      - ./database/data:/var/lib/influxdb
     networks:
       - streaming
 
   datastreaming:
     build:
-      context: ./DataStreamer
+      context: ./dataStreamer
     container_name: datastreaming
     depends_on:
       kafka:
@@ -69,7 +69,7 @@ services:
 
   backend:
     build:
-      context: ./Backend
+      context: ./backend
     container_name: backend
     depends_on:
       kafka:
@@ -80,7 +80,7 @@ services:
       - streaming
   frontend:
     build:
-      context: ./Frontend
+      context: ./frontend
     container_name: frontend
     depends_on:
       kafka:
@@ -91,7 +91,7 @@ services:
       - streaming
   dataops:
     build:
-      context: ./Dataops
+      context: ./dataops
     container_name: dataops
     depends_on:
       kafka:

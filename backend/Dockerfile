@@ -12,4 +12,4 @@ WORKDIR /app
 # COPY . .
 EXPOSE 3000
 # Run an infinite loop to keep the container running
-CMD ["bash", "-c", "while true;do:done"]
+CMD ["bash", "-c", "while true; do :; done"]
