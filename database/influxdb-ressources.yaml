@@ -85,9 +85,10 @@ spec:
       name: db
       port: 8086 # Port exposed to the outside world
       targetPort: 8086 # Port that the application is listening on
+      nodePort: 30300
 
     - protocol: TCP
       name: metrics
       port: 8080 # Port for metrics
       targetPort: 8080
-  type: LoadBalancer
+  type: NodePort

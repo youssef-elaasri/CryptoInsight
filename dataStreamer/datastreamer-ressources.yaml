@@ -23,13 +23,6 @@ spec:
               value: "kafka-service:9092"
             - name: TOPIC
               value: "assets"
-          resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
           # readinessProbe:
           #   httpGet:
           #     path: /health
@@ -49,9 +42,10 @@ kind: Service
 metadata:
   name: datastreaming-service
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 30200
   selector:
     app: datastreaming

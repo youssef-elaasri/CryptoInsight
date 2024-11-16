@@ -19,7 +19,6 @@ spec:
       containers:
         - name: kafka
           image: bitnami/kafka:latest
-          imagePullPolicy: Never
           ports:
             - containerPort: 9092
             - containerPort: 9094
@@ -35,7 +34,7 @@ spec:
             - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
               value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT"
             - name: KAFKA_CFG_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka:9092,EXTERNAL://kafka_b:9094"
+              value: "PLAINTEXT://kafka-service:9092,EXTERNAL://kafka_b:9094"
             - name: KAFKA_BROKER_ID
               value: "1"
             - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
