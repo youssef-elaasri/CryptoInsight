@@ -28,10 +28,12 @@ def on_message(ws, message, producer):
 
 def publish_data(producer, data):
     try:
-        producer.send(TOPIC, json.dumps(data).encode('utf-8'))
+        print(f"Publishing data: {data}",flush=True)  # Debug: print the data being published
+        future = producer.send(TOPIC, json.dumps(data).encode('utf-8'))
+        record_metadata = future.get(timeout=10)  # Wait for the send to complete
+        print(f"Message sent to Kafka: {record_metadata.topic}",flush=True)
     except Exception as e:
-        print("Erro aqui")
-
+        print(f"Error publishing data to Kafka: {e}",flush=True)
 def on_error(ws, error):
     print(f"Error: {error}")
 
