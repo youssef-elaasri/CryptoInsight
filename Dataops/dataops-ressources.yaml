@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dataops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dataops
+  template:
+    metadata:
+      labels:
+        app: dataops
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "8080"
+          prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: dataops
+          image: dataops:latest # Replace with your actual data operation image name
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3002
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+          readinessProbe:
+            httpGet:
+              path: /health # Replace with your health check endpoint
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health # Replace with your health check endpoint
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 20
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dataops-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3002
+      targetPort: 3002
+  selector:
+    app: dataops

@@ -3,6 +3,9 @@ import os
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 import json
+from prometheus_client import start_http_server, Gauge
+import time
+import random
 
 # Kafka broker address and topic
 KAFKA_BROKER = os.getenv("KAFKA_BROKER")
@@ -45,10 +48,8 @@ def save_to_influx(write_api, data):
 
 def main():
     consumer = create_consumer()
-
     client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
     write_api = client.write_api(write_options=SYNCHRONOUS)
-
     while True:
         for message in consumer:
             try:
