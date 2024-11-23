@@ -54,6 +54,18 @@ kubectl apply -f dataops/dataops-ressources.yaml
 kubectl apply -f dataStreamer/datastreamer-ressources.yaml
 ```
 
+### Resolving "Insufficient Memory" Errors
+
+If you encounter an "Insufficient memory" error while deploying the project on a local Kubernetes cluster using Docker Desktop, follow these steps:
+
+1. Open **Docker Desktop**.
+2. Go to **Settings > Resources > Kubernetes**.
+3. Adjust the **Memory** allocation to at least **6GB** (or higher, depending on your needs).
+4. Save the changes and restart Docker Desktop.
+
+This will provide sufficient resources for the deployments to run successfully.
+
+
 ## Creating Cluster Roles and Role Bindings
 
 ### 1. Cluster Role and role bindings for Kube-State-Metrics
