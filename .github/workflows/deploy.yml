@@ -29,7 +29,9 @@ jobs:
     
     - name: Deploy resources to GKE
       run: |
-        kubectl apply -f Database/kafka-ressources.yaml
-        kubectl apply -f Database/influxdb-ressources.yaml
+        kubectl apply -f database/kafka-ressources.yaml
+        kubectl apply -f database/influxdb-ressources.yaml
+        kubectl apply -f backend/backend-ressources.yaml
+
 
 
