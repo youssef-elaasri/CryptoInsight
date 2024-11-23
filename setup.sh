@@ -4,6 +4,11 @@
 YAML_FILES=(
     "./database/kafka-ressources.yaml"
     "./database/influxdb-ressources.yaml"
+    "./backend/backend-ressources.yaml"
+    # uncomment the following lines to deploy the frontend, dataops, and datastreamer once they are ready
+    # "./frontend/frontend-ressources.yaml"
+    # "./dataops/dataops-ressources.yaml"
+    # "./dataStreamer/datastreamer-ressources.yaml"
 )
 
 # Apply YAML files

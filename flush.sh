@@ -1,8 +1,13 @@
 #!/bin/bash
 
 # Names of deployments and services to delete
-DEPLOYMENTS=("influxdb-deployment" "kafka")
-SERVICES=("influxdb-service" "kafka-service")
+DEPLOYMENTS=("influxdb-deployment" "kafka" "backend" "dataops" "datastreaming" "frontend")
+SERVICES=("influxdb-service" "kafka-service" "frontend-service" "backend-service" "datastreaming-service")
+
+    
+ 
+      
+
 
 # Delete deployments
 echo "Deleting deployments..."
