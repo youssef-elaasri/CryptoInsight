@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: influxdb
-          image: cryptoinsight_influxdb:latest
-          imagePullPolicy: Never
+          image: influxdb:latest
+          imagePullPolicy: IfNotPresent
           env:
             - name: DOCKER_INFLUXDB_INIT_MODE
               value: "setup"
@@ -61,7 +61,7 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              memory: "2Gi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
+              memory: "1Gi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
               cpu: "500m"
             limits:
               memory: "4Gi"

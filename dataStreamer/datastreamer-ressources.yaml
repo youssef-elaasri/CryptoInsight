@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: datastreaming
-          image: cryptoinsight_datastreaming:latest
-          imagePullPolicy: Never
+          image: datastreaming:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:

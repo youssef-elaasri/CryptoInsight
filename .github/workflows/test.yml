@@ -36,12 +36,12 @@ jobs:
         sudo chmod +x /usr/local/bin/docker-compose
 
     - name: Start services
-      run: docker-compose up -d
+      run: ./apply.sh
 
     - name: Run tests
       run: |
         python -m unittest discover -s tests
 
-    - name: Stop services
-      if: always()
-      run: docker-compose down
+    # - name: Stop services
+    #   if: always()
+    #   run: docker-compose down

@@ -2,7 +2,7 @@ FROM influxdb:latest
 
 WORKDIR /app
 COPY requirements.txt .
-COPY start.sh .
+COPY main.py .
 
 RUN apt-get update && apt upgrade -y
 RUN apt-get install -y python3
