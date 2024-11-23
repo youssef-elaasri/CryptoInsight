@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: dataops
-          image: cryptoinsight-dataops:latest # Replace with your actual data operation image name
+          image: cryptoinsight_dataops:latest # Replace with your actual data operation image name
           imagePullPolicy: Never
           ports:
             - containerPort: 3002
@@ -27,13 +27,13 @@ spec:
               cpu: "250m"
           readinessProbe:
             httpGet:
-              path: /health # Replace with your health check endpoint
+              # path: /health # Replace with your health check endpoint
               port: 3002
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /health # Replace with your health check endpoint
+              # path: /health # Replace with your health check endpoint
               port: 3002
             initialDelaySeconds: 15
             periodSeconds: 20

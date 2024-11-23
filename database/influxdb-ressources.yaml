@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: influxdb
-          image: cryptoinsight-influxdb:latest
+          image: cryptoinsight_influxdb:latest
           imagePullPolicy: Never
           env:
             - name: DOCKER_INFLUXDB_INIT_MODE

@@ -13,15 +13,15 @@ spec:
         app: backend
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
+        prometheus.io/port: "80"
         prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: backend
-          image: cryptoinsight-backend:latest # Replace with your actual backend image name
+          image: cryptoinsight_backend:latest  
           imagePullPolicy: Never
           ports:
-            - containerPort: 3000
+            - containerPort: 80
           resources:
             limits:
               memory: "256Mi"
@@ -31,14 +31,12 @@ spec:
               cpu: "250m"
           readinessProbe:
             httpGet:
-              path: /health # Replace with your health check endpoint
-              port: 3000
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /health # Replace with your health check endpoint
-              port: 3000
+              port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
 
@@ -48,9 +46,9 @@ kind: Service
 metadata:
   name: backend-service
 spec:
-  type: LoadBalancer
+  type: LoadBalancer 
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: 80
+      targetPort: 80
   selector:
     app: backend

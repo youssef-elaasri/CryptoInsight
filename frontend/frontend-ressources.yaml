@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: cryptoinsight-frontend:latest # Replace with your actual frontend image name
+          image: cryptoinsight_frontend:latest # Replace with your actual frontend image name
           imagePullPolicy: Never
           ports:
             - containerPort: 3001
