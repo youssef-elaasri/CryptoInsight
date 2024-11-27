@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend:latest
+          image: superuserdo/backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -31,24 +32,13 @@ spec:
               cpu: "250m"
           readinessProbe:
             httpGet:
+              path: /
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
+              path: /
               port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  type: LoadBalancer 
-  ports:
-    - port: 80
-      targetPort: 80
-  selector:
-    app: backend
