@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-stack
+  namespace: sre
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring-stack
+  template:
+    metadata:
+      labels:
+        app: monitoring-stack
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: admin
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - name: grafana
+              containerPort: 3000
+
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/
+            - name: prometheus-storage-volume
+              mountPath: /prometheus/
+
+        - name: kube-state-metrics
+          image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.3.0
+          ports:
+            - containerPort: 8080
+              name: http-metrics
+            - containerPort: 8081
+              name: telemetry
+
+      volumes:
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources
+        - name: kube-state-metrics-storage
+          emptyDir: {}
+        - name: prometheus-config-volume
+          configMap:
+            name: prometheus-server-conf
+        - name: prometheus-storage-volume
+          emptyDir: {}

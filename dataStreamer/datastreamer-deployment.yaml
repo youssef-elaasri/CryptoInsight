@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datastreaming
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datastreaming
+  template:
+    metadata:
+      labels:
+        app: datastreaming
+    spec:
+      containers:
+        - name: datastreaming
+          image: datastreaming:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka-service:9092"
+            - name: TOPIC
+              value: "assets"
+          resources:
+            requests:
+              memory: "512Mi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "500m"

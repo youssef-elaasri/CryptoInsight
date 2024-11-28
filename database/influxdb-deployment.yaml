@@ -60,12 +60,5 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 7
             failureThreshold: 3
-          resources:
-            requests:
-              memory: "512Mi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
-              cpu: "250m"
-            limits:
-              memory: "2Gi"
-              cpu: "500m"
       volumes:
         - name: influxdb-storage
