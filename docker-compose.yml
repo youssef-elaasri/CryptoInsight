@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: bitnami/kafka:latest
+    image: kafka
     container_name: kafka
     hostname: kafka
     ports:
@@ -27,7 +27,8 @@ services:
       - streaming
 
   influxdb:
-    build: ./Database
+    build: ./database
+    image: influxdb
     container_name: database
     restart: always
     environment:
@@ -41,20 +42,21 @@ services:
       - KAFKA_BROKER=kafka:9092
       - TOPIC=assets
     ports:
-      - '8086:8086'
+      - "8086:8086"
     depends_on:
       kafka:
         condition: service_healthy
     healthcheck:
       test: "exit 0"
     volumes:
-      - ./Database/data:/var/lib/influxdb
+      - ./database/data:/var/lib/influxdb
     networks:
       - streaming
 
   datastreaming:
+    image: datastreaming
     build:
-      context: ./DataStreamer
+      context: ./dataStreamer
     container_name: datastreaming
     depends_on:
       kafka:
@@ -64,6 +66,43 @@ services:
     environment:
       KAFKA_BROKER: "kafka:9092"
       TOPIC: "assets"
+    networks:
+      - streaming
+
+  backend:
+    image: backend
+    build:
+      context: ./backend
+    container_name: backend
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    networks:
+      - streaming
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+    container_name: frontend
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    networks:
+      - streaming
+  dataops:
+    image: dataops
+    build:
+      context: ./dataops
+    container_name: dataops
+    depends_on:
+      kafka:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
     networks:
       - streaming
 

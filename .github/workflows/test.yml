@@ -1,0 +1,47 @@
+# .github/workflows/tests.yml
+
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - CI/CD
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 5432:5432
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Start services
+      run: ./apply.sh
+
+    - name: Run tests
+      run: |
+        python -m unittest discover -s tests
+
+    # - name: Stop services
+    #   if: always()
+    #   run: docker-compose down

@@ -1,24 +1,134 @@
-# Crypto Project
+# Kubernetes Setup Guide
 
-## Overview
-This project is a work in progress. It aims to explore various aspects of cryptography and distributed systems.
+This document provides the necessary commands to deploy the resources in the Kubernetes cluster using the YAML configurations provided in the project directory.
 
-## Features
-- [ ] Encryption Algorithms
-- [ ] Distributed Ledger Technology
-- [ ] Secure Communication Protocols
+## Prerequisites
 
-## Installation
-Instructions will be provided once the project reaches a stable state.
+Ensure you have the following tools installed:
 
-## Usage
-Usage details will be added as the project develops.
+- `kubectl` (Kubernetes CLI)
+- A running Kubernetes cluster (local, cloud, or managed service)
+- Your Kubernetes context configured to point to the appropriate cluster
 
-## Contributing
-Contributions are welcome. Please fork the repository and submit a pull request.
+## Create Docker Images using Docker-compose
 
-## License
-To be decided.
+```bash
+docker-compose build
+```
 
-## Contact
-For any inquiries, please contact the project maintainer.
+## Creating App Deployments
+
+### Influxdb
+
+```bash
+kubectl apply -f database/influxdb-ressources.yaml
+```
+
+### Kafka
+
+```bash
+kubectl apply -f database/kafka-ressources.yaml
+```
+
+### Backend
+
+```bash
+kubectl apply -f backend/backend-ressources.yaml
+```
+
+### Frontend
+
+```bash
+kubectl apply -f frontend/frontend-ressources.yaml
+```
+
+### Dataops
+
+```bash
+kubectl apply -f dataops/dataops-ressources.yaml
+```
+
+### dataStreamer
+
+```bash
+kubectl apply -f dataStreamer/datastreamer-ressources.yaml
+```
+
+### Resolving "Insufficient Memory" Errors
+
+If you encounter an "Insufficient memory" error while deploying the project on a local Kubernetes cluster using Docker Desktop, follow these steps:
+
+1. Open **Docker Desktop**.
+2. Go to **Settings > Resources > Kubernetes**.
+3. Adjust the **Memory** allocation to at least **6GB** (or higher, depending on your needs).
+4. Save the changes and restart Docker Desktop.
+
+This will provide sufficient resources for the deployments to run successfully.
+
+
+## Creating Cluster Roles and Role Bindings
+
+### 1. Cluster Role and role bindings for Kube-State-Metrics
+
+To create the necessary cluster role for `kube-state-metrics`, run the following command:
+
+```bash
+kubectl apply -f sre/cluster-role-kube-state-metrics.yaml
+```
+
+### 2. Cluster Role and Role bindings for Prometheus
+
+To create the necessary cluster role for `prometheus`, run the following command:
+
+```bash
+kubectl apply -f sre/cluster-role-prometheus.yaml
+```
+
+## Creating Service Accounts
+
+To create the service account for the `monitoring-stack` (Grafana and Prometheus), run the following command:
+
+```bash
+kubectl apply -f sre/service-account.yaml
+```
+
+This will create the service account required by the deployment to access the Kubernetes resources.
+
+## Creating ConfigMaps
+
+### 1. Prometheus ConfigMap
+
+To create the ConfigMap for Prometheus, use the following command:
+
+```bash
+kubectl apply -f sre/config-map.yaml
+```
+
+This will configure Prometheus with the necessary scrape configurations and other settings.
+
+### 2. Grafana Datasource ConfigMap
+
+To create the ConfigMap for Grafana datasources, run the following:
+
+```bash
+kubectl apply -f sre/grafana-datasource-config.yaml
+```
+
+This will allow Grafana to connect to Prometheus and other data sources based on your configurations.
+
+## Creating Deployments
+
+### 1. Monitoring Stack Deployment (Grafana, Prometheus, Kube-State-Metrics)
+
+To deploy the `monitoring-stack` (which includes Grafana, Prometheus, and Kube-State-Metrics), use:
+
+```bash
+kubectl apply -f sre/sre-ressources.yaml
+```
+
+This command will create the necessary deployments and services for Prometheus, Grafana, and Kube-State-Metrics.
+
+## Accessing Grafana and Prometheus
+
+- Grafana: You can access Grafana via `http://<node-ip>:32000` (the NodePort specified in the `grafana-service.yaml`). (If working locally localhost:32000)
+- Prometheus: You can access Prometheus via `http://<node-ip>:30000` (the NodePort specified in the `prometheus-service.yaml`). (If working locally localhost:30000)

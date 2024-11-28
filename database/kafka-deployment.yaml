@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: kafka
+          image: bitnami/kafka:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9092
+            - containerPort: 9094
+          env:
+            - name: KAFKA_ENABLE_KRAFT
+              value: "yes"
+            - name: KAFKA_CFG_PROCESS_ROLES
+              value: "broker,controller"
+            - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+              value: "CONTROLLER"
+            - name: KAFKA_CFG_LISTENERS
+              value: "PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094"
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT"
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://kafka-service:9092,EXTERNAL://kafka_b:9094"
+            - name: KAFKA_BROKER_ID
+              value: "1"
+            - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+              value: "1@127.0.0.1:9093"
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: "yes"
+            - name: KAFKA_CFG_NODE_ID
+              value: "1"
+            - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
+              value: "true"
+            - name: BITNAMI_DEBUG
+              value: "yes"
+            - name: KAFKA_CFG_NUM_PARTITIONS
+              value: "2"
+            - name: KAFKA_KRAFT_CLUSTER_ID
+              value: "r4zt_wrqTRuT7W2NJsB_GA"
+          livenessProbe: # This checks if the application within a container is healthy. If the Liveness Probe fails, Kubernetes will restart the container
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 7
+            failureThreshold: 3
+          readinessProbe: # This checks if the application within the container is ready to serve requests
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 7
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "512Mi" # This can be changed later on, 8Gi/16Gi 2 CPU ideally
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "500m"

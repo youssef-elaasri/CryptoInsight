@@ -1,0 +1,37 @@
+name: Deploy to Google Cloud
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v2
+    
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        version: 'latest'
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+    
+    - name: Install gke-gcloud-auth-plugin
+      run: |
+        gcloud components install gke-gcloud-auth-plugin -q
+    
+    - name: Configure kubectl with GKE credentials
+      run: |
+        gcloud container clusters get-credentials cryptoinsights --region europe-southwest1
+    
+    - name: Deploy resources to GKE
+      run: |
+        kubectl apply -f database/kafka-ressources.yaml
+        kubectl apply -f database/influxdb-ressources.yaml
+        kubectl apply -f backend/backend-ressources.yaml
+
+
+

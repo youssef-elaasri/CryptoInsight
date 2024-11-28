@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb-service
+  namespace: default
+  labels:
+    app: influxdb
+spec:
+  selector:
+    app: influxdb
+  ports:
+    - protocol: TCP
+      name: db
+      port: 8086 # Port exposed to the outside world
+      targetPort: 8086 # Port that the application is listening on
+      nodePort: 30300
+
+    - protocol: TCP
+      name: metrics
+      port: 8080 # Port for metrics
+      targetPort: 8080
+  type: NodePort
