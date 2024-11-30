@@ -1,0 +1,1 @@
+Get http://localhost:8080/api/influxdb/findByTokenAndTimeRange?token=BTCUSDT&startTime=1732741080000000000&endTime=1732741139999000000

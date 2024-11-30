@@ -1,0 +1,13 @@
+com/cryptoinsight/backend/models/Coin.class
+com/cryptoinsight/backend/configurations/KafkaConsumerConfig.class
+com/cryptoinsight/backend/services/impl/InfluxDBServiceImpl.class
+com/cryptoinsight/backend/controllers/WebSocketController.class
+com/cryptoinsight/backend/repositories/facade/InfluxRepository.class
+com/cryptoinsight/backend/BackendApplication.class
+com/cryptoinsight/backend/services/facade/InfluxDBService.class
+com/cryptoinsight/backend/repositories/impl/InfluxRepositoryImpl.class
+com/cryptoinsight/backend/services/impl/KafkaConsumerServiceImpl.class
+com/cryptoinsight/backend/services/facade/KafkaConsumerService.class
+com/cryptoinsight/backend/controllers/InfluxDBController.class
+com/cryptoinsight/backend/configurations/InfluxDBConfig.class
+com/cryptoinsight/backend/configurations/WebSocketConfig.class
