@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface KafkaConsumerService {
 
-    void consumeMessage(String message);
+   /* void consumeMessage(String message);
 
     void startConsuming();
-    List<String> getConsumedMessages();
+    List<String> getConsumedMessages();*/
+    void consume(String message);
 }
