@@ -2,6 +2,7 @@ package com.cryptoinsight.backend.configurations;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,11 +11,13 @@ import java.util.Properties;
 @Configuration
 public class KafkaConsumerConfig {
 
+    @Value("${kafka.broker}")
+    private String kafkaBroker;
+
     @Bean
     public Properties kafkaConsumerProperties() {
-        String kafkaBroker = System.getenv("KAFKA_BROKER");
         if (kafkaBroker == null) {
-            throw new IllegalArgumentException("La variable d'environnement KAFKA_BROKER doit être définie.");
+            throw new IllegalArgumentException("La propriété kafka.broker doit être définie.");
         }
 
         Properties properties = new Properties();

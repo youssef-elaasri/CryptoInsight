@@ -8,4 +8,6 @@ public interface InfluxDBService {
     void save(Coin coin);
 
     List<Coin> findByTokenAndTimeRange(String token, String startTime, String endTime);
+
+    List<Coin> getMarketData();
 }

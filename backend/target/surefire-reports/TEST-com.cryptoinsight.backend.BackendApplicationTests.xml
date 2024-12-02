@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.cryptoinsight.backend.BackendApplicationTests" time="3.562" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.cryptoinsight.backend.BackendApplicationTests" time="2.959" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -11,32 +11,31 @@
     <property name="os.name" value="Linux"/>
     <property name="java.vm.specification.version" value="21"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="user.country" value="FR"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/ensimag/CryptoInsight/backend/target/surefire/surefirebooter-20241117235254349_3.jar /home/ensimag/CryptoInsight/backend/target/surefire 2024-11-17T23-52-54_240-jvmRun1 surefire-20241117235254349_1tmp surefire_0-20241117235254349_2tmp"/>
+    <property name="sun.java.command" value="/home/ensimag/CryptoInsight/backend/target/surefire/surefirebooter-20241130214254724_3.jar /home/ensimag/CryptoInsight/backend/target/surefire 2024-11-30T21-42-54_653-jvmRun1 surefire-20241130214254724_1tmp surefire_0-20241130214254724_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/ensimag/CryptoInsight/backend/target/test-classes:/home/ensimag/CryptoInsight/backend/target/classes:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.3.5/spring-boot-starter-web-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter/3.3.5/spring-boot-starter-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot/3.3.5/spring-boot-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.3.5/spring-boot-autoconfigure-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.3.5/spring-boot-starter-logging-3.3.5.jar:/home/ensimag/.m2/repository/ch/qos/logback/logback-classic/1.5.11/logback-classic-1.5.11.jar:/home/ensimag/.m2/repository/ch/qos/logback/logback-core/1.5.11/logback-core-1.5.11.jar:/home/ensimag/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.23.1/log4j-to-slf4j-2.23.1.jar:/home/ensimag/.m2/repository/org/apache/logging/log4j/log4j-api/2.23.1/log4j-api-2.23.1.jar:/home/ensimag/.m2/repository/org/slf4j/jul-to-slf4j/2.0.16/jul-to-slf4j-2.0.16.jar:/home/ensimag/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar:/home/ensimag/.m2/repository/org/yaml/snakeyaml/2.2/snakeyaml-2.2.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.3.5/spring-boot-starter-json-3.3.5.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.17.2/jackson-databind-2.17.2.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.17.2/jackson-annotations-2.17.2.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.17.2/jackson-core-2.17.2.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.17.2/jackson-datatype-jdk8-2.17.2.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.17.2/jackson-datatype-jsr310-2.17.2.jar:/home/ensimag/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.17.2/jackson-module-parameter-names-2.17.2.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.3.5/spring-boot-starter-tomcat-3.3.5.jar:/home/ensimag/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.31/tomcat-embed-core-10.1.31.jar:/home/ensimag/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.1.31/tomcat-embed-el-10.1.31.jar:/home/ensimag/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.31/tomcat-embed-websocket-10.1.31.jar:/home/ensimag/.m2/repository/org/springframework/spring-web/6.1.14/spring-web-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-beans/6.1.14/spring-beans-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-webmvc/6.1.14/spring-webmvc-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-aop/6.1.14/spring-aop-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-expression/6.1.14/spring-expression-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-test/3.3.5/spring-boot-starter-test-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-test/3.3.5/spring-boot-test-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-test-autoconfigure/3.3.5/spring-boot-test-autoconfigure-3.3.5.jar:/home/ensimag/.m2/repository/com/jayway/jsonpath/json-path/2.9.0/json-path-2.9.0.jar:/home/ensimag/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.2/jakarta.xml.bind-api-4.0.2.jar:/home/ensimag/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.3/jakarta.activation-api-2.1.3.jar:/home/ensimag/.m2/repository/net/minidev/json-smart/2.5.1/json-smart-2.5.1.jar:/home/ensimag/.m2/repository/net/minidev/accessors-smart/2.5.1/accessors-smart-2.5.1.jar:/home/ensimag/.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar:/home/ensimag/.m2/repository/org/assertj/assertj-core/3.25.3/assertj-core-3.25.3.jar:/home/ensimag/.m2/repository/net/bytebuddy/byte-buddy/1.14.19/byte-buddy-1.14.19.jar:/home/ensimag/.m2/repository/org/awaitility/awaitility/4.2.2/awaitility-4.2.2.jar:/home/ensimag/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/home/ensimag/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.5/junit-jupiter-5.10.5.jar:/home/ensimag/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.5/junit-jupiter-api-5.10.5.jar:/home/ensimag/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/ensimag/.m2/repository/org/junit/platform/junit-platform-commons/1.10.5/junit-platform-commons-1.10.5.jar:/home/ensimag/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/ensimag/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.5/junit-jupiter-params-5.10.5.jar:/home/ensimag/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.5/junit-jupiter-engine-5.10.5.jar:/home/ensimag/.m2/repository/org/junit/platform/junit-platform-engine/1.10.5/junit-platform-engine-1.10.5.jar:/home/ensimag/.m2/repository/org/mockito/mockito-core/5.11.0/mockito-core-5.11.0.jar:/home/ensimag/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.19/byte-buddy-agent-1.14.19.jar:/home/ensimag/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/ensimag/.m2/repository/org/mockito/mockito-junit-jupiter/5.11.0/mockito-junit-jupiter-5.11.0.jar:/home/ensimag/.m2/repository/org/skyscreamer/jsonassert/1.5.3/jsonassert-1.5.3.jar:/home/ensimag/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar:/home/ensimag/.m2/repository/org/springframework/spring-core/6.1.14/spring-core-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-jcl/6.1.14/spring-jcl-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-test/6.1.14/spring-test-6.1.14.jar:/home/ensimag/.m2/repository/org/xmlunit/xmlunit-core/2.9.1/xmlunit-core-2.9.1.jar:/home/ensimag/.m2/repository/com/influxdb/influxdb-client-java/7.2.0/influxdb-client-java-7.2.0.jar:/home/ensimag/.m2/repository/com/influxdb/influxdb-client-core/7.2.0/influxdb-client-core-7.2.0.jar:/home/ensimag/.m2/repository/com/influxdb/influxdb-client-utils/7.2.0/influxdb-client-utils-7.2.0.jar:/home/ensimag/.m2/repository/com/squareup/okio/okio/3.9.0/okio-3.9.0.jar:/home/ensimag/.m2/repository/com/squareup/okio/okio-jvm/3.9.0/okio-jvm-3.9.0.jar:/home/ensimag/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25.jar:/home/ensimag/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/ensimag/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/home/ensimag/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25.jar:/home/ensimag/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25.jar:/home/ensimag/.m2/repository/com/squareup/retrofit2/retrofit/2.11.0/retrofit-2.11.0.jar:/home/ensimag/.m2/repository/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.jar:/home/ensimag/.m2/repository/org/apache/commons/commons-csv/1.11.0/commons-csv-1.11.0.jar:/home/ensimag/.m2/repository/commons-io/commons-io/2.16.1/commons-io-2.16.1.jar:/home/ensimag/.m2/repository/commons-codec/commons-codec/1.16.1/commons-codec-1.16.1.jar:/home/ensimag/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/home/ensimag/.m2/repository/io/reactivex/rxjava3/rxjava/3.1.9/rxjava-3.1.9.jar:/home/ensimag/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/home/ensimag/.m2/repository/com/squareup/retrofit2/adapter-rxjava3/2.11.0/adapter-rxjava3-2.11.0.jar:/home/ensimag/.m2/repository/com/squareup/retrofit2/converter-scalars/2.11.0/converter-scalars-2.11.0.jar:/home/ensimag/.m2/repository/com/squareup/retrofit2/converter-gson/2.11.0/converter-gson-2.11.0.jar:/home/ensimag/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/ensimag/.m2/repository/org/springframework/kafka/spring-kafka/3.2.4/spring-kafka-3.2.4.jar:/home/ensimag/.m2/repository/org/springframework/spring-context/6.1.14/spring-context-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-messaging/6.1.14/spring-messaging-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/spring-tx/6.1.14/spring-tx-6.1.14.jar:/home/ensimag/.m2/repository/org/springframework/retry/spring-retry/2.0.10/spring-retry-2.0.10.jar:/home/ensimag/.m2/repository/io/micrometer/micrometer-observation/1.13.6/micrometer-observation-1.13.6.jar:/home/ensimag/.m2/repository/io/micrometer/micrometer-commons/1.13.6/micrometer-commons-1.13.6.jar:/home/ensimag/.m2/repository/org/apache/kafka/kafka-clients/3.7.1/kafka-clients-3.7.1.jar:/home/ensimag/.m2/repository/com/github/luben/zstd-jni/1.5.6-3/zstd-jni-1.5.6-3.jar:/home/ensimag/.m2/repository/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar:/home/ensimag/.m2/repository/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar:/home/ensimag/.m2/repository/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar:/home/ensimag/.m2/repository/org/springframework/boot/spring-boot-starter-websocket/3.3.5/spring-boot-starter-websocket-3.3.5.jar:/home/ensimag/.m2/repository/org/springframework/spring-websocket/6.1.14/spring-websocket-6.1.14.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/ensimag"/>
-    <property name="user.language" value="fr"/>
+    <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="java.version.date" value="2024-10-15"/>
     <property name="java.home" value="/usr/lib/jvm/java-21-openjdk-amd64"/>
     <property name="file.separator" value="/"/>
     <property name="basedir" value="/home/ensimag/CryptoInsight/backend"/>
-    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
-    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="FILE_LOG_CHARSET" value="UTF-8"/>
     <property name="java.awt.headless" value="true"/>
-    <property name="surefire.real.class.path" value="/home/ensimag/CryptoInsight/backend/target/surefire/surefirebooter-20241117235254349_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/ensimag/CryptoInsight/backend/target/surefire/surefirebooter-20241130214254724_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.5+11-Ubuntu-1ubuntu124.04"/>
     <property name="user.name" value="ensimag"/>
     <property name="stdout.encoding" value="UTF-8"/>
     <property name="path.separator" value=":"/>
-    <property name="os.version" value="6.8.0-48-generic"/>
+    <property name="os.version" value="5.15.167.4-microsoft-standard-WSL2"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
@@ -47,21 +46,21 @@
     <property name="user.dir" value="/home/ensimag/CryptoInsight/backend"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="PID" value="82399"/>
+    <property name="PID" value="22943"/>
     <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
     <property name="native.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
-    <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
     <property name="java.vendor" value="Ubuntu"/>
     <property name="java.vm.version" value="21.0.5+11-Ubuntu-1ubuntu124.04"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
     <property name="LOGGED_APPLICATION_NAME" value="[backend] "/>
   </properties>
-  <testcase name="contextLoads" classname="com.cryptoinsight.backend.BackendApplicationTests" time="0.698">
-    <system-out><![CDATA[23:52:55.004 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.cryptoinsight.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-23:52:55.099 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.cryptoinsight.backend.BackendApplication for test class com.cryptoinsight.backend.BackendApplicationTests
+  <testcase name="contextLoads" classname="com.cryptoinsight.backend.BackendApplicationTests" time="0.706">
+    <system-out><![CDATA[21:42:55.411 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.cryptoinsight.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+21:42:55.493 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.cryptoinsight.backend.BackendApplication for test class com.cryptoinsight.backend.BackendApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -72,114 +71,9 @@
 
  :: Spring Boot ::                (v3.3.5)
 
-2024-11-17T23:52:55.499+01:00  INFO 82399 --- [backend] [           main] c.c.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 21.0.5 with PID 82399 (started by ensimag in /home/ensimag/CryptoInsight/backend)
-2024-11-17T23:52:55.500+01:00  INFO 82399 --- [backend] [           main] c.c.backend.BackendApplicationTests      : No active profile set, falling back to 1 default profile: "default"
-2024-11-17T23:52:56.658+01:00  INFO 82399 --- [backend] [           main] o.a.k.clients.consumer.ConsumerConfig    : ConsumerConfig values: 
-	allow.auto.create.topics = true
-	auto.commit.interval.ms = 5000
-	auto.include.jmx.reporter = true
-	auto.offset.reset = earliest
-	bootstrap.servers = [localhost:9092]
-	check.crcs = true
-	client.dns.lookup = use_all_dns_ips
-	client.id = consumer-crypto-group-1
-	client.rack = 
-	connections.max.idle.ms = 540000
-	default.api.timeout.ms = 60000
-	enable.auto.commit = true
-	enable.metrics.push = true
-	exclude.internal.topics = true
-	fetch.max.bytes = 52428800
-	fetch.max.wait.ms = 500
-	fetch.min.bytes = 1
-	group.id = crypto-group
-	group.instance.id = null
-	group.protocol = classic
-	group.remote.assignor = null
-	heartbeat.interval.ms = 3000
-	interceptor.classes = []
-	internal.leave.group.on.close = true
-	internal.throw.on.fetch.stable.offset.unsupported = false
-	isolation.level = read_uncommitted
-	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
-	max.partition.fetch.bytes = 1048576
-	max.poll.interval.ms = 300000
-	max.poll.records = 500
-	metadata.max.age.ms = 300000
-	metric.reporters = []
-	metrics.num.samples = 2
-	metrics.recording.level = INFO
-	metrics.sample.window.ms = 30000
-	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
-	receive.buffer.bytes = 65536
-	reconnect.backoff.max.ms = 1000
-	reconnect.backoff.ms = 50
-	request.timeout.ms = 30000
-	retry.backoff.max.ms = 1000
-	retry.backoff.ms = 100
-	sasl.client.callback.handler.class = null
-	sasl.jaas.config = null
-	sasl.kerberos.kinit.cmd = /usr/bin/kinit
-	sasl.kerberos.min.time.before.relogin = 60000
-	sasl.kerberos.service.name = null
-	sasl.kerberos.ticket.renew.jitter = 0.05
-	sasl.kerberos.ticket.renew.window.factor = 0.8
-	sasl.login.callback.handler.class = null
-	sasl.login.class = null
-	sasl.login.connect.timeout.ms = null
-	sasl.login.read.timeout.ms = null
-	sasl.login.refresh.buffer.seconds = 300
-	sasl.login.refresh.min.period.seconds = 60
-	sasl.login.refresh.window.factor = 0.8
-	sasl.login.refresh.window.jitter = 0.05
-	sasl.login.retry.backoff.max.ms = 10000
-	sasl.login.retry.backoff.ms = 100
-	sasl.mechanism = GSSAPI
-	sasl.oauthbearer.clock.skew.seconds = 30
-	sasl.oauthbearer.expected.audience = null
-	sasl.oauthbearer.expected.issuer = null
-	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
-	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
-	sasl.oauthbearer.jwks.endpoint.url = null
-	sasl.oauthbearer.scope.claim.name = scope
-	sasl.oauthbearer.sub.claim.name = sub
-	sasl.oauthbearer.token.endpoint.url = null
-	security.protocol = PLAINTEXT
-	security.providers = null
-	send.buffer.bytes = 131072
-	session.timeout.ms = 45000
-	socket.connection.setup.timeout.max.ms = 30000
-	socket.connection.setup.timeout.ms = 10000
-	ssl.cipher.suites = null
-	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
-	ssl.endpoint.identification.algorithm = https
-	ssl.engine.factory.class = null
-	ssl.key.password = null
-	ssl.keymanager.algorithm = SunX509
-	ssl.keystore.certificate.chain = null
-	ssl.keystore.key = null
-	ssl.keystore.location = null
-	ssl.keystore.password = null
-	ssl.keystore.type = JKS
-	ssl.protocol = TLSv1.3
-	ssl.provider = null
-	ssl.secure.random.implementation = null
-	ssl.trustmanager.algorithm = PKIX
-	ssl.truststore.certificates = null
-	ssl.truststore.location = null
-	ssl.truststore.password = null
-	ssl.truststore.type = JKS
-	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
-
-2024-11-17T23:52:56.724+01:00  INFO 82399 --- [backend] [           main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
-2024-11-17T23:52:56.913+01:00  INFO 82399 --- [backend] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 3.7.1
-2024-11-17T23:52:56.914+01:00  INFO 82399 --- [backend] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: e2494e6ffb89f828
-2024-11-17T23:52:56.914+01:00  INFO 82399 --- [backend] [           main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1731883976912
-2024-11-17T23:52:57.660+01:00  INFO 82399 --- [backend] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
-2024-11-17T23:52:57.662+01:00  INFO 82399 --- [backend] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@66715ca9]]
-2024-11-17T23:52:57.663+01:00  INFO 82399 --- [backend] [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
-2024-11-17T23:52:57.674+01:00  INFO 82399 --- [backend] [           main] c.c.backend.BackendApplicationTests      : Started BackendApplicationTests in 2.454 seconds (process running for 3.266)
+2024-11-30T21:42:55.798+01:00  INFO 22943 --- [backend] [           main] c.c.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 21.0.5 with PID 22943 (started by ensimag in /home/ensimag/CryptoInsight/backend)
+2024-11-30T21:42:55.799+01:00  INFO 22943 --- [backend] [           main] c.c.backend.BackendApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2024-11-30T21:42:57.499+01:00  INFO 22943 --- [backend] [           main] c.c.backend.BackendApplicationTests      : Started BackendApplicationTests in 1.903 seconds (process running for 2.719)
 ]]></system-out>
     <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/home/ensimag/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.19/byte-buddy-agent-1.14.19.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning

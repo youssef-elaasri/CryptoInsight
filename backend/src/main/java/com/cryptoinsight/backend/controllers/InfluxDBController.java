@@ -32,4 +32,9 @@ public class InfluxDBController {
             @RequestParam String endTime) {
         return influxDBService.findByTokenAndTimeRange(token, startTime, endTime);
     }
+
+    @GetMapping("/marketData")
+    public List<Coin> getMarketData() {
+        return influxDBService.getMarketData();
+    }
 }

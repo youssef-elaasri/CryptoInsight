@@ -1,9 +1,8 @@
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/BackendApplication.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/configurations/InfluxDBConfig.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/configurations/KafkaConsumerConfig.java
-/home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/configurations/WebSocketConfig.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/controllers/InfluxDBController.java
-/home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/controllers/WebSocketController.java
+/home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/controllers/KafkaController.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/models/Coin.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/repositories/facade/InfluxRepository.java
 /home/ensimag/CryptoInsight/backend/src/main/java/com/cryptoinsight/backend/repositories/impl/InfluxRepositoryImpl.java

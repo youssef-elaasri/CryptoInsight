@@ -9,4 +9,6 @@ public interface InfluxRepository {
     void save(Coin coin);
 
     List<FluxTable> findByTokenAndTimeRange(String token, String startTime, String endTime);
+
+    List<FluxTable> getAllMarketData();
 }

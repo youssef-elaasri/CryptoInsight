@@ -5,9 +5,11 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -16,13 +18,19 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
     private KafkaConsumer<String, String> consumer;
 
+    @Value("${kafka.broker}")
+    private String kafkaBroker;
+
+    @Value("${kafka.topic}")
+    private String topic;
+
+    // Liste pour stocker les messages consommés
+    private final List<String> consumedMessages = new ArrayList<>();
+
     @Override
     public void startConsuming() {
-        String kafkaBroker = System.getenv("KAFKA_BROKER");
-        String topic = System.getenv("TOPIC");
-
         if (kafkaBroker == null || topic == null) {
-            throw new IllegalArgumentException("Les variables d'environnement KAFKA_BROKER et TOPIC doivent être définies.");
+            throw new IllegalArgumentException("Les propriétés kafka.broker et kafka.topic doivent être définies.");
         }
 
         // Configurer les propriétés du consommateur Kafka
@@ -48,25 +56,35 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
         try {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-                records.forEach(record -> consumeMessage(record.value()));
+                if (!records.isEmpty()) {
+                    records.forEach(record -> consumeMessage(record.value()));
+                } else {
+                    System.out.println("Aucun message reçu.");
+                }
             }
         } catch (Exception e) {
             System.err.println("Erreur lors de la consommation des messages : " + e.getMessage());
         } finally {
-            // Assurez-vous de fermer correctement le consommateur Kafka
             if (consumer != null) {
                 consumer.close();
             }
         }
     }
+    
 
     @Override
     public void consumeMessage(String message) {
         try {
             // Logique de traitement du message
             System.out.println("Message reçu : " + message);
+            consumedMessages.add(message);  // Ajouter le message à la liste
         } catch (Exception e) {
             System.err.println("Erreur lors du traitement du message : " + e.getMessage());
         }
+    }
+
+    // Méthode pour récupérer les messages consommés
+    public List<String> getConsumedMessages() {
+        return consumedMessages;
     }
 }
