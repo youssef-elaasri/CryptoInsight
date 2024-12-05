@@ -2,6 +2,10 @@ terraform {
 
   backend "remote" {
     organization = "crypto_insight"
+
+    workspaces {
+      name = "CryptoInsight"
+    }
   }
   required_providers {
     google = {
