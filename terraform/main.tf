@@ -20,7 +20,6 @@ terraform {
 }
 
 provider "google" {
-  credentials = file(var.GOOGLE_CREDENTIALS) #I'm not sure this will work
   project = var.project_id
   region  = var.region
   zone    = var.zone
