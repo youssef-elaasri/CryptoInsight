@@ -1,7 +1,7 @@
 terraform {
 
   backend "remote" {
-    organization = "CryptoInsight"
+    organization = "crypto_insight"
 
     workspaces {
       name = "CryptoInsight"
