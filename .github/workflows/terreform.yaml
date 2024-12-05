@@ -21,11 +21,13 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.7
+
+          
       # Authenticate with Terraform Cloud
       - name: Set Terraform Cloud Token
-        run: echo "Setting Terraform Cloud Token"
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+        run: echo "Terraform Cloud Token set"
 
       # Setup Google Cloud credentials
       - name: Authenticate Google Cloud
