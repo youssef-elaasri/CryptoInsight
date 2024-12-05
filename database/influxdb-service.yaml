@@ -19,4 +19,4 @@ spec:
       name: metrics
       port: 8080 # Port for metrics
       targetPort: 8080
-  type: NodePort
+  type: LoadBalancer

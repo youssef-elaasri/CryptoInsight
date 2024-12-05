@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datastreaming
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datastreaming
+  template:
+    metadata:
+      labels:
+        app: datastreaming
+    spec:
+      containers:
+        - name: datastreaming
+          image: datastreaming:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka-service:9092"
+            - name: TOPIC
+              value: "assets"
