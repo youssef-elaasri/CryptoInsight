@@ -10,7 +10,7 @@ jobs:
     name: Apply Terraform
     runs-on: ubuntu-latest
     env:
-      TF_WORKSPACE: your-workspace-name  # Specify your Terraform Cloud workspace
+      TF_WORKSPACE: CryptoInsight
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
