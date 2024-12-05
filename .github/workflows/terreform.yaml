@@ -1,60 +1,51 @@
 name: Terraform Deployment
-
 on:
   push:
     branches:
-      - main 
+      - main
       - terraform
 
 jobs:
   terraform:
     name: Apply Terraform
     runs-on: ubuntu-latest
-
+    env:
+      TF_WORKSPACE: your-workspace-name  # Specify your Terraform Cloud workspace
     steps:
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Setup Terraform CLI
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.7
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.7
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-          
-      # Authenticate with Terraform Cloud
-      - name: Set Terraform Cloud Token
-        env:
-          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
-        run: echo "Terraform Cloud Token set"
+    - name: Authenticate Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials_json: ${{ secrets.GCLOUD_AUTH }}
 
-      # Setup Google Cloud credentials
-      - name: Authenticate Google Cloud
-        uses: google-github-actions/auth@v1
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+    - name: Setup Terraform Cloud Credentials
+      run: |
+        mkdir -p ~/.terraform.d
+        echo 'credentials "app.terraform.io" { token = "${{ secrets.TF_API_TOKEN }}" }' > ~/.terraform.d/credentials.tfrc.json
 
-      # Initialize Terraform
-      - name: Terraform Init
-        run: terraform init -input=false
-        working-directory: terraform
+    - name: Terraform Init
+      run: terraform init -input=false
+      working-directory: terraform
 
-      # Apply Terraform to create the cluster
-      - name: Apply Terraform - Create Cluster
-        run: terraform apply -target=google_container_cluster.primary -auto-approve
-        working-directory: terraform
+    # Apply Terraform to create the cluster
+    - name: Apply Terraform - Create Cluster
+      run: terraform apply -target=google_container_cluster.primary -auto-approve
+      working-directory: terraform
 
+    - name: Terraform Plan
+      run: terraform plan -input=false -out=tfplan
+      working-directory: terraform
 
-      # Plan Terraform changes
-      - name: Terraform Plan
-        run: terraform plan -input=false -out=tfplan
-        working-directory: terraform
-
-      # Apply Terraform changes
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -input=false tfplan
-        working-directory: terraform
-
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -input=false tfplan
+      working-directory: terraform
