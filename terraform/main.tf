@@ -1,4 +1,12 @@
 terraform {
+
+  backend "remote" {
+    organization = "CryptoInsight"
+
+    workspaces {
+      name = "CryptoInsight"
+    }
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"

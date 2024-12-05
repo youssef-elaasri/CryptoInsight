@@ -1,46 +1,48 @@
-name: Deploy Kubernetes Cluster and Pods
+name: Terraform Deployment
 
 on:
   push:
     branches:
+      - main 
       - terraform
-  workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Deploy to GCP
+  terraform:
+    name: Apply Terraform
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout repository
+      # Step 1: Checkout the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Terraform
-      - name: Set up Terraform
+      # Step 2: Setup Terraform CLI
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.9.8
+          terraform_version: 1.5.7
+      # Step 3: Authenticate with Terraform Cloud
+      - name: Set Terraform Cloud Token
+        run: echo "Setting Terraform Cloud Token"
+        env:
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
-      # Step 3: Configure gcloud CLI and Authenticate
-      - name: Set up gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0.2.0
+      # Step 4: Setup Google Cloud credentials
+      - name: Authenticate Google Cloud
+        uses: google-github-actions/auth@v1
         with:
-          version: 'latest'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
 
-      # Step 4: Initialize Terraform
+      # Step 5: Initialize Terraform
       - name: Terraform Init
-        run: terraform init
-        working-directory: terraform
+        run: terraform init -input=false
 
-      # Step 5: Apply Terraform to create the cluster
-      - name: Apply Terraform - Create Cluster
-        run: terraform apply -target=google_container_cluster.primary -auto-approve
-        working-directory: terraform
+      # Step 6: Plan Terraform changes
+      - name: Terraform Plan
+        run: terraform plan -input=false -out=tfplan
 
-      # Step 6: Apply Terraform to deploy pods
-      - name: Apply Terraform - Deploy Pods
-        run: terraform apply -auto-approve
-        working-directory: terraform
+      # Step 7: Apply Terraform changes
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply -input=false tfplan
