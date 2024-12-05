@@ -32,9 +32,13 @@ jobs:
         mkdir -p ~/.terraform.d
         echo 'credentials "app.terraform.io" { token = "${{ secrets.TF_API_TOKEN }}" }' > ~/.terraform.d/credentials.tfrc.json
 
+
     - name: Terraform Init
+      env:
+        TF_WORKSPACE: CryptoInsight  # Explicitly set workspace
       run: terraform init -input=false
       working-directory: terraform
+
 
     # Apply Terraform to create the cluster
     - name: Apply Terraform - Create Cluster
