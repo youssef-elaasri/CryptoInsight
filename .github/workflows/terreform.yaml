@@ -12,37 +12,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Setup Terraform CLI
+      # Setup Terraform CLI
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.7
-      # Step 3: Authenticate with Terraform Cloud
+      # Authenticate with Terraform Cloud
       - name: Set Terraform Cloud Token
         run: echo "Setting Terraform Cloud Token"
         env:
           TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
-      # Step 4: Setup Google Cloud credentials
+      # Setup Google Cloud credentials
       - name: Authenticate Google Cloud
         uses: google-github-actions/auth@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           credentials_json: ${{ secrets.GCLOUD_AUTH }}
 
-      # Step 5: Initialize Terraform
+      # Initialize Terraform
       - name: Terraform Init
         run: terraform init -input=false
+        working-directory: terraform
 
-      # Step 6: Plan Terraform changes
+      # Apply Terraform to create the cluster
+      - name: Apply Terraform - Create Cluster
+        run: terraform apply -target=google_container_cluster.primary -auto-approve
+        working-directory: terraform
+
+
+      # Plan Terraform changes
       - name: Terraform Plan
         run: terraform plan -input=false -out=tfplan
+        working-directory: terraform
 
-      # Step 7: Apply Terraform changes
+      # Apply Terraform changes
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -input=false tfplan
+        working-directory: terraform
+
