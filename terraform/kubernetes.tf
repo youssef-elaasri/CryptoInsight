@@ -42,7 +42,7 @@ resource "kubernetes_manifest" "kafka_service" {
 
 resource "kubernetes_manifest" "datastreamer_deployment" {
   depends_on = [google_container_cluster.primary]
-  manifest   = yamldecode(file("../dataStreamer/datastreamer-deployment.yaml"))
+  manifest   = yamldecode(file("../dataStreamer/dataStreamer-deployment.yaml"))
 }
 
 resource "kubernetes_manifest" "datastreamer_svc" {

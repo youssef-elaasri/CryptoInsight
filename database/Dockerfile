@@ -12,5 +12,6 @@ RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
 COPY . .
 
 EXPOSE 8080
+EXPOSE 8000
 
 CMD [ "/bin/sh", "-c", "/entrypoint.sh & python3 /app/main.py"]

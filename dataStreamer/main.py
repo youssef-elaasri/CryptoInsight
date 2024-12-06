@@ -1,6 +1,7 @@
 import json
 import websocket
 import os
+import time 
 from kafka import KafkaProducer
 
 KAFKA_BROKER = os.getenv("KAFKA_BROKER")
@@ -22,16 +23,15 @@ def on_message(ws, message, producer):
         'lowest_price': data['k']['l'],
         'volume': data['k']['v'],
         'trades': data['k']['n'],
+        'timestamp':time.time() # Record start time to measure latency
     }
 
     publish_data(producer, cleaned)
 
 def publish_data(producer, data):
     try:
-        print(f"Publishing data: {data}",flush=True)  # Debug: print the data being published
         future = producer.send(TOPIC, json.dumps(data).encode('utf-8'))
         record_metadata = future.get(timeout=10)  # Wait for the send to complete
-        print(f"Message sent to Kafka: {record_metadata.topic}",flush=True)
     except Exception as e:
         print(f"Error publishing data to Kafka: {e}",flush=True)
 def on_error(ws, error):

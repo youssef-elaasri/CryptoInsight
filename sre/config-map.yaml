@@ -35,3 +35,7 @@ data:
           - targets:
               - 'localhost:8080'
               - 'localhost:8081'
+      - job_name: 'data_pipeline'
+        static_configs:
+          - targets: 
+              - 'influxdb-service.default.svc.cluster.local:8080'

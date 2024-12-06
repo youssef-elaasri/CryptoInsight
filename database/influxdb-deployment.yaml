@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: influxdb
-          image: superuserdo/influxdb:latest
+          image: jihadhd/cryptoinsight-influxdb:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: DOCKER_INFLUXDB_INIT_MODE

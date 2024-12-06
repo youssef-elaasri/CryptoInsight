@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: datastreaming
-          image: datastreaming:latest
+          image: jihadhd/cryptoinsight-datastreaming:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

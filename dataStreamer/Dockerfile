@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 8080
 
 # Define the command to run the application
-CMD ["python3", "main.py"]
+CMD ["python3","main.py"]

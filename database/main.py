@@ -5,12 +5,15 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import json
 from prometheus_client import start_http_server, Gauge
 import time
-import random
+import logging
+from prometheus_client import Histogram
+
 
 # Kafka broker address and topic
 KAFKA_BROKER = os.getenv("KAFKA_BROKER")
 TOPIC = os.getenv("TOPIC")
-
+# Expose metric for prometheus to scrape
+data_pipeline_latency = Histogram('data_pipeline_latency_seconds', 'Latency in seconds from receiving data to saving in DB')
 # InfluxDB connection details
 INFLUXDB_URL = "http://influxdb:8086"
 INFLUXDB_TOKEN = os.getenv("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
@@ -27,7 +30,7 @@ def create_consumer():
         group_id = 'influx',
         value_deserializer = lambda x: x.decode('utf-8')
     )
-
+    print("Kafka consumer created successfully",flush=True)
     return consumer
 
 def save_to_influx(write_api, data):
@@ -42,22 +45,30 @@ def save_to_influx(write_api, data):
         .field("volume", float(data['volume'])) \
         .field("trades", int(data['trades'])) \
         .time(data['start_time'])
-
+    print(f"Data saved to InfluxDB: {data}",flush=True)
     # Write the point to InfluxDB
     write_api.write(bucket=INFLUXDB_BUCKET, record=point)
 
 def main():
     consumer = create_consumer()
     client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
+    print("Connected to InfluxDB",flush=True)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     while True:
         for message in consumer:
             try:
                 converted = json.loads(message.value.replace("\'", "\""))
-                print(f"Consumed: {converted}")
+                # get timestamp to measure latency
+                start_time=converted["timestamp"]
+                current_time=time.time()
+                latency=current_time-start_time
+                print(f"Consumed message: {converted}, Latency: {latency:.3f}s",flush=True)
+                data_pipeline_latency.observe(latency)
                 save_to_influx(write_api, converted)
             except Exception as e:
-                print("Error processing message:", e)
+                print(f"Error processing message: {e}", flush=True)
 
 if __name__ == "__main__":
+    start_http_server(8080)
+    print("Prometheus HTTP server started on port 8080",flush=True)
     main()
