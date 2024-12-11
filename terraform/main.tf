@@ -1,12 +1,18 @@
 terraform {
+  ### Desperate attempt to get the remote backend working on terraform cloud
 
-  backend "remote" {
-    organization = "crypto_insight"
+  # backend "remote" {
+  #   organization = "crypto_insight"
 
-    workspaces {
-      name = "CryptoInsight"
-    }
+  #   workspaces {
+  #     name = "CryptoInsight"
+  #   }
+  # }
+
+  backend "gcs" {
+    bucket = "cryptoinsight-terraform-states" # Hard coded GCP bucket name
   }
+
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -71,5 +77,12 @@ provider "kubernetes" {
     ]
   }
 }
+
+resource "kubernetes_namespace" "sre" {
+  metadata {
+    name = "sre"
+  }
+}
+
 
 
