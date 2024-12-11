@@ -12,7 +12,7 @@ KAFKA_BROKER = os.getenv("KAFKA_BROKER")
 TOPIC = os.getenv("TOPIC")
 
 # InfluxDB connection details
-INFLUXDB_URL = "http://influxdb-service:8086"
+INFLUXDB_URL = "http://influxdb:8086"
 INFLUXDB_TOKEN = os.getenv("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
 INFLUXDB_ORG = os.getenv("DOCKER_INFLUXDB_INIT_ORG")
 INFLUXDB_BUCKET = os.getenv("DOCKER_INFLUXDB_INIT_BUCKET")

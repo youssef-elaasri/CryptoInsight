@@ -1,0 +1,39 @@
+.header {
+  background-color: #2b51ce;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+span.title {
+  font-size: 37px;
+  font-weight: bold;
+}
+
+span.title:nth-of-type(1) {
+  color: white;
+}
+
+span.title:nth-of-type(2) {
+  color: #1d44c4;
+  -webkit-text-stroke: 1px white;
+}
+
+a {
+  color: white;
+  background-color: #2b51ce;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  padding: 10px;
+  margin-left: 40px;
+  border-radius: 10px;
+}
+
+a:hover {
+  cursor: pointer;
+  color: #1d44c4;
+  background-color: white;
+  transition: all 0.5s ease;
+}

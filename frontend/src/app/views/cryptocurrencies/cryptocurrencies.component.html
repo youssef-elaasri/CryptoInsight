@@ -1,0 +1,85 @@
+<p-card>
+  <ng-template pTemplate="title">
+    <div class="d-flex flex-column">
+      <span class="title">Cryptocurrency Prices</span>
+      <span class="subheader">{{ coins.length }} Assets</span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="card">
+      <p-table
+        #dt
+        [value]="coins"
+        dataKey="token"
+        [globalFilterFields]="['token']"
+        [paginator]="true"
+        [rows]="5"
+        [tableStyle]="{ 'min-width': '75rem' }"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-end">
+            <p-iconField iconPosition="left" class="ml-auto">
+              <p-inputIcon>
+                <i class="pi pi-search"></i>
+              </p-inputIcon>
+              <input
+                pInputText
+                type="text"
+                (input)="
+                  dt.filterGlobal($any($event.target)?.value, 'contains')
+                "
+                placeholder="Search asset"
+              />
+            </p-iconField>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="token" style="width: 22%">
+              Asset <p-sortIcon field="token" />
+            </th>
+            <th pSortableColumn="closePrice" style="width: 22%">
+              Price <p-sortIcon field="closePrice" />
+            </th>
+            <th pSortableColumn="volume" style="width: 22%">
+              Volume <p-sortIcon field="volume" />
+            </th>
+            <th pSortableColumn="trades" style="width: 22%">
+              Trades <p-sortIcon field="trades" />
+            </th>
+            <th style="width: 22%">Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-coin>
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="getIcon(coin.token)"
+                  width="32"
+                  style="vertical-align: middle; margin-right: 10px"
+                />
+                {{ coin.token }}
+              </div>
+            </td>
+            <td style="color: green">
+              ${{ coin.closePrice | number : "1.2-2" }}
+            </td>
+            <td style="color: green">${{ coin.volume | number : "1.2-2" }}</td>
+            <td>
+              {{ coin.trades }}
+            </td>
+            <td>
+              <p-button icon="pi pi-eye" [rounded]="true" />
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No assets found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</p-card>

@@ -4,3 +4,6 @@ terraform.tfstate
 terraform.tfvars    
 
 .terraform*
+
+frontend/node_modules/
+frontend/.angular/
