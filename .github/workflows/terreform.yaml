@@ -1,46 +1,60 @@
-name: Deploy Kubernetes Cluster and Pods
-
+name: Terraform Deployment
 on:
   push:
     branches:
-      - terraform
-  workflow_dispatch:
+      - main
 
 jobs:
-  deploy:
-    name: Deploy to GCP
+  terraform:
+    name: Apply Terraform
     runs-on: ubuntu-latest
-
+    env:
+      TF_WORKSPACE: CryptoInsight
     steps:
-      # Step 1: Check out the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Terraform
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.9.8
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.7
+    
 
-      # Step 3: Configure gcloud CLI and Authenticate
-      - name: Set up gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0.2.0
-        with:
-          version: 'latest'
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+      # 3. Authenticate with Terraform Cloud
+    - name: Configure Terraform Cloud Token
+      env:
+        TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+      run: echo "TF_CLOUD_TOKEN=${{ secrets.TF_CLOUD_TOKEN }}" >> $GITHUB_ENV
 
-      # Step 4: Initialize Terraform
-      - name: Terraform Init
-        run: terraform init
-        working-directory: terraform
+    - name: Authenticate Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials_json: ${{ secrets.GCLOUD_AUTH }}
 
-      # Step 5: Apply Terraform to create the cluster
-      - name: Apply Terraform - Create Cluster
-        run: terraform apply -target=google_container_cluster.primary -auto-approve
-        working-directory: terraform
+    - name: Setup Terraform Cloud Credentials
+      run: |
+        mkdir -p ~/.terraform.d
+        echo 'credentials "app.terraform.io" { token = "${{ secrets.TF_API_TOKEN }}" }' > ~/.terraform.d/credentials.tfrc.json
 
-      # Step 6: Apply Terraform to deploy pods
-      - name: Apply Terraform - Deploy Pods
-        run: terraform apply -auto-approve
-        working-directory: terraform
+
+    - name: Terraform Init
+      env:
+        TF_WORKSPACE: CryptoInsight  # Explicitly set workspace
+      run: terraform init -input=false
+      working-directory: terraform
+
+
+    # Apply Terraform to create the cluster
+    - name: Apply Terraform - Create Cluster
+      run: terraform apply -target=google_container_cluster.primary -auto-approve
+      working-directory: terraform
+
+    - name: Terraform Plan
+      run: terraform plan -input=false -out=tfplan
+      working-directory: terraform
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -input=false tfplan
+      working-directory: terraform
