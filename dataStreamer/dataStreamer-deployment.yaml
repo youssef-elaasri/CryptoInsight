@@ -13,6 +13,8 @@ spec:
       labels:
         app: datastreaming
     spec:
+      nodeSelector:
+        role: master
       containers:
         - name: datastreaming
           image: jihadhd/cryptoinsight-datastreaming:latest

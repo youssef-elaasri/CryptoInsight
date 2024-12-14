@@ -17,6 +17,8 @@ spec:
         prometheus.io/port: "80"
         prometheus.io/path: "/metrics"
     spec:
+      nodeSelector:
+        role: slave
       containers:
         - name: backend
           image: superuserdo/backend:latest

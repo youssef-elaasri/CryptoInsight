@@ -1,18 +1,4 @@
 terraform {
-  ### Desperate attempt to get the remote backend working on terraform cloud
-
-  # backend "remote" {
-  #   organization = "crypto_insight"
-
-  #   workspaces {
-  #     name = "CryptoInsight"
-  #   }
-  # }
-
-  backend "gcs" {
-    bucket = "cryptoinsight-terraform-states" # Hard coded GCP bucket name
-  }
-
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -43,18 +29,47 @@ resource "google_container_cluster" "primary" {
   location            = var.region
   initial_node_count  = 1
   deletion_protection = false
+  remove_default_node_pool = true
 
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
 
+  network = google_compute_network.vpc_network.name
+}
+
+resource "google_container_node_pool" "master_pool" {
+  name       = "master-pool"
+  cluster    = google_container_cluster.primary.id
+  location   = var.region
+
+  node_count = 1
+
   node_config {
     machine_type = "e2-standard-2"
+    labels = {
+      role = "master"
+    }
     disk_size_gb = 50
     oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
+}
 
-  network = google_compute_network.vpc_network.name
+resource "google_container_node_pool" "slave_pool" {
+  name       = "slave-pool"
+  cluster    = google_container_cluster.primary.id
+  location   = var.region
+
+  node_count = 1
+
+  node_config {
+    machine_type = "e2-standard-2"
+    labels = {
+      role = "slave"
+    }
+    disk_size_gb = 50
+    oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
 }
 
 # Configure kubernetes provider with cluster access
@@ -62,6 +77,10 @@ provider "kubernetes" {
   host                   = "https://${google_container_cluster.primary.endpoint}"
   cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
   token                  = data.google_client_config.default.access_token
+
+  # Add these lines for better authentication handling
+  client_certificate = base64decode(google_container_cluster.primary.master_auth[0].client_certificate)
+  client_key         = base64decode(google_container_cluster.primary.master_auth[0].client_key)
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "gcloud"
@@ -77,12 +96,4 @@ provider "kubernetes" {
     ]
   }
 }
-
-resource "kubernetes_namespace" "sre" {
-  metadata {
-    name = "sre"
-  }
-}
-
-
 

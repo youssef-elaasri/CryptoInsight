@@ -13,6 +13,8 @@ spec:
       labels:
         app: monitoring-stack
     spec:
+      nodeSelector:
+        role: master
       automountServiceAccountToken: true
       serviceAccountName: admin
       containers:
