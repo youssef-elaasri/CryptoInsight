@@ -70,7 +70,11 @@
               {{ coin.trades }}
             </td>
             <td>
-              <p-button icon="pi pi-eye" [rounded]="true" />
+              <p-button
+                icon="pi pi-eye"
+                [rounded]="true"
+                (onClick)="viewCoin(coin.token)"
+              />
             </td>
           </tr>
         </ng-template>

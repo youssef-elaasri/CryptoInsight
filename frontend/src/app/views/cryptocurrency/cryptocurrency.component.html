@@ -1,0 +1,32 @@
+<p-card>
+  <ng-template pTemplate="title">
+    <div class="d-flex flex-column">
+      <span class="title d-flex align-items-center"
+        ><img
+          [src]="getIcon(coin.token)"
+          width="40"
+          style="vertical-align: middle; margin-right: 10px"
+        />
+        {{ coin.token }}</span
+      >
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="d-flex">
+      <div class="info-section d-flex flex-column">
+        <div class="mb-4">
+          <span class="price">${{ coin.closePrice | number : "1.2-2" }}</span>
+        </div>
+        <div class="underline-div mb-3 d-flex justify-content-between">
+          <span>Volume</span>
+          <span class="value">${{ coin.volume | number : "1.0-0" }}</span>
+        </div>
+        <div class="underline-div mb-3 d-flex justify-content-between">
+          <span>Trades</span>
+          <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
+        </div>
+      </div>
+      <div class="chart-section"></div>
+    </div>
+  </ng-template>
+</p-card>

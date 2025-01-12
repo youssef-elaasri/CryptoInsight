@@ -5,7 +5,7 @@ import { filter, interval, map, Observable } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class CoinSimulationService {
+export class CryptocurrencySimulationService {
   private tokens = [
     "BTC",
     "ETH",
