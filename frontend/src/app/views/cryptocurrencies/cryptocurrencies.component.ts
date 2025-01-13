@@ -34,15 +34,77 @@ export class CryptocurrenciesComponent implements OnInit {
   ) {}
 
   coins: Coin[] = [];
+  previousCoins: {
+    [token: string]: { changePercentage: number; previousClosePrice: number };
+  } = {};
   loading: boolean = true;
+
+  topGainers: {
+    token: string;
+    changePercentage: number;
+    closePrice: number;
+  }[] = [];
+  topLosers: { token: string; changePercentage: number; closePrice: number }[] =
+    [];
+  topChange: { token: string; changePercentage: number; closePrice: number }[] =
+    [];
 
   ngOnInit() {
     this.cryptocurrencySimulationService
       .getAllCoinsStream()
       .subscribe((coins) => {
+        const updatedPreviousCoins: {
+          [token: string]: {
+            changePercentage: number;
+            previousClosePrice: number;
+          };
+        } = {};
+        coins.forEach((coin) => {
+          const previousCoin = this.previousCoins[coin.token];
+          updatedPreviousCoins[coin.token] = {
+            changePercentage: previousCoin
+              ? ((coin.closePrice - previousCoin.previousClosePrice) /
+                  previousCoin.previousClosePrice) *
+                100
+              : 0,
+            previousClosePrice: coin.closePrice,
+          };
+        });
+        this.previousCoins = updatedPreviousCoins;
         this.coins = coins;
+        this.calculateTopChanges();
+        this.loading = false;
         // this.coins = this.coins.sort((a, b) => b.closePrice - a.closePrice);
       });
+  }
+
+  calculateTopChanges() {
+    const changes = Object.entries(this.previousCoins).map(([token, data]) => ({
+      token,
+      changePercentage: data.changePercentage,
+      closePrice: data.previousClosePrice,
+    }));
+
+    const sortedByGain = [...changes].sort(
+      (a, b) => b.changePercentage - a.changePercentage
+    );
+
+    const sortedByLoss = [...changes].sort(
+      (a, b) => a.changePercentage - b.changePercentage
+    );
+
+    const sortedByAbsoluteChange = [...changes].sort(
+      (a, b) => Math.abs(b.changePercentage) - Math.abs(a.changePercentage)
+    );
+
+    this.topGainers = sortedByGain.slice(0, 3);
+    this.topLosers = sortedByLoss.slice(0, 3);
+    this.topChange = sortedByAbsoluteChange.slice(0, 3);
+  }
+
+  positiveChange(token: string) {
+    if (this.previousCoins[token].changePercentage >= 0) return true;
+    return false;
   }
 
   getIcon(token: string): string {
@@ -53,7 +115,6 @@ export class CryptocurrenciesComponent implements OnInit {
 
   viewCoin(token: string) {
     this.cryptocurrencyService.selectedToken = token;
-    console.log(token);
     this.router.navigate(["cryptocurrency"]);
   }
 }

@@ -57,8 +57,8 @@ export class CryptocurrencySimulationService {
    * Helper method to generate random coin data.
    */
   private generateRandomCoinData(token: string): Coin {
-    const startTime = new Date();
-    const endTime = new Date(startTime.getTime() + 60000); // 1 minute later
+    const startTime = Math.floor(Date.now() / 1000); // Current time in epoch (seconds)
+    const endTime = startTime + 60; // 1 minute later in epoch
     const openPrice = this.getRandomNumber(1000, 50000);
     const closePrice = this.getRandomNumber(1000, 50000);
     const highestPrice = Math.max(

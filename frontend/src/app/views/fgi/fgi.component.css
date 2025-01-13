@@ -1,0 +1,22 @@
+:host::ng-deep div.p-card.p-component {
+  background-color: rgb(248, 251, 255);
+  margin: 60px;
+  border-radius: 30px;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: x-large;
+  color: #1d44c4;
+}
+
+.description {
+  text-align: center;
+  font-size: large;
+  color: black;
+}
+
+.card-title {
+  font-weight: bold;
+  color: black;
+}

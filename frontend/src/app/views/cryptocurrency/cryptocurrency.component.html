@@ -1,21 +1,47 @@
 <p-card>
   <ng-template pTemplate="title">
     <div class="d-flex flex-column">
-      <span class="title d-flex align-items-center"
-        ><img
-          [src]="getIcon(coin.token)"
-          width="40"
-          style="vertical-align: middle; margin-right: 10px"
-        />
-        {{ coin.token }}</span
-      >
+      <span class="title d-flex align-items-center justify-content-between"
+        ><div>
+          <img
+            [src]="getIcon(coin.token)"
+            width="40"
+            style="vertical-align: middle; margin-right: 10px"
+          />
+          {{ coin.token }}
+        </div>
+        <div>
+          <p-button
+            class="me-2"
+            icon="pi pi-chart-bar"
+            [text]="true"
+            [raised]="true"
+            [disabled]="chartType"
+            (onClick)="switchChart()"
+          />
+          <p-button
+            icon="pi pi-chart-line"
+            [text]="true"
+            [raised]="true"
+            [disabled]="!chartType"
+            (onClick)="switchChart()"
+          /></div
+      ></span>
     </div>
   </ng-template>
   <ng-template pTemplate="content">
     <div class="d-flex">
       <div class="info-section d-flex flex-column">
-        <div class="mb-4">
+        <div
+          class="mb-4 d-flex justify-content-between align-items-center"
+          [ngStyle]="{ color: positiveChange ? 'green' : 'red' }"
+        >
           <span class="price">${{ coin.closePrice | number : "1.2-2" }}</span>
+          <span
+            ><i *ngIf="positiveChange" class="pi pi-caret-up me-1"></i>
+            <i *ngIf="!positiveChange" class="pi pi-caret-down me-1"></i
+            >{{ changePercentage | number : "1.1-1" }}%</span
+          >
         </div>
         <div class="underline-div mb-3 d-flex justify-content-between">
           <span>Volume</span>
@@ -26,7 +52,7 @@
           <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
         </div>
       </div>
-      <div class="chart-section"></div>
+      <div #chartContainerRef class="chart-section"></div>
     </div>
   </ng-template>
 </p-card>
