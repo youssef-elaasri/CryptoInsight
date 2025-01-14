@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/views/cryptocurrencies/cryptocurrencies.component.css"],
+  "sourcesContent": [":host::ng-deep div.p-card.p-component {\n  background-color: rgb(248, 251, 255);\n  border-radius: 30px;\n}\n\n.main-title {\n  font-weight: bold;\n  color: black;\n}\n\n.secondary-title {\n  font-weight: bold;\n  font-size: large;\n  color: black;\n}\n\n.subheader {\n  font-weight: normal;\n  font-size: large;\n  margin-top: 15px;\n}\n"],
+  "mappings": ";AAAA,KAAK,UAAU,GAAG,CAAC,MAAM,CAAC;AACxB,oBAAkB,IAAI,GAAG,EAAE,GAAG,EAAE;AAChC,iBAAe;AACjB;AAEA,CAAC;AACC,eAAa;AACb,SAAO;AACT;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO;AACT;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,cAAY;AACd;",
+  "names": []
+}
