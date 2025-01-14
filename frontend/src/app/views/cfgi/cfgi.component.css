@@ -2,6 +2,8 @@
   background-color: rgb(248, 251, 255);
   margin: 60px;
   border-radius: 30px;
+  width: 30rem;
+  height: 29rem;
 }
 
 .title {
@@ -19,4 +21,22 @@
 .card-title {
   font-weight: bold;
   color: black;
+}
+
+.underline-div {
+  border-bottom: 1px solid grey;
+  padding-bottom: 5px;
+}
+
+.historical-class {
+  font-weight: bold;
+  color: black;
+}
+
+.historical-value {
+  font-weight: bold;
+  font-size: large;
+  color: white;
+  padding: 10px;
+  border-radius: 30px;
 }

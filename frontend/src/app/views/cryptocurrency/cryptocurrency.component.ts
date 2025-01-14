@@ -18,6 +18,7 @@ import {
   ISeriesApi,
   TimeChartOptions,
 } from "lightweight-charts";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-cryptocurrency",
@@ -28,42 +29,46 @@ import {
 })
 export class CryptocurrencyComponent implements OnInit, AfterViewInit {
   @ViewChild("chartContainerRef") chartContainer!: ElementRef;
-  chartOptions = {
+  private chartOptions = {
     layout: {
       textColor: "black",
       background: { type: "solid", color: "white" },
     },
   };
-  chart!: IChartApi;
-  candlestickSeries!: ISeriesApi<any>;
-  areaSeries!: ISeriesApi<any>;
+  private chart!: IChartApi;
+  private candlestickSeries!: ISeriesApi<any>;
+  private areaSeries!: ISeriesApi<any>;
   chartType = true; // candlestick => true | area => false
 
   coin: Coin = new Coin();
-  previousClose: number = 0;
+  supply!: {
+    circulatingSupply: number;
+    maxSupply: number;
+  };
+  private previousClose: number = 0;
   changePercentage: number = 0;
   positiveChange = true;
 
   constructor(
+    private router: Router,
     private cryptocurrencyService: CryptocurrencyService,
     private cryptocurrencySimulationService: CryptocurrencySimulationService
   ) {}
 
   ngOnInit(): void {
+    if (
+      this.cryptocurrencyService.selectedToken === undefined ||
+      this.cryptocurrencyService.selectedToken === null
+    )
+      this.router.navigate(["/"]);
     this.cryptocurrencySimulationService
       .getCoinStream(this.cryptocurrencyService.selectedToken)
-      .subscribe((coin) => {
-        this.coin = coin;
+      .subscribe((result) => {
+        this.coin = result.coin;
+        this.supply = result.additionalData;
         this.update();
         this.previousClose = this.coin.closePrice;
       });
-    // this.cryptocurrencySimulationService
-    //   .getCoinStream("BTC")
-    //   .subscribe((coin) => {
-    //     this.coin = coin;
-    //     this.update();
-    //     this.previousClose = this.coin.closePrice;
-    //   });
   }
 
   ngAfterViewInit() {

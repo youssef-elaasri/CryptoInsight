@@ -1,0 +1,101 @@
+<div class="d-flex flex-column align-items-center mt-5">
+  <span class="title mb-4">Crypto Fear & Greed Index</span>
+  <span class="description"
+    >The Crypto Fear and Greed Index is determined by factors such as
+    volatility, social media sentiment<br />
+    surveys, market momentum, and additional metrics.</span
+  >
+</div>
+<div class="d-flex justify-content-center">
+  <p-card>
+    <ng-template pTemplate="title"
+      ><span class="card-title"
+        >Crypto Fear & Greed Indicator</span
+      ></ng-template
+    >
+    <ng-template pTemplate="content"
+      ><div #gaugeChart style="width: 100%; height: 420px"></div>
+    </ng-template>
+  </p-card>
+  <p-card>
+    <ng-template pTemplate="title"
+      ><span class="card-title">Historical Values</span></ng-template
+    >
+    <ng-template pTemplate="content">
+      <div class="d-flex flex-column justify-content-center">
+        <div
+          class="underline-div d-flex justify-content-between align-items-center mb-3"
+        >
+          <div class="d-flex flex-column">
+            <span class="historical-class mb-2">Now</span
+            ><span
+              [style.color]="getColorByValue(todayData.value || 0)"
+              style="font-weight: bold"
+              >{{ todayData.classification }}</span
+            >
+          </div>
+          <div
+            [style.backgroundColor]="getColorByValue(todayData.value || 0)"
+            class="historical-value"
+          >
+            {{ todayData.value }}
+          </div>
+        </div>
+        <div
+          class="underline-div d-flex justify-content-between align-items-center mb-3"
+        >
+          <div class="d-flex flex-column">
+            <span class="historical-class mb-2">Yesterday</span
+            ><span
+              [style.color]="getColorByValue(yesterdayData.value || 0)"
+              style="font-weight: bold"
+              >{{ yesterdayData.classification }}</span
+            >
+          </div>
+          <div
+            [style.backgroundColor]="getColorByValue(yesterdayData.value || 0)"
+            class="historical-value"
+          >
+            {{ yesterdayData.value }}
+          </div>
+        </div>
+        <div
+          class="underline-div d-flex justify-content-between align-items-center mb-3"
+        >
+          <div class="d-flex flex-column">
+            <span class="historical-class mb-2">Last week</span
+            ><span
+              [style.color]="getColorByValue(lastWeekData.value || 0)"
+              style="font-weight: bold"
+              >{{ lastWeekData.classification }}</span
+            >
+          </div>
+          <div
+            [style.backgroundColor]="getColorByValue(lastWeekData.value || 0)"
+            class="historical-value"
+          >
+            {{ lastWeekData.value }}
+          </div>
+        </div>
+        <div
+          class="underline-div d-flex justify-content-between align-items-center mb-3"
+        >
+          <div class="d-flex flex-column">
+            <span class="historical-class mb-2">Last month</span
+            ><span
+              [style.color]="getColorByValue(lastMonthData.value || 0)"
+              style="font-weight: bold"
+              >{{ lastMonthData.classification }}</span
+            >
+          </div>
+          <div
+            [style.backgroundColor]="getColorByValue(lastMonthData.value || 0)"
+            class="historical-value"
+          >
+            {{ lastMonthData.value }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

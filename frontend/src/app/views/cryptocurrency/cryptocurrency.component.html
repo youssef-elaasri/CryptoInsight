@@ -43,13 +43,23 @@
             >{{ changePercentage | number : "1.1-1" }}%</span
           >
         </div>
-        <div class="underline-div mb-3 d-flex justify-content-between">
+        <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Volume</span>
           <span class="value">${{ coin.volume | number : "1.0-0" }}</span>
         </div>
-        <div class="underline-div mb-3 d-flex justify-content-between">
+        <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Trades</span>
           <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Circulating supply</span>
+          <span class="value">{{
+            supply.circulatingSupply | number : "1.0-0"
+          }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Max supply</span>
+          <span class="value">{{ supply.maxSupply | number : "1.0-0" }}</span>
         </div>
       </div>
       <div #chartContainerRef class="chart-section"></div>
