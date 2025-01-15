@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <div id="messages"></div>
+    <script>
+        // Connexion au backend
+        const socket = new SockJS('http://localhost:8080/sockjs-websocket');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // S'abonner au canal "/topic/messages"
+            stompClient.subscribe('/topic/messages', function (message) {
+                console.log('Message received: ', message.body);
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.innerHTML += `<p>${message.body}</p>`;
+            });
+        }, function (error) {
+            console.error('Error connecting to WebSocket: ', error);
+        });
+    </script>
+</body>
+</html>
