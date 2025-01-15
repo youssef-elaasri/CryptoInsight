@@ -10,21 +10,21 @@
           />
           {{ coin.token }}
         </div>
-        <div>
+        <div *ngIf="priceChart">
           <p-button
             class="me-2"
             icon="pi pi-chart-bar"
             [text]="true"
             [raised]="true"
             [disabled]="chartType"
-            (onClick)="switchChart()"
+            (onClick)="switchChartType()"
           />
           <p-button
             icon="pi pi-chart-line"
             [text]="true"
             [raised]="true"
             [disabled]="!chartType"
-            (onClick)="switchChart()"
+            (onClick)="switchChartType()"
           /></div
       ></span>
     </div>
@@ -52,6 +52,12 @@
           <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Market Cap</span>
+          <span class="value"
+            >${{ format(coin.closePrice * supply.maxSupply) }}</span
+          >
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Circulating supply</span>
           <span class="value">{{
             supply.circulatingSupply | number : "1.0-0"
@@ -60,6 +66,24 @@
         <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Max supply</span>
           <span class="value">{{ supply.maxSupply | number : "1.0-0" }}</span>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+          <p-button
+            class="me-2"
+            label="Price"
+            [rounded]="true"
+            [outlined]="!priceChart"
+            severity="contrast"
+            (onClick)="switchChart(true)"
+          />
+          <p-button
+            class="ms-2"
+            label="Confidence"
+            [rounded]="true"
+            [outlined]="priceChart"
+            severity="contrast"
+            (onClick)="switchChart(false)"
+          />
         </div>
       </div>
       <div #chartContainerRef class="chart-section"></div>

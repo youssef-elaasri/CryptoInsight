@@ -37,8 +37,10 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
   };
   private chart!: IChartApi;
   private candlestickSeries!: ISeriesApi<any>;
-  private areaSeries!: ISeriesApi<any>;
+  private priceAreaSeries!: ISeriesApi<any>;
+  private confidenceAreaSeries!: ISeriesApi<any>;
   chartType = true; // candlestick => true | area => false
+  priceChart = true;
 
   coin: Coin = new Coin();
   supply!: {
@@ -56,13 +58,14 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    if (
-      this.cryptocurrencyService.selectedToken === undefined ||
-      this.cryptocurrencyService.selectedToken === null
-    )
-      this.router.navigate(["/"]);
+    // if (
+    //   this.cryptocurrencyService.selectedToken === undefined ||
+    //   this.cryptocurrencyService.selectedToken === null
+    // )
+    //   this.router.navigate(["/"]);
     this.cryptocurrencySimulationService
       .getCoinStream(this.cryptocurrencyService.selectedToken)
+      // .getCoinStream("BTC")
       .subscribe((result) => {
         this.coin = result.coin;
         this.supply = result.additionalData;
@@ -116,8 +119,8 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     this.chart.timeScale().fitContent();
   }
 
-  initAreaChart() {
-    this.areaSeries = this.chart.addAreaSeries({
+  initPriceAreaChart() {
+    this.priceAreaSeries = this.chart.addAreaSeries({
       lineColor: "#2962FF",
       topColor: "#2962FF",
       bottomColor: "rgba(41, 98, 255, 0.28)",
@@ -139,31 +142,71 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     this.chart.timeScale().fitContent();
   }
 
-  switchChart() {
+  initConfidenceAreaChart() {
+    this.confidenceAreaSeries = this.chart.addAreaSeries({
+      lineColor: "#7E57C2", // Purple
+      topColor: "#7E57C2", // Purple
+      bottomColor: "rgba(126, 87, 194, 0.28)", // Light Purple
+    });
+
+    const areaData = [
+      { value: 0, time: 1642425322 },
+      { value: 8, time: 1642511722 },
+      { value: 10, time: 1642598122 },
+      { value: 20, time: 1642684522 },
+      { value: 3, time: 1642770922 },
+      { value: 43, time: 1642857322 },
+      { value: 41, time: 1642943722 },
+      { value: 43, time: 1643030122 },
+      { value: 56, time: 1643116522 },
+      { value: 46, time: 1643202922 },
+    ];
+
+    this.confidenceAreaSeries.setData(areaData);
+    this.chart.timeScale().fitContent();
+  }
+
+  switchChartType() {
     this.chartType = !this.chartType;
     if (this.chartType) {
-      this.chart.removeSeries(this.areaSeries);
+      this.chart.removeSeries(this.priceAreaSeries);
       this.initCandlestickChart();
     } else {
       this.chart.removeSeries(this.candlestickSeries);
-      this.initAreaChart();
+      this.initPriceAreaChart();
+    }
+  }
+
+  switchChart(type: boolean) {
+    if ((type && this.priceChart) || (!type && !this.priceChart)) return;
+    this.priceChart = !this.priceChart;
+    if (this.priceChart) {
+      this.chart.removeSeries(this.confidenceAreaSeries);
+      if (this.chartType) this.initCandlestickChart();
+      else this.initPriceAreaChart();
+    } else {
+      if (this.chartType) this.chart.removeSeries(this.candlestickSeries);
+      else this.chart.removeSeries(this.priceAreaSeries);
+      this.initConfidenceAreaChart();
     }
   }
 
   update() {
-    if (this.chartType) {
-      this.candlestickSeries.update({
-        open: this.coin.openPrice,
-        high: this.coin.highestPrice,
-        low: this.coin.lowestPrice,
-        close: this.coin.closePrice,
-        time: this.coin.startTime,
-      });
-    } else {
-      this.areaSeries.update({
-        value: this.coin.closePrice,
-        time: this.coin.startTime,
-      });
+    if (this.priceChart) {
+      if (this.chartType) {
+        this.candlestickSeries.update({
+          open: this.coin.openPrice,
+          high: this.coin.highestPrice,
+          low: this.coin.lowestPrice,
+          close: this.coin.closePrice,
+          time: this.coin.startTime,
+        });
+      } else {
+        this.priceAreaSeries.update({
+          value: this.coin.closePrice,
+          time: this.coin.startTime,
+        });
+      }
     }
     this.calculateGainOrLossPercentage();
   }
@@ -176,6 +219,22 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     else this.positiveChange = false;
     this.changePercentage =
       ((this.coin.closePrice - this.previousClose) / this.previousClose) * 100;
+  }
+
+  format(value: number): string {
+    if (!value || isNaN(value)) {
+      return "N/A";
+    }
+
+    if (value >= 1e12) {
+      return (value / 1e12).toFixed(2) + "T"; // Trillions
+    } else if (value >= 1e9) {
+      return (value / 1e9).toFixed(2) + "B"; // Billions
+    } else if (value >= 1e6) {
+      return (value / 1e6).toFixed(2) + "M"; // Millions
+    } else {
+      return value.toFixed(2); // Less than a million
+    }
   }
 
   getIcon(token: string): string {

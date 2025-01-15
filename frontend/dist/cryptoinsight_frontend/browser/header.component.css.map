@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/views/common/header/header.component.css"],
-  "sourcesContent": [".header {\n  background-color: #2b51ce;\n  padding-left: 100px;\n  padding-right: 100px;\n  padding-top: 15px;\n  padding-bottom: 15px;\n}\n\nspan.title {\n  font-size: 37px;\n  font-weight: bold;\n}\n\nspan.title:nth-of-type(1) {\n  color: white;\n}\n\nspan.title:nth-of-type(2) {\n  color: #1d44c4;\n  -webkit-text-stroke: 1px white;\n}\n\na {\n  color: white;\n  background-color: #2b51ce;\n  font-weight: bold;\n  font-size: 18px;\n  text-decoration: none;\n  padding: 10px;\n  margin-left: 40px;\n  border-radius: 10px;\n}\n\na:hover {\n  cursor: pointer;\n  color: #1d44c4;\n  background-color: white;\n  transition: all 0.5s ease;\n}\n"],
-  "mappings": ";AAAA,CAAC;AACC,oBAAkB;AAClB,gBAAc;AACd,iBAAe;AACf,eAAa;AACb,kBAAgB;AAClB;AAEA,IAAI,CAAC;AACH,aAAW;AACX,eAAa;AACf;AAEA,IAAI,CALC,KAKK;AACR,SAAO;AACT;AAEA,IAAI,CATC,KASK;AACR,SAAO;AACP,uBAAqB,IAAI;AAC3B;AAEA;AACE,SAAO;AACP,oBAAkB;AAClB,eAAa;AACb,aAAW;AACX,mBAAiB;AACjB,WAAS;AACT,eAAa;AACb,iBAAe;AACjB;AAEA,CAAC;AACC,UAAQ;AACR,SAAO;AACP,oBAAkB;AAClB,cAAY,IAAI,KAAK;AACvB;",
-  "names": []
-}

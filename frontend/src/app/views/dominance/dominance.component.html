@@ -1,0 +1,50 @@
+<div class="d-flex flex-column align-items-center mt-4">
+  <span class="title mb-4">Market Cap Dominance</span>
+  <span class="description"
+    >Market cap dominance in crypto is the percentage of a cryptocurrency's
+    market value relative to the total <br />
+    market value of all cryptocurrencies, reflecting its influence in the
+    market.</span
+  >
+</div>
+<div class="d-flex justify-content-center mt-4">
+  <p-button
+    label="Chart"
+    [raised]="true"
+    class="hola"
+    [outlined]="!visualType"
+    (onClick)="switchType(true)"
+  />
+  <p-button
+    label="Pie"
+    [raised]="true"
+    [outlined]="visualType"
+    (onClick)="switchType(false)"
+  />
+</div>
+
+<div class="d-flex justify-content-center">
+  <p-card>
+    <ng-template pTemplate="title"
+      ><span class="card-title">Current Market Cap Dominance</span></ng-template
+    >
+    <ng-template pTemplate="content">
+      <p-chart
+        *ngIf="visualType"
+        type="bar"
+        [data]="data"
+        [options]="options"
+        width="50rem"
+        height="30rem"
+      />
+      <p-chart
+        *ngIf="!visualType"
+        type="pie"
+        [data]="data"
+        [options]="options"
+        width="50rem"
+        height="30rem"
+      />
+    </ng-template>
+  </p-card>
+</div>

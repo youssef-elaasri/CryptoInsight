@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/views/cfgi/cfgi.component.css"],
-  "sourcesContent": [":host::ng-deep div.p-card.p-component {\n  background-color: rgb(248, 251, 255);\n  margin: 60px;\n  border-radius: 30px;\n  width: 30rem;\n  height: 29rem;\n}\n\n.title {\n  font-weight: bolder;\n  font-size: x-large;\n  color: #1d44c4;\n}\n\n.description {\n  text-align: center;\n  font-size: large;\n  color: black;\n}\n\n.card-title {\n  font-weight: bold;\n  color: black;\n}\n\n.underline-div {\n  border-bottom: 1px solid grey;\n  padding-bottom: 5px;\n}\n\n.historical-class {\n  font-weight: bold;\n  color: black;\n}\n\n.historical-value {\n  font-weight: bold;\n  font-size: large;\n  color: white;\n  padding: 10px;\n  border-radius: 30px;\n}\n"],
-  "mappings": ";AAAA,KAAK,UAAU,GAAG,CAAC,MAAM,CAAC;AACxB,oBAAkB,IAAI,GAAG,EAAE,GAAG,EAAE;AAChC,UAAQ;AACR,iBAAe;AACf,SAAO;AACP,UAAQ;AACV;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO;AACT;AAEA,CAAC;AACC,cAAY;AACZ,aAAW;AACX,SAAO;AACT;AAEA,CAAC;AACC,eAAa;AACb,SAAO;AACT;AAEA,CAAC;AACC,iBAAe,IAAI,MAAM;AACzB,kBAAgB;AAClB;AAEA,CAAC;AACC,eAAa;AACb,SAAO;AACT;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO;AACP,WAAS;AACT,iBAAe;AACjB;",
-  "names": []
-}

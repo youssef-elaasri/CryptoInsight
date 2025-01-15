@@ -22,6 +22,7 @@ export class CfgiComponent implements OnInit, AfterViewInit {
   @ViewChild("gaugeChart") gaugeChart!: ElementRef;
 
   private chart: any;
+  private updateInterval: any;
 
   constructor(private cfgiService: CfgiService) {}
 
@@ -30,6 +31,14 @@ export class CfgiComponent implements OnInit, AfterViewInit {
       this.todayData.value || 50,
       this.todayData.classification || "Neutral"
     );
+
+    // Set an interval to update the chart every 30 minutes
+    this.updateInterval = setInterval(() => {
+      this.updateChart(
+        this.todayData.value || 50,
+        this.todayData.classification || "Neutral"
+      );
+    }, 2 * 60 * 1000); // 30 minutes in milliseconds
   }
 
   ngAfterViewInit(): void {
@@ -38,6 +47,13 @@ export class CfgiComponent implements OnInit, AfterViewInit {
       this.todayData.value || 50,
       this.todayData.classification || "Neutral"
     );
+  }
+
+  ngOnDestroy(): void {
+    // Clear the interval when the component is destroyed to avoid memory leaks
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
   }
 
   initChart(): void {

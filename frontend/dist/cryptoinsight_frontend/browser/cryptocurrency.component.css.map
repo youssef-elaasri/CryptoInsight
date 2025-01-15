@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/views/cryptocurrency/cryptocurrency.component.css"],
-  "sourcesContent": [":host::ng-deep div.p-card.p-component {\n  background-color: rgb(248, 251, 255);\n  margin: 60px;\n  border-radius: 30px;\n}\n\n.title {\n  font-weight: bold;\n  color: black;\n}\n\n.info-section {\n  width: 20%;\n}\n\n.chart-section {\n  height: 60vh;\n  width: 80%;\n  margin-left: 30px;\n}\n\n.price {\n  font-weight: bold;\n  font-size: x-large;\n  color: black;\n}\n\n.value {\n  font-weight: bold;\n  font-size: large;\n  color: black;\n}\n\n.underline-div {\n  border-bottom: 1px solid grey;\n  padding-bottom: 5px;\n}\n"],
-  "mappings": ";AAAA,KAAK,UAAU,GAAG,CAAC,MAAM,CAAC;AACxB,oBAAkB,IAAI,GAAG,EAAE,GAAG,EAAE;AAChC,UAAQ;AACR,iBAAe;AACjB;AAEA,CAAC;AACC,eAAa;AACb,SAAO;AACT;AAEA,CAAC;AACC,SAAO;AACT;AAEA,CAAC;AACC,UAAQ;AACR,SAAO;AACP,eAAa;AACf;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO;AACT;AAEA,CAAC;AACC,eAAa;AACb,aAAW;AACX,SAAO;AACT;AAEA,CAAC;AACC,iBAAe,IAAI,MAAM;AACzB,kBAAgB;AAClB;",
-  "names": []
-}

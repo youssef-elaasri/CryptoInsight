@@ -8,8 +8,6 @@ import { Observable } from "rxjs";
 export class CfgiService {
   private apiUrl = "https://api.alternative.me/fng/?limit=31&format=json";
 
-  private refreshInterval: any;
-
   private _todayData: { value: number | null; classification: string | null } =
     {
       value: null,
@@ -42,7 +40,7 @@ export class CfgiService {
 
   constructor(private http: HttpClient) {
     this.fetchAndSetData();
-    this.refreshInterval = setInterval(() => {
+    setInterval(() => {
       this.fetchAndSetData();
     }, 60 * 60 * 1000); // update every hour
   }

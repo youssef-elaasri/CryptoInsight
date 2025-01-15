@@ -21,9 +21,10 @@ export class CryptocurrencySimulationService {
     SHIB: "shiba-inu",
   };
 
-  private tokens = Object.keys(this.tokenSlugMapping);
+  private _tokens = Object.keys(this.tokenSlugMapping);
 
-  private coinData: Record<string, Coin> = {}; // Cache to hold the latest data for each token
+  private _coinData: Record<string, Coin> = {}; // Cache to hold the latest data for each token
+
   private supplyData: Record<
     string,
     { circulatingSupply: number; maxSupply: number }
@@ -33,15 +34,15 @@ export class CryptocurrencySimulationService {
 
   constructor(private http: HttpClient) {
     // Initialize the coin data cache
-    this.tokens.forEach((token) => {
-      this.coinData[token] = this.generateRandomCoinData(token);
+    this._tokens.forEach((token) => {
+      this._coinData[token] = this.generateRandomCoinData(token);
       this.supplyData[token] = { circulatingSupply: 0, maxSupply: 0 }; // Default values
     });
 
     // Simulate real-time updates every second for coin data
     interval(1000).subscribe(() => {
-      this.tokens.forEach((token) => {
-        this.coinData[token] = this.generateRandomCoinData(token);
+      this._tokens.forEach((token) => {
+        this._coinData[token] = this.generateRandomCoinData(token);
       });
     });
 
@@ -52,13 +53,28 @@ export class CryptocurrencySimulationService {
     }, 60 * 60 * 1000); // Every hour
   }
 
+  getCoinData(token: string): {
+    coin: Coin;
+    additionalData: { circulatingSupply: number; maxSupply: number };
+  } | null {
+    const coin = this.coinData[token]; // Use cached coin data
+    const additionalData = this.supplyData[token]; // Use cached supply data
+
+    if (coin && additionalData) {
+      return { coin, additionalData };
+    }
+
+    console.error(`Data for token ${token} not found.`);
+    return null; // Return null if data is not available
+  }
+
   getCoinStream(token: string): Observable<{
     coin: Coin;
     additionalData: { circulatingSupply: number; maxSupply: number };
   }> {
     return interval(1000).pipe(
       map(() => ({
-        coin: this.coinData[token], // Use cached coin data
+        coin: this._coinData[token], // Use cached coin data
         additionalData: this.supplyData[token], // Use cached supply data
       }))
     );
@@ -66,12 +82,12 @@ export class CryptocurrencySimulationService {
 
   getAllCoinsStream(): Observable<Coin[]> {
     return interval(1000).pipe(
-      map(() => Object.values(this.coinData)) // Return the latest data for all tokens
+      map(() => Object.values(this._coinData)) // Return the latest data for all tokens
     );
   }
 
   private updateSupplyData(): void {
-    this.tokens.forEach((token) => {
+    this._tokens.forEach((token) => {
       const slug = this.tokenSlugMapping[token];
       this.fetchSupplyData(slug).subscribe(
         (data) => {
@@ -108,7 +124,8 @@ export class CryptocurrencySimulationService {
     const startTime = Math.floor(Date.now() / 1000); // Current time in epoch (seconds)
     const endTime = startTime + 60; // 1 minute later in epoch
     const openPrice = this.getRandomNumber(1000, 50000);
-    const closePrice = this.getRandomNumber(1000, 50000);
+    // const closePrice = this.getRandomNumber(1000, 50000);
+    const closePrice = this.getRandomNumber(1000, 1500);
     const highestPrice = Math.max(
       openPrice,
       closePrice,
@@ -137,5 +154,19 @@ export class CryptocurrencySimulationService {
 
   private getRandomNumber(min: number, max: number): number {
     return Math.random() * (max - min) + min;
+  }
+
+  public get tokens() {
+    return this._tokens;
+  }
+  public set tokens(value) {
+    this._tokens = value;
+  }
+
+  public get coinData(): Record<string, Coin> {
+    return this._coinData;
+  }
+  public set coinData(value: Record<string, Coin>) {
+    this._coinData = value;
   }
 }
