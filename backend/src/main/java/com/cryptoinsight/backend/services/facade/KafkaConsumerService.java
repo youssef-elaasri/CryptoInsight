@@ -8,7 +8,7 @@ public interface KafkaConsumerService {
 
    /* void consumeMessage(String message);
 
-    void startConsuming();
-    List<String> getConsumedMessages();*/
+    void startConsuming();*/
+    List<String> getConsumedMessages();
     void consume(String message);
 }

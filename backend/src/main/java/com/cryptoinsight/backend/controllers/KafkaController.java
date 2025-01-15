@@ -23,4 +23,13 @@ public class KafkaController {
     public List<String> getMessages() {
         return kafkaConsumerService.getConsumedMessages();
     }
+
+    @Autowired
+    private WebSocketController webSocketController;
+
+    @GetMapping("/sendMessage")
+    public String sendMessage() {
+        webSocketController.sendToFrontend("Hello from REST controller!");
+        return "Message sent!";
+    }
 }
