@@ -9,16 +9,16 @@ import { HttpClient } from "@angular/common/http";
 })
 export class CryptocurrencySimulationService {
   private tokenSlugMapping: Record<string, string> = {
-    BTC: "bitcoin",
-    ETH: "ethereum",
-    BNB: "binancecoin",
-    SOL: "solana",
-    AVAX: "avalanche-2",
-    XRP: "ripple",
-    ADA: "cardano",
-    DOGE: "dogecoin",
-    DOT: "polkadot",
-    SHIB: "shiba-inu",
+    BTCUSDT: "bitcoin",
+    ETHUSDT: "ethereum",
+    BNBUSDT: "binancecoin",
+    SOLUSDT: "solana",
+    AVAXUSDT: "avalanche-2",
+    XRPUSDT: "ripple",
+    ADAUSDT: "cardano",
+    DOGEUSDT: "dogecoin",
+    DOTUSDT: "polkadot",
+    SHIBUSDT: "shiba-inu",
   };
 
   private _tokens = Object.keys(this.tokenSlugMapping);

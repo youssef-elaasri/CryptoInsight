@@ -12,7 +12,7 @@ services:
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://kafka_b:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -76,8 +76,12 @@ services:
         condition: service_healthy
       influxdb:
         condition: service_healthy
+    environment:
+      KAFKA_BROKER: "kafka:9092"
+      TOPIC: "assets"
     networks:
       - streaming
+
   frontend:
     build:
       context: ./frontend
@@ -89,6 +93,7 @@ services:
         condition: service_healthy
     networks:
       - streaming
+
   dataops:
     build:
       context: ./dataops

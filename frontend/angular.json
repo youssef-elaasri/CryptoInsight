@@ -30,7 +30,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": ["src/polyfills.ts"]
           },
           "configurations": {
             "production": {

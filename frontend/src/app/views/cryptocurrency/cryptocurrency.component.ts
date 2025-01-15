@@ -34,6 +34,10 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
       textColor: "black",
       background: { type: "solid", color: "white" },
     },
+    timeScale: {
+      timeVisible: true, // Show time instead of dates
+      secondsVisible: false, // Hide seconds, show only minutes
+    },
   };
   private chart!: IChartApi;
   private candlestickSeries!: ISeriesApi<any>;
@@ -53,25 +57,27 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
-    private cryptocurrencyService: CryptocurrencyService,
-    private cryptocurrencySimulationService: CryptocurrencySimulationService
+    private cryptocurrencyService: CryptocurrencyService
   ) {}
 
   ngOnInit(): void {
-    // if (
-    //   this.cryptocurrencyService.selectedToken === undefined ||
-    //   this.cryptocurrencyService.selectedToken === null
-    // )
-    //   this.router.navigate(["/"]);
-    this.cryptocurrencySimulationService
+    if (
+      this.cryptocurrencyService.selectedToken === undefined ||
+      this.cryptocurrencyService.selectedToken === null
+    )
+      this.router.navigate(["/"]);
+    this.cryptocurrencyService
       .getCoinStream(this.cryptocurrencyService.selectedToken)
-      // .getCoinStream("BTC")
       .subscribe((result) => {
         this.coin = result.coin;
         this.supply = result.additionalData;
         this.update();
         this.previousClose = this.coin.closePrice;
       });
+
+    this.cryptocurrencyService.findAllTokenData("BTCUSDT").subscribe((data) => {
+      console.log(data);
+    });
   }
 
   ngAfterViewInit() {
@@ -90,12 +96,12 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
       wickUpColor: "#26a69a",
       wickDownColor: "#ef5350",
     });
-    // const candlestickData = [
-    //   { open: 10, high: 10.63, low: 9.49, close: 9.55, time: 1642427876 },
-    //   { open: 9.55, high: 10.3, low: 9.42, close: 9.94, time: 1642514276 },
-    //   { open: 9.94, high: 10.17, low: 9.92, close: 9.78, time: 1642600676 },
-    //   { open: 9.78, high: 10.59, low: 9.18, close: 9.51, time: 1642687076 },
-    //   { open: 9.51, high: 10.46, low: 9.1, close: 10.17, time: 1642773476 },
+    const candlestickData = [
+      { open: 10, high: 10.63, low: 9.49, close: 9.55, time: 1642427876 },
+      { open: 9.55, high: 10.3, low: 9.42, close: 9.94, time: 1642514276 },
+      { open: 9.94, high: 10.17, low: 9.92, close: 9.78, time: 1642600676 },
+      { open: 9.78, high: 10.59, low: 9.18, close: 9.51, time: 1642687076 },
+      { open: 9.51, high: 10.46, low: 9.1, close: 10.17, time: 1642773476 },
     //   {
     //     open: 10.17,
     //     high: 10.96,
@@ -116,7 +122,7 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     // ];
 
     // this.candlestickSeries.setData(candlestickData);
-    this.chart.timeScale().fitContent();
+    this.chart.timeScale().fitContent;
   }
 
   initPriceAreaChart() {
@@ -199,12 +205,12 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
           high: this.coin.highestPrice,
           low: this.coin.lowestPrice,
           close: this.coin.closePrice,
-          time: this.coin.startTime,
+          time: Math.floor(this.coin.startTime / 1_000_000_000),
         });
       } else {
         this.priceAreaSeries.update({
           value: this.coin.closePrice,
-          time: this.coin.startTime,
+          time: Math.floor(this.coin.startTime / 1_000_000_000),
         });
       }
     }
@@ -238,8 +244,7 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
   }
 
   getIcon(token: string): string {
-    if (token === undefined) return token;
-    token = token.toLowerCase();
+    token = token.replace("USDT", "").toLowerCase();
     token = "images/" + token + ".png";
     return token;
   }

@@ -43,11 +43,14 @@
               <th pSortableColumn="closePrice" style="width: 22%">
                 Price <p-sortIcon field="closePrice" />
               </th>
+              <th pSortableColumn="trades" style="width: 22%">
+                Trades <p-sortIcon field="trades" />
+              </th>
               <th pSortableColumn="volume" style="width: 22%">
                 Volume <p-sortIcon field="volume" />
               </th>
               <th pSortableColumn="trades" style="width: 22%">
-                Trades <p-sortIcon field="trades" />
+                Trade Volume <p-sortIcon field="trades" />
               </th>
               <th pSortableColumn="chage" style="width: 22%">Change</th>
               <th style="width: 22%">Action</th>
@@ -68,11 +71,14 @@
               <td style="color: green">
                 ${{ coin.closePrice | number : "1.2-2" }}
               </td>
-              <td style="color: green">
-                ${{ coin.volume | number : "1.0-0" }}
-              </td>
               <td>
                 {{ coin.trades }}
+              </td>
+              <td>
+                {{ coin.volume | number : "1.0-0" }}
+              </td>
+              <td style="color: green">
+                ${{ coin.trades * coin.volume | number : "1.0-0" }}
               </td>
               <td
                 [ngStyle]="{

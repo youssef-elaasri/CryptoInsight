@@ -7,7 +7,6 @@ import { InputTextModule } from "primeng/inputtext";
 import { TableModule } from "primeng/table";
 import { Coin } from "../../models/coin/coin";
 import { ButtonModule } from "primeng/button";
-import { CryptocurrencySimulationService } from "../../controllers/cryptocurrency-simulation/cryptocurrency-simulation.service";
 import { CryptocurrencyService } from "../../controllers/cryptocurrency/cryptocurrency.service";
 import { Router } from "@angular/router";
 
@@ -29,8 +28,7 @@ import { Router } from "@angular/router";
 export class CryptocurrenciesComponent implements OnInit {
   constructor(
     private router: Router,
-    private cryptocurrencyService: CryptocurrencyService,
-    private cryptocurrencySimulationService: CryptocurrencySimulationService
+    private cryptocurrencyService: CryptocurrencyService
   ) {}
 
   coins: Coin[] = [];
@@ -50,32 +48,30 @@ export class CryptocurrenciesComponent implements OnInit {
     [];
 
   ngOnInit() {
-    this.cryptocurrencySimulationService
-      .getAllCoinsStream()
-      .subscribe((coins) => {
-        const updatedPreviousCoins: {
-          [token: string]: {
-            changePercentage: number;
-            previousClosePrice: number;
-          };
-        } = {};
-        coins.forEach((coin) => {
-          const previousCoin = this.previousCoins[coin.token];
-          updatedPreviousCoins[coin.token] = {
-            changePercentage: previousCoin
-              ? ((coin.closePrice - previousCoin.previousClosePrice) /
-                  previousCoin.previousClosePrice) *
-                100
-              : 0,
-            previousClosePrice: coin.closePrice,
-          };
-        });
-        this.previousCoins = updatedPreviousCoins;
-        this.coins = coins;
-        this.calculateTopChanges();
-        this.loading = false;
-        // this.coins = this.coins.sort((a, b) => b.closePrice - a.closePrice);
+    this.cryptocurrencyService.getAllCoinsStream().subscribe((coins) => {
+      const updatedPreviousCoins: {
+        [token: string]: {
+          changePercentage: number;
+          previousClosePrice: number;
+        };
+      } = {};
+      coins.forEach((coin) => {
+        const previousCoin = this.previousCoins[coin.token];
+        updatedPreviousCoins[coin.token] = {
+          changePercentage: previousCoin
+            ? ((coin.closePrice - previousCoin.previousClosePrice) /
+                previousCoin.previousClosePrice) *
+              100
+            : 0,
+          previousClosePrice: coin.closePrice,
+        };
       });
+      this.previousCoins = updatedPreviousCoins;
+      this.coins = coins;
+      this.calculateTopChanges();
+      this.loading = false;
+      this.coins = this.coins.sort((a, b) => b.closePrice - a.closePrice);
+    });
   }
 
   calculateTopChanges() {
@@ -108,7 +104,7 @@ export class CryptocurrenciesComponent implements OnInit {
   }
 
   getIcon(token: string): string {
-    token = token.toLowerCase();
+    token = token.replace("USDT", "").toLowerCase();
     token = "images/" + token + ".png";
     return token;
   }
@@ -116,5 +112,13 @@ export class CryptocurrenciesComponent implements OnInit {
   viewCoin(token: string) {
     this.cryptocurrencyService.selectedToken = token;
     this.router.navigate(["cryptocurrency"]);
+  }
+
+  connect() {
+    this.cryptocurrencyService.connect();
+  }
+
+  disconnect() {
+    this.cryptocurrencyService.disconnect();
   }
 }
