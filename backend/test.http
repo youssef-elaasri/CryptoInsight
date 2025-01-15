@@ -1,0 +1,14 @@
+POST http://localhost:8080/api/influxdb/save
+Content-Type: application/json
+
+{
+    "token": "NFS",
+    "startTime": "2024-12-12T12:00:00Z",
+    "endTime": "2024-12-12T12:30:00Z",
+    "openPrice": 20000,
+    "closePrice": 20500,
+    "highestPrice": 21000,
+    "lowestPrice": 19500,
+    "volume": 1500,
+    "trades": 200
+}
