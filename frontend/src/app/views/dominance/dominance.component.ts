@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  OnDestroy,
   OnInit,
   PLATFORM_ID,
 } from "@angular/core";
@@ -12,6 +13,8 @@ import { ChartModule } from "primeng/chart";
 import { CryptocurrencySimulationService } from "../../controllers/cryptocurrency-simulation/cryptocurrency-simulation.service";
 import { DominanceService } from "../../controllers/dominance/dominance.service";
 import { ButtonModule } from "primeng/button";
+import { CryptocurrencyService } from "../../controllers/cryptocurrency/cryptocurrency.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-dominance",
@@ -20,7 +23,7 @@ import { ButtonModule } from "primeng/button";
   templateUrl: "./dominance.component.html",
   styleUrl: "./dominance.component.css",
 })
-export class DominanceComponent implements OnInit {
+export class DominanceComponent implements OnInit, OnDestroy {
   data: any;
   options: any;
   tokens: any;
@@ -31,22 +34,27 @@ export class DominanceComponent implements OnInit {
   visualType: boolean = true; // true => chart | false => pie
 
   constructor(
+    private router: Router,
     private cd: ChangeDetectorRef,
     private dominanceService: DominanceService,
-    private cryptocurrencySimulationService: CryptocurrencySimulationService
+    private cryptocurrencyService: CryptocurrencyService
   ) {}
 
   ngOnInit() {
-    this.tokens = this.cryptocurrencySimulationService.tokens;
+    if (this.dominanceService.refresh !== 5) this.router.navigate(["/"]);
+    this.tokens = this.cryptocurrencyService.tokens;
     this.tokens = [...this.tokens, "Others"];
     this.calculateDominance();
-    this.initPie();
-
     this.updateInterval = setInterval(() => {
       this.calculateDominance();
-      if (this.visualType) this.initChart;
-      else this.initPie;
-    }, 2 * 60 * 1000); // 30 minutes in milliseconds
+    }, 1 * 60 * 1000); // Every minute
+  }
+
+  ngOnDestroy(): void {
+    // Clear the interval when the component is destroyed to avoid memory leaks
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
   }
 
   switchType(type: boolean) {
@@ -61,42 +69,66 @@ export class DominanceComponent implements OnInit {
 
   //
   calculateDominance(): void {
-    const totalMarketCap = this.dominanceService.totalMarketCap;
-    // const totalMarketCap = 3210453463579;
+    this.dominanceService.fetchAndSetMarketCap().subscribe((response) => {
+      const totalMarketCap =
+        response?.data?.quotes?.USD?.total_market_cap || null;
+      // const totalMarketCap = 3210453463579;
 
-    // Check if totalMarketCap is valid
-    if (!totalMarketCap || totalMarketCap <= 0) {
-      console.error("Total market cap is invalid or null.");
-      return;
-    }
+      // Check if totalMarketCap is valid
+      if (!totalMarketCap || totalMarketCap <= 0) {
+        console.error("Total market cap is invalid or null.");
+        return;
+      }
 
-    // Calculate market caps for tokens except the last one ("Others")
-    this.marketCaps = this.tokens.slice(0, -1).map((token: any) => {
-      const coinData = this.cryptocurrencySimulationService.getCoinData(token);
+      // Calculate market caps for tokens except the last one ("Others")
+      this.marketCaps = this.tokens.slice(0, -1).map((token: any) => {
+        const coinData = this.cryptocurrencyService.getCoinData(token);
 
-      // Safely calculate market cap with fallback values
-      const marketCap =
-        (coinData?.coin?.closePrice || 0) *
-        (coinData?.additionalData?.circulatingSupply || 0);
+        // Safely calculate market cap with fallback values
+        const marketCap =
+          (coinData?.coin?.closePrice || 0) *
+          (coinData?.additionalData?.circulatingSupply || 0);
 
-      return marketCap;
+        return marketCap;
+      });
+
+      // Calculate total market cap for calculated tokens
+      const totalCalculatedMarketCap = this.marketCaps.reduce(
+        (a, b) => a + b,
+        0
+      );
+
+      // Calculate "Others" market cap
+      const othersMarketCap = totalMarketCap - totalCalculatedMarketCap;
+
+      // Add "Others" market cap as the last value in the array
+      this.marketCaps.push(
+        othersMarketCap > 0 ? othersMarketCap : 50000000000000
+      );
+
+      // Convert market caps to dominance percentages
+      this.marketCaps = this.marketCaps.map((cap) =>
+        Number(((cap / totalMarketCap) * 100).toFixed(2))
+      );
+
+      // work around
+      this.visualType = !this.visualType;
+      if (this.visualType) {
+        this.initChart();
+      } else {
+        this.initPie();
+      }
+
+      this.visualType = !this.visualType;
+      if (this.visualType) {
+        this.initChart();
+      } else {
+        this.initPie();
+      }
+
+      if (this.visualType) this.initChart;
+      else this.initPie;
     });
-
-    // Calculate total market cap for calculated tokens
-    const totalCalculatedMarketCap = this.marketCaps.reduce((a, b) => a + b, 0);
-
-    // Calculate "Others" market cap
-    const othersMarketCap = totalMarketCap - totalCalculatedMarketCap;
-
-    // Add "Others" market cap as the last value in the array
-    this.marketCaps.push(
-      othersMarketCap > 0 ? othersMarketCap : 50000000000000
-    );
-
-    // Convert market caps to dominance percentages
-    this.marketCaps = this.marketCaps.map((cap) =>
-      Number(((cap / totalMarketCap) * 100).toFixed(2))
-    );
   }
 
   initChart() {
@@ -114,17 +146,17 @@ export class DominanceComponent implements OnInit {
           {
             data: this.marketCaps,
             backgroundColor: [
-              "rgba(249, 115, 22, 0.2)", // Orange
-              "rgba(6, 182, 212, 0.2)", // Cyan
-              "rgba(107, 114, 128, 0.2)", // Gray
-              "rgba(139, 92, 246, 0.2)", // Purple
-              "rgba(34, 197, 94, 0.2)", // Green
-              "rgba(239, 68, 68, 0.2)", // Red
-              "rgba(59, 130, 246, 0.2)", // Blue
-              "rgba(250, 204, 21, 0.2)", // Yellow
-              "rgba(217, 70, 239, 0.2)", // Pink
-              "rgba(16, 185, 129, 0.2)", // Teal
-              "rgba(37, 99, 235, 0.2)", // Indigo
+              "rgba(249, 115, 22, 0.6)", // Darker Orange
+              "rgba(6, 182, 212, 0.6)", // Darker Cyan
+              "rgba(107, 114, 128, 0.6)", // Darker Gray
+              "rgba(139, 92, 246, 0.6)", // Darker Purple
+              "rgba(34, 197, 94, 0.6)", // Darker Green
+              "rgba(239, 68, 68, 0.6)", // Darker Red
+              "rgba(59, 130, 246, 0.6)", // Darker Blue
+              "rgba(250, 204, 21, 0.6)", // Darker Yellow
+              "rgba(217, 70, 239, 0.6)", // Darker Pink
+              "rgba(16, 185, 129, 0.6)", // Darker Teal
+              "rgba(37, 99, 235, 0.6)", // Darker Indigo
             ],
             borderColor: [
               "rgb(249, 115, 22)", // Orange
@@ -185,17 +217,17 @@ export class DominanceComponent implements OnInit {
           {
             data: this.marketCaps,
             backgroundColor: [
-              "rgba(249, 115, 22, 0.2)", // Orange
-              "rgba(6, 182, 212, 0.2)", // Cyan
-              "rgba(107, 114, 128, 0.2)", // Gray
-              "rgba(139, 92, 246, 0.2)", // Purple
-              "rgba(34, 197, 94, 0.2)", // Green
-              "rgba(239, 68, 68, 0.2)", // Red
-              "rgba(59, 130, 246, 0.2)", // Blue
-              "rgba(250, 204, 21, 0.2)", // Yellow
-              "rgba(217, 70, 239, 0.2)", // Pink
-              "rgba(16, 185, 129, 0.2)", // Teal
-              "rgba(37, 99, 235, 0.2)", // Indigo
+              "rgba(249, 115, 22, 0.6)", // Darker Orange
+              "rgba(6, 182, 212, 0.6)", // Darker Cyan
+              "rgba(107, 114, 128, 0.6)", // Darker Gray
+              "rgba(139, 92, 246, 0.6)", // Darker Purple
+              "rgba(34, 197, 94, 0.6)", // Darker Green
+              "rgba(239, 68, 68, 0.6)", // Darker Red
+              "rgba(59, 130, 246, 0.6)", // Darker Blue
+              "rgba(250, 204, 21, 0.6)", // Darker Yellow
+              "rgba(217, 70, 239, 0.6)", // Darker Pink
+              "rgba(16, 185, 129, 0.6)", // Darker Teal
+              "rgba(37, 99, 235, 0.6)", // Darker Indigo
             ],
             hoverBackgroundColor: [
               "rgb(249, 115, 22)", // Orange

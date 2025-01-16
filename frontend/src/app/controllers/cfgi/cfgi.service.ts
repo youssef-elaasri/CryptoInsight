@@ -42,7 +42,7 @@ export class CfgiService {
     this.fetchAndSetData();
     setInterval(() => {
       this.fetchAndSetData();
-    }, 60 * 60 * 1000); // update every hour
+    }, 1 * 60 * 1000); // update every minute
   }
 
   fetchAndSetData(): void {

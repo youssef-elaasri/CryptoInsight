@@ -72,13 +72,18 @@
                 ${{ coin.closePrice | number : "1.2-2" }}
               </td>
               <td>
-                {{ coin.trades }}
+                {{ previousCoins[coin.token].trades }}
               </td>
               <td>
-                {{ coin.volume | number : "1.0-0" }}
+                {{ previousCoins[coin.token].volume | number : "1.1-2" }}
               </td>
               <td style="color: green">
-                ${{ coin.trades * coin.volume | number : "1.0-0" }}
+                ${{
+                  format(
+                    previousCoins[coin.token].volume *
+                      previousCoins[coin.token].close_price
+                  )
+                }}
               </td>
               <td
                 [ngStyle]="{
@@ -93,9 +98,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{
-                  previousCoins[coin.token].changePercentage | number : "1.1-1"
-                }}%
+                {{ changePercentages[coin.token] | number : "1.1-2" }}%
               </td>
               <td>
                 <p-button
@@ -156,7 +159,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>
@@ -204,7 +207,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>
@@ -252,7 +255,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>

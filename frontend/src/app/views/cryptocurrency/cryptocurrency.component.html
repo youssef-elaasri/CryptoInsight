@@ -40,16 +40,24 @@
           <span
             ><i *ngIf="positiveChange" class="pi pi-caret-up me-1"></i>
             <i *ngIf="!positiveChange" class="pi pi-caret-down me-1"></i
-            >{{ changePercentage | number : "1.1-1" }}%</span
+            >{{ changePercentage | number : "1.1-2" }}%</span
           >
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
-          <span>Volume</span>
-          <span class="value">${{ coin.volume | number : "1.0-0" }}</span>
+          <span>Trades</span>
+          <span class="value">{{ tokenData["trades"] }}</span>
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
-          <span>Trades</span>
-          <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
+          <span>Volume</span>
+          <span class="value">{{
+            tokenData["volume"] | number : "1.1-2"
+          }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Trade Volume</span>
+          <span class="value"
+            >${{ format(tokenData["volume"] * tokenData["close_price"]) }}</span
+          >
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Market Cap</span>

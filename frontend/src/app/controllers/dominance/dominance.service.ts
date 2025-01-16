@@ -10,29 +10,29 @@ export class DominanceService {
 
   private _totalMarketCap: number | null = null;
 
+  _refresh!: number;
+
   constructor(private http: HttpClient) {
     this.fetchAndSetMarketCap();
 
-    interval(60 * 60 * 1000).subscribe(() => {
-      // Every hour
+    interval(1 * 60 * 1000).subscribe(() => {
+      // Every minute
       this.fetchAndSetMarketCap();
     });
   }
 
-  private fetchAndSetMarketCap(): void {
-    this.http.get<any>(this.apiUrl).subscribe(
-      (response) => {
-        this._totalMarketCap =
-          response?.data?.quotes?.USD?.total_market_cap || null;
-        console.log(this._totalMarketCap);
-      },
-      (error) => {
-        console.error("Error fetching total market cap:", error);
-        this._totalMarketCap = null;
-      }
-    );
+  public fetchAndSetMarketCap() {
+    return this.http.get<any>(this.apiUrl);
   }
+  //response?.data?.quotes?.USD?.total_market_cap || null;
   public get totalMarketCap(): number | null {
     return this._totalMarketCap;
+  }
+
+  public get refresh(): number {
+    return this._refresh;
+  }
+  public set refresh(value: number) {
+    this._refresh = value;
   }
 }

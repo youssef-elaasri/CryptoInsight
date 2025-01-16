@@ -1,5 +1,4 @@
-# Use the official Nginx image from the Docker Hub
-FROM nginx:latest
-
-# Expose port 80 to allow traffic to the container
-EXPOSE 80
+FROM openjdk:21-slim
+COPY ./target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.jar"]

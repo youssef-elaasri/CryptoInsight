@@ -10,5 +10,15 @@ public interface InfluxRepository {
 
     List<FluxTable> findByTokenAndTimeRange(String token, String startTime, String endTime);
 
+    public List<FluxTable> getLastTwoPeriods(String startTime, String stopTime, String windowPeriod);
+
+    public List<FluxTable> getLastTwoPeriodsPrice(String startTime, String stopTime, String windowPeriod);
+
+    List<FluxTable> getLastTwoPeriodsForToken(String token, String startTime, String stopTime,
+            String windowPeriod);
+
+    public List<FluxTable> getLastTwoPeriodsPriceForToken(String token, String startTime, String stopTime,
+            String windowPeriod);
+
     List<FluxTable> getAllMarketData();
 }

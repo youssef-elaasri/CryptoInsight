@@ -10,6 +10,7 @@ import {
 import * as echarts from "echarts";
 import { CardModule } from "primeng/card";
 import { CfgiService } from "../../controllers/cfgi/cfgi.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-cfgi",
@@ -18,35 +19,31 @@ import { CfgiService } from "../../controllers/cfgi/cfgi.service";
   templateUrl: "./cfgi.component.html",
   styleUrl: "./cfgi.component.css",
 })
-export class CfgiComponent implements OnInit, AfterViewInit {
+export class CfgiComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("gaugeChart") gaugeChart!: ElementRef;
 
   private chart: any;
   private updateInterval: any;
 
-  constructor(private cfgiService: CfgiService) {}
+  constructor(private router: Router, private cfgiService: CfgiService) {}
 
   ngOnInit() {
-    this.updateChart(
-      this.todayData.value || 50,
-      this.todayData.classification || "Neutral"
-    );
-
-    // Set an interval to update the chart every 30 minutes
-    this.updateInterval = setInterval(() => {
-      this.updateChart(
-        this.todayData.value || 50,
-        this.todayData.classification || "Neutral"
-      );
-    }, 2 * 60 * 1000); // 30 minutes in milliseconds
+    this.initChart();
+    // this.updateChart(
+    //   this.todayData.value || 50,
+    //   this.todayData.classification || "Neutral"
+    // );
   }
 
   ngAfterViewInit(): void {
     this.initChart();
-    this.updateChart(
-      this.todayData.value || 50,
-      this.todayData.classification || "Neutral"
-    );
+    // this.updateChart(
+    //   this.todayData.value || 50,
+    //   this.todayData.classification || "Neutral"
+    // );
+    console.log(this.todayData.value);
+    if (this.todayData.value === undefined || this.todayData.value === null)
+      this.router.navigate(["/"]);
   }
 
   ngOnDestroy(): void {
@@ -69,7 +66,12 @@ export class CfgiComponent implements OnInit, AfterViewInit {
           name: "CFGI",
           type: "gauge",
           detail: { formatter: "{value}" },
-          data: [{ value: 50, name: "Neutral" }],
+          data: [
+            {
+              value: this.todayData.value,
+              name: this.todayData.classification,
+            },
+          ],
           axisLine: {
             lineStyle: {
               width: 12,

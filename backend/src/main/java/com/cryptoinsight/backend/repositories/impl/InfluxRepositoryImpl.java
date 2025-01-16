@@ -57,14 +57,88 @@ public class InfluxRepositoryImpl implements InfluxRepository {
                 return queryApi.query(fluxQuery);
         }
 
+        public List<FluxTable> getLastTwoPeriods(String startTime, String stopTime, String windowPeriod) {
+                String query = String.format(
+                                """
+                                                from(bucket: \"%s\")
+                                                  |> range(start: %s, stop: %s)
+                                                  |> filter(fn: (r) => r["_measurement"] == "market_data")
+                                                  |> filter(fn: (r) => r["_field"] == "trades" or r["_field"] == "volume")
+                                                  |> aggregateWindow(every: %s, fn: sum, createEmpty: false)
+                                                  |> tail(n: 2)
+                                                  |> yield(name: "last_2_periods")
+                                                """,
+                                bucket, startTime, stopTime, windowPeriod);
+
+                QueryApi queryApi = influxDBClient.getQueryApi();
+                return queryApi.query(query);
+        }
+
+        public List<FluxTable> getLastTwoPeriodsPrice(String startTime, String stopTime, String windowPeriod) {
+                String query = String.format(
+                                """
+                                                from(bucket: \"%s\")
+                                                  |> range(start: %s, stop: %s)
+                                                  |> filter(fn: (r) => r["_measurement"] == "market_data")
+                                                  |> filter(fn: (r) => r["_field"] == "close_price") // Filter for close price
+                                                  |> aggregateWindow(every: %s, fn: mean, createEmpty: false) // Calculate mean
+                                                  |> tail(n: 2) // Get last 2 periods
+                                                  |> yield(name: "last_2_periods")
+                                                """,
+                                bucket, startTime, stopTime, windowPeriod);
+
+                QueryApi queryApi = influxDBClient.getQueryApi();
+                return queryApi.query(query);
+        }
+
+        public List<FluxTable> getLastTwoPeriodsForToken(String token, String startTime, String stopTime,
+                        String windowPeriod) {
+                String query = String.format(
+                                """
+                                                from(bucket: \"%s\")
+                                                  |> range(start: %s, stop: %s)
+                                                  |> filter(fn: (r) => r["_measurement"] == "market_data")
+                                                  |> filter(fn: (r) => r["token"] == \"%s\") // Filter for specific token
+                                                  |> filter(fn: (r) => r["_field"] == "trades" or r["_field"] == "volume")
+                                                  |> aggregateWindow(every: %s, fn: sum, createEmpty: false)
+                                                  |> tail(n: 2)
+                                                  |> yield(name: "last_2_periods")
+                                                """,
+                                bucket, startTime, stopTime, token, windowPeriod);
+
+                QueryApi queryApi = influxDBClient.getQueryApi();
+                return queryApi.query(query);
+        }
+
+        public List<FluxTable> getLastTwoPeriodsPriceForToken(String token, String startTime, String stopTime,
+                        String windowPeriod) {
+                String query = String.format(
+                                """
+                                                from(bucket: \"%s\")
+                                                  |> range(start: %s, stop: %s)
+                                                  |> filter(fn: (r) => r["_measurement"] == "market_data")
+                                                  |> filter(fn: (r) => r["token"] == \"%s\") // Filter for specific token
+                                                  |> filter(fn: (r) => r["_field"] == "close_price")
+                                                  |> aggregateWindow(every: %s, fn: mean, createEmpty: false)
+                                                  |> tail(n: 2)
+                                                  |> yield(name: "last_2_periods")
+                                                """,
+                                bucket, startTime, stopTime, token, windowPeriod);
+
+                QueryApi queryApi = influxDBClient.getQueryApi();
+                return queryApi.query(query);
+        }
+
         @Override
         public List<FluxTable> getAllMarketData() {
                 String fluxQuery = String.format(
-                        "from(bucket: \"%s\") " +
-                                "|> range(start: 0) " + // Récupère toutes les données depuis le début
-                                "|> filter(fn: (r) => r[\"_measurement\"] == \"market_data\") " + // Filtrer par mesure
-                                "|> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
-                        bucket);
+                                "from(bucket: \"%s\") " +
+                                                "|> range(start: 0) " + // Récupère toutes les données depuis le début
+                                                "|> filter(fn: (r) => r[\"_measurement\"] == \"market_data\") " + // Filtrer
+                                                                                                                  // par
+                                                                                                                  // mesure
+                                                "|> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
+                                bucket);
                 QueryApi queryApi = influxDBClient.getQueryApi();
                 return queryApi.query(fluxQuery);
         }

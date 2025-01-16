@@ -4,13 +4,14 @@ import SockJS from "sockjs-client";
 import { Client, IFrame, IStompSocket, Stomp } from "@stomp/stompjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, interval, map, catchError, of } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class CryptocurrencyService {
   private externalApi = "https://api.alternative.me/v2/ticker";
-  private backendApi = "http://localhost:8080/api/influxdb/";
+  private backendApi = "influxdb/";
 
   private _selectedToken!: string;
   private tokenSlugMapping: Record<string, string> = {
@@ -36,12 +37,11 @@ export class CryptocurrencyService {
   private stompClient: Client;
 
   constructor(private http: HttpClient) {
+    this.backendApi = environment.apiUrl + this.backendApi;
     this.stompClient = new Client();
 
     this.stompClient.webSocketFactory = (): IStompSocket => {
-      return new SockJS(
-        "http://localhost:8080/sockjs-websocket"
-      ) as IStompSocket;
+      return new SockJS("http://backend:8080/sockjs-websocket") as IStompSocket;
     };
 
     this.stompClient.onConnect = (frame: IFrame) => {
@@ -61,7 +61,7 @@ export class CryptocurrencyService {
     this.updateSupplyData();
     setInterval(() => {
       this.updateSupplyData();
-    }, 60 * 60 * 1000); // Every hour
+    }, 1 * 60 * 1000); // Every minute
   }
 
   getCoinData(token: string): {
@@ -176,6 +176,33 @@ export class CryptocurrencyService {
       this.backendApi + "findByTokenAndTimeRange",
       { params }
     );
+  }
+
+  getLastTwoPeriods(): Observable<
+    Record<string, { trades: number; volume: number }>
+  > {
+    const url = `${this.backendApi}getLastTwoPeriods`;
+
+    const params = new HttpParams()
+      .set("startTime", "2000-01-01T00:00:00Z")
+      .set("stopTime", "2100-01-01T00:00:00Z")
+      .set("windowPeriod", "1h");
+
+    return this.http.get<Record<string, { trades: number; volume: number }>>(
+      url,
+      { params }
+    );
+  }
+
+  getLastTwoPeriodsForToken(token: string): Observable<Record<string, number>> {
+    const url = `${this.backendApi}getLastTwoPeriodsForToken`;
+    const params = new HttpParams()
+      .set("token", token)
+      .set("startTime", "2000-01-01T00:00:00Z")
+      .set("stopTime", "2100-01-01T00:00:00Z")
+      .set("windowPeriod", "1h");
+
+    return this.http.get<Record<string, number>>(url, { params });
   }
 
   public get selectedToken(): string {
