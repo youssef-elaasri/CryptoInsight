@@ -41,7 +41,6 @@ export class CfgiComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this.todayData.value || 50,
     //   this.todayData.classification || "Neutral"
     // );
-    console.log(this.todayData.value);
     if (this.todayData.value === undefined || this.todayData.value === null)
       this.router.navigate(["/"]);
   }

@@ -1,9 +1,7 @@
 package com.cryptoinsight.backend;
 
-
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-
 
 import java.net.URI;
 import java.net.http.WebSocket;
@@ -36,7 +34,7 @@ public class WebSocketClientTest extends WebSocketClient {
     }
 
     public static void main(String[] args) {
-        WebSocketClientTest client = new WebSocketClientTest(URI.create("ws://localhost:8080/websocket"));
+        WebSocketClientTest client = new WebSocketClientTest(URI.create("ws://backend:8080/websocket"));
         client.connect();
     }
 }

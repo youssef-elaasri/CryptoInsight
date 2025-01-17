@@ -95,9 +95,6 @@ export class CryptocurrenciesComponent implements OnInit, OnDestroy {
       const currentClosePrice = currentCoin.closePrice; // Get current close price
       const previousClosePrice = previousCoin.close_price || 0; // Get previous close price
 
-      console.log(currentClosePrice);
-      console.log(previousClosePrice);
-
       const changePercentage =
         previousClosePrice !== 0
           ? ((currentClosePrice - previousClosePrice) / previousClosePrice) *

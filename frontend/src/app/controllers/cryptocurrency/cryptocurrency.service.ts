@@ -41,7 +41,7 @@ export class CryptocurrencyService {
     this.stompClient = new Client();
 
     this.stompClient.webSocketFactory = (): IStompSocket => {
-      return new SockJS("http://backend:8080/sockjs-websocket") as IStompSocket;
+      return new SockJS("/backend/sockjs-websocket") as IStompSocket;
     };
 
     this.stompClient.onConnect = (frame: IFrame) => {
