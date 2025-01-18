@@ -29,21 +29,30 @@
       ><span class="card-title">Current Market Cap Dominance</span></ng-template
     >
     <ng-template pTemplate="content">
+      <div
+        *ngIf="loading"
+        class="d-flex flex-column justify-content-center align-items-center"
+        style="width: 50rem; height: 29rem"
+      >
+        <div class="loader"></div>
+        <p class="loading-text">Loading data...</p>
+      </div>
+
       <p-chart
-        *ngIf="visualType"
+        *ngIf="visualType && !loading"
         type="bar"
         [data]="data"
         [options]="options"
         width="50rem"
-        height="30rem"
+        height="29rem"
       />
       <p-chart
-        *ngIf="!visualType"
+        *ngIf="!visualType && !loading"
         type="pie"
         [data]="data"
         [options]="options"
         width="50rem"
-        height="30rem"
+        height="29rem"
       />
     </ng-template>
   </p-card>

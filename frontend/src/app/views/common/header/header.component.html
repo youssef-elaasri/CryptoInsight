@@ -5,9 +5,7 @@
   </div>
   <div>
     <a routerLink="/">Cryptocurrencies</a>
-    <a (click)="redirectToCfgi()">CFGI</a>
-    <a (click)="redirectToDominance()">Market Cap Dominance</a>
+    <a routerLink="cfgi">CFGI</a>
+    <a routerLink="dominance">Market Cap Dominance</a>
   </div>
 </div>
-
-<div *ngIf="isLoading" class="loading-alert">Assets are loading...</div>

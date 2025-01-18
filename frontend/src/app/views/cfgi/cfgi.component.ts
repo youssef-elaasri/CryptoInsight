@@ -11,6 +11,7 @@ import * as echarts from "echarts";
 import { CardModule } from "primeng/card";
 import { CfgiService } from "../../controllers/cfgi/cfgi.service";
 import { Router } from "@angular/router";
+import { interval, filter, take } from "rxjs";
 
 @Component({
   selector: "app-cfgi",
@@ -19,7 +20,7 @@ import { Router } from "@angular/router";
   templateUrl: "./cfgi.component.html",
   styleUrl: "./cfgi.component.css",
 })
-export class CfgiComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CfgiComponent implements AfterViewInit, OnDestroy {
   @ViewChild("gaugeChart") gaugeChart!: ElementRef;
 
   private chart: any;
@@ -27,26 +28,27 @@ export class CfgiComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private router: Router, private cfgiService: CfgiService) {}
 
-  ngOnInit() {
-    this.initChart();
-    // this.updateChart(
-    //   this.todayData.value || 50,
-    //   this.todayData.classification || "Neutral"
-    // );
-  }
-
   ngAfterViewInit(): void {
-    this.initChart();
-    // this.updateChart(
-    //   this.todayData.value || 50,
-    //   this.todayData.classification || "Neutral"
-    // );
-    if (this.todayData.value === undefined || this.todayData.value === null)
-      this.router.navigate(["/"]);
+    if (this.todayData.value === undefined || this.todayData.value === null) {
+      // Poll until todayData is available
+      interval(200) // Poll every 200ms
+        .pipe(
+          filter(
+            () =>
+              Object.keys(this.todayData) !== undefined &&
+              Object.keys(this.todayData) !== null
+          ), // Check length
+          take(1) // Complete after the condition is met
+        )
+        .subscribe(() => {
+          this.initChart();
+        });
+    } else {
+      this.initChart();
+    }
   }
 
   ngOnDestroy(): void {
-    // Clear the interval when the component is destroyed to avoid memory leaks
     if (this.updateInterval) {
       clearInterval(this.updateInterval);
     }

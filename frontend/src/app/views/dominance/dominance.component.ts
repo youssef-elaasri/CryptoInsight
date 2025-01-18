@@ -15,6 +15,7 @@ import { DominanceService } from "../../controllers/dominance/dominance.service"
 import { ButtonModule } from "primeng/button";
 import { CryptocurrencyService } from "../../controllers/cryptocurrency/cryptocurrency.service";
 import { Router } from "@angular/router";
+import { interval, filter, take } from "rxjs";
 
 @Component({
   selector: "app-dominance",
@@ -30,6 +31,7 @@ export class DominanceComponent implements OnInit, OnDestroy {
   marketCaps: number[] = [];
   platformId = inject(PLATFORM_ID);
   private updateInterval: any;
+  loading: boolean = true;
 
   visualType: boolean = true; // true => chart | false => pie
 
@@ -41,13 +43,36 @@ export class DominanceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.dominanceService.refresh !== 5) this.router.navigate(["/"]);
     this.tokens = this.cryptocurrencyService.tokens;
     this.tokens = [...this.tokens, "Others"];
-    this.calculateDominance();
-    this.updateInterval = setInterval(() => {
+    if (Object.keys(this.cryptocurrencyService.coinData).length !== 10) {
+      this.cryptocurrencyService.connect();
+
+      // Poll until coinData length becomes 10
+      interval(200) // Poll every 200ms
+        .pipe(
+          filter(
+            () => Object.keys(this.cryptocurrencyService.coinData).length === 10
+          ), // Check length
+          take(1) // Complete after the condition is met
+        )
+        .subscribe(() => {
+          this.cryptocurrencyService.disconnect();
+          // Proceed to the next steps
+          this.calculateDominance();
+          this.loading = false;
+          this.updateInterval = setInterval(() => {
+            this.calculateDominance();
+          }, 1 * 60 * 1000); // Every minute
+        });
+    } else {
+      this.loading = false;
+      // If already ready, proceed directly
       this.calculateDominance();
-    }, 1 * 60 * 1000); // Every minute
+      this.updateInterval = setInterval(() => {
+        this.calculateDominance();
+      }, 1 * 60 * 1000); // Every minute
+    }
   }
 
   ngOnDestroy(): void {
@@ -141,7 +166,7 @@ export class DominanceComponent implements OnInit, OnDestroy {
       const surfaceBorder = "#EDEDED";
 
       this.data = {
-        labels: this.tokens,
+        labels: this.getTokensWithoutUSDT(),
         datasets: [
           {
             data: this.marketCaps,
@@ -212,7 +237,7 @@ export class DominanceComponent implements OnInit, OnDestroy {
       const textColor = documentStyle.getPropertyValue("--text-color");
 
       this.data = {
-        labels: this.tokens,
+        labels: this.getTokensWithoutUSDT(),
         datasets: [
           {
             data: this.marketCaps,
@@ -258,5 +283,11 @@ export class DominanceComponent implements OnInit, OnDestroy {
       };
       this.cd.markForCheck();
     }
+  }
+
+  getTokensWithoutUSDT(): string[] {
+    return this.tokens.map((token: string) =>
+      token.endsWith("USDT") ? token.slice(0, -4) : token
+    );
   }
 }

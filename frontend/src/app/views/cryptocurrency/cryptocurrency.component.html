@@ -8,22 +8,22 @@
             width="40"
             style="vertical-align: middle; margin-right: 10px"
           />
-          {{ coin.token }}
+          {{ removeUSDT(coin.token) }}
         </div>
-        <div *ngIf="priceChart">
+        <div>
           <p-button
             class="me-2"
             icon="pi pi-chart-bar"
             [text]="true"
             [raised]="true"
-            [disabled]="chartType"
+            [disabled]="!priceChart || chartType"
             (onClick)="switchChartType()"
           />
           <p-button
             icon="pi pi-chart-line"
             [text]="true"
             [raised]="true"
-            [disabled]="!chartType"
+            [disabled]="!priceChart || !chartType"
             (onClick)="switchChartType()"
           /></div
       ></span>
@@ -36,7 +36,7 @@
           class="mb-4 d-flex justify-content-between align-items-center"
           [ngStyle]="{ color: positiveChange ? 'green' : 'red' }"
         >
-          <span class="price">${{ coin.closePrice | number : "1.2-2" }}</span>
+          <span class="price">${{ coin.closePrice }}</span>
           <span
             ><i *ngIf="positiveChange" class="pi pi-caret-up me-1"></i>
             <i *ngIf="!positiveChange" class="pi pi-caret-down me-1"></i

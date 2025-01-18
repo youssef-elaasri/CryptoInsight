@@ -14,25 +14,5 @@ import { CommonModule } from "@angular/common";
   styleUrl: "./header.component.css",
 })
 export class HeaderComponent {
-  isLoading = false;
-  constructor(
-    private router: Router,
-    private dominanceService: DominanceService,
-    private cryptocurrencyService: CryptocurrencyService
-  ) {}
-
-  redirectToCfgi() {
-    this.isLoading = false;
-    this.router.navigate(["cfgi"]);
-  }
-
-  redirectToDominance() {
-    let size = Object.keys(this.cryptocurrencyService.coinData).length;
-    if (size !== 10) this.isLoading = true;
-    else {
-      this.isLoading = false;
-      this.dominanceService.refresh = 5;
-      this.router.navigate(["dominance"]);
-    }
-  }
+  constructor(private router: Router) {}
 }

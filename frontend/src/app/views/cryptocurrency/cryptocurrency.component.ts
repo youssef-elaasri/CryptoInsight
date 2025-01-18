@@ -240,4 +240,8 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     token = "images/" + token + ".png";
     return token;
   }
+
+  removeUSDT(input: string): string {
+    return input.endsWith("USDT") ? input.slice(0, -4) : input;
+  }
 }

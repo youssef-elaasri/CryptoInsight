@@ -65,12 +65,12 @@
                     width="32"
                     style="vertical-align: middle; margin-right: 10px"
                   />
-                  <span style="font-weight: bold">{{ coin.token }}</span>
+                  <span style="font-weight: bold">{{
+                    removeUSDT(coin.token)
+                  }}</span>
                 </div>
               </td>
-              <td style="color: green">
-                ${{ coin.closePrice | number : "1.2-2" }}
-              </td>
+              <td style="color: green">${{ coin.closePrice }}</td>
               <td>
                 {{ previousCoins[coin.token].trades }}
               </td>
@@ -140,11 +140,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"
@@ -188,11 +190,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"
@@ -236,11 +240,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"

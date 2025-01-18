@@ -170,6 +170,10 @@ export class CryptocurrenciesComponent implements OnInit, OnDestroy {
     this.router.navigate(["cryptocurrency"]);
   }
 
+  removeUSDT(input: string): string {
+    return input.endsWith("USDT") ? input.slice(0, -4) : input;
+  }
+
   connect() {
     this.cryptocurrencyService.connect();
   }
