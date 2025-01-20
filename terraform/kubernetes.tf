@@ -8,6 +8,13 @@
 #   depends_on = [google_container_cluster.primary]
 # }
 
+resource "kubernetes_namespace" "sre" {
+  metadata {
+    name = "sre"
+  }
+}
+
+
 resource "kubernetes_manifest" "backend_deployment" {
   depends_on = [google_container_cluster.primary]
   manifest   = yamldecode(file("../backend/backend-deployment.yaml"))

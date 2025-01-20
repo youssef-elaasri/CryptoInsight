@@ -9,6 +9,11 @@ terraform {
       version = ">= 2.0.1"
     }
   }
+  backend "gcs" {
+    bucket = "cryptoinsight-terraform-states"
+    prefix = "terraform/state"
+  }
+
 }
 
 provider "google" {
@@ -25,10 +30,10 @@ resource "google_compute_network" "vpc_network" {
 }
 
 resource "google_container_cluster" "primary" {
-  name                = "crypto-insights-cluster"
-  location            = var.region
-  initial_node_count  = 1
-  deletion_protection = false
+  name                     = "crypto-insights-cluster"
+  location                 = var.region
+  initial_node_count       = 1
+  deletion_protection      = false
   remove_default_node_pool = true
 
   workload_identity_config {
@@ -39,9 +44,9 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "master_pool" {
-  name       = "master-pool"
-  cluster    = google_container_cluster.primary.id
-  location   = var.region
+  name     = "master-pool"
+  cluster  = google_container_cluster.primary.id
+  location = var.region
 
   node_count = 1
 
@@ -56,9 +61,9 @@ resource "google_container_node_pool" "master_pool" {
 }
 
 resource "google_container_node_pool" "slave_pool" {
-  name       = "slave-pool"
-  cluster    = google_container_cluster.primary.id
-  location   = var.region
+  name     = "slave-pool"
+  cluster  = google_container_cluster.primary.id
+  location = var.region
 
   node_count = 1
 
