@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: monitoring-stack
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8087
       targetPort: 9090

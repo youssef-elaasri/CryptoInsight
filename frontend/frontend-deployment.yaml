@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -16,30 +17,18 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/path: "/metrics"
     spec:
-      nodeSelector:
-        role: slave
       containers:
         - name: frontend
-          image: jihadhd/frontend:latest # Replace with your actual frontend image name
-          imagePullPolicy: always
+          image: jihadhd/frontend_image:latest # Replace with your actual frontend image name
+          imagePullPolicy: Always
           ports:
-            - containerPort: 3001
+            - containerPort: 4002
           resources:
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
             requests:
-              memory: "128Mi"
               cpu: "250m"
-          readinessProbe:
-            httpGet:
-              path: /health # Replace with your health check endpoint
-              port: 3001
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health # Replace with your health check endpoint
-              port: 3001
-            initialDelaySeconds: 15
-            periodSeconds: 20
+              memory: "512Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "4Gi"
+              ephemeral-storage: "4Gi"

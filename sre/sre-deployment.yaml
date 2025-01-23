@@ -13,9 +13,6 @@ spec:
       labels:
         app: monitoring-stack
     spec:
-      nodeSelector:
-        role: master
-      automountServiceAccountToken: true
       serviceAccountName: admin
       containers:
         - name: grafana
@@ -23,6 +20,15 @@ spec:
           ports:
             - name: grafana
               containerPort: 3000
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+              ephemeral-storage: "2Gi"
 
         - name: prometheus
           image: prom/prometheus:latest
@@ -31,6 +37,15 @@ spec:
             - "--storage.tsdb.path=/prometheus/"
           ports:
             - containerPort: 9090
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+              ephemeral-storage: "2Gi"
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus/
@@ -44,6 +59,15 @@ spec:
               name: http-metrics
             - containerPort: 8081
               name: telemetry
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "4Gi"
+              ephemeral-storage: "4Gi"
 
       volumes:
         - name: grafana-datasources

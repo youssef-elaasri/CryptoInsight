@@ -98,6 +98,21 @@ resource "kubernetes_manifest" "prom_svc" {
   depends_on = [google_container_cluster.primary]
   manifest   = yamldecode(file("../sre/prom-svc.yaml"))
 }
+resource "kubernetes_manifest" "frontend_deployment" {
+  depends_on = [google_container_cluster.primary]
+  manifest   = yamldecode(file("../frontend/frontend-deployment.yaml"))
+}
+resource "kubernetes_manifest" "frontend_svc" {
+  depends_on = [google_container_cluster.primary]
+  manifest   = yamldecode(file("../frontend/frontend-svc.yaml"))
+}
 
+resource "kubernetes_manifest" "hpa_backend" {
+  depends_on = [google_container_cluster.primary]
+  manifest   = yamldecode(file("../devops/hpa-backend.yaml"))
+}
 
-
+resource "kubernetes_manifest" "hpa_frontend" {
+  depends_on = [google_container_cluster.primary]
+  manifest   = yamldecode(file("../devops/hpa-frontend.yaml"))
+}

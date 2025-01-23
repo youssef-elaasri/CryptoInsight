@@ -1,4 +1,3 @@
-# Create a deployment with Liveness and Readiness Probes
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,12 +17,19 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/path: "/metrics"
     spec:
-      nodeSelector:
-        role: master
       containers:
         - name: influxdb
           image: jihadhd/cryptoinsight-influxdb:latest
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "4Gi"
+              ephemeral-storage: "2Gi"
           env:
             - name: DOCKER_INFLUXDB_INIT_MODE
               value: "setup"
@@ -48,14 +54,14 @@ spec:
           volumeMounts:
             - name: influxdb-storage
               mountPath: /var/lib/influxdb
-          livenessProbe: # This checks if the application within a container is healthy. If the Liveness Probe fails, Kubernetes will restart the container
+          livenessProbe:
             tcpSocket:
               port: 8086
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 7
             failureThreshold: 3
-          readinessProbe: # This checks if the application within the container is ready to serve requests
+          readinessProbe:
             tcpSocket:
               port: 8086
             initialDelaySeconds: 30

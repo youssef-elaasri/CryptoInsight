@@ -29,47 +29,13 @@ resource "google_container_cluster" "primary" {
   location            = var.region
   initial_node_count  = 1
   deletion_protection = false
-  remove_default_node_pool = true
+  enable_autopilot = true
 
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
 
   network = google_compute_network.vpc_network.name
-}
-
-resource "google_container_node_pool" "master_pool" {
-  name       = "master-pool"
-  cluster    = google_container_cluster.primary.id
-  location   = var.region
-
-  node_count = 1
-
-  node_config {
-    machine_type = "e2-standard-2"
-    labels = {
-      role = "master"
-    }
-    disk_size_gb = 50
-    oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
-}
-
-resource "google_container_node_pool" "slave_pool" {
-  name       = "slave-pool"
-  cluster    = google_container_cluster.primary.id
-  location   = var.region
-
-  node_count = 1
-
-  node_config {
-    machine_type = "e2-standard-2"
-    labels = {
-      role = "slave"
-    }
-    disk_size_gb = 50
-    oauth_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
 }
 
 # Configure kubernetes provider with cluster access
