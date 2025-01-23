@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FgiComponent } from './fgi.component';
+import { CfgiComponent } from './cfgi.component';
 
-describe('FgiComponent', () => {
-  let component: FgiComponent;
-  let fixture: ComponentFixture<FgiComponent>;
+describe('CfgiComponent', () => {
+  let component: CfgiComponent;
+  let fixture: ComponentFixture<CfgiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FgiComponent]
+      imports: [CfgiComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FgiComponent);
+    fixture = TestBed.createComponent(CfgiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

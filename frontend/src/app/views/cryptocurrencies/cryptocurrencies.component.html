@@ -43,11 +43,14 @@
               <th pSortableColumn="closePrice" style="width: 22%">
                 Price <p-sortIcon field="closePrice" />
               </th>
+              <th pSortableColumn="trades" style="width: 22%">
+                Trades <p-sortIcon field="trades" />
+              </th>
               <th pSortableColumn="volume" style="width: 22%">
                 Volume <p-sortIcon field="volume" />
               </th>
               <th pSortableColumn="trades" style="width: 22%">
-                Trades <p-sortIcon field="trades" />
+                Trade Volume <p-sortIcon field="trades" />
               </th>
               <th pSortableColumn="chage" style="width: 22%">Change</th>
               <th style="width: 22%">Action</th>
@@ -62,17 +65,25 @@
                     width="32"
                     style="vertical-align: middle; margin-right: 10px"
                   />
-                  <span style="font-weight: bold">{{ coin.token }}</span>
+                  <span style="font-weight: bold">{{
+                    removeUSDT(coin.token)
+                  }}</span>
                 </div>
               </td>
-              <td style="color: green">
-                ${{ coin.closePrice | number : "1.2-2" }}
-              </td>
-              <td style="color: green">
-                ${{ coin.volume | number : "1.0-0" }}
+              <td style="color: green">${{ coin.closePrice }}</td>
+              <td>
+                {{ previousCoins[coin.token].trades }}
               </td>
               <td>
-                {{ coin.trades }}
+                {{ previousCoins[coin.token].volume | number : "1.1-2" }}
+              </td>
+              <td style="color: green">
+                ${{
+                  format(
+                    previousCoins[coin.token].volume *
+                      previousCoins[coin.token].close_price
+                  )
+                }}
               </td>
               <td
                 [ngStyle]="{
@@ -87,9 +98,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{
-                  previousCoins[coin.token].changePercentage | number : "1.1-1"
-                }}%
+                {{ changePercentages[coin.token] | number : "1.1-2" }}%
               </td>
               <td>
                 <p-button
@@ -131,11 +140,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"
@@ -150,7 +161,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>
@@ -179,11 +190,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"
@@ -198,7 +211,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>
@@ -227,11 +240,13 @@
                 width="32"
                 style="vertical-align: middle; margin-right: 10px"
               />
-              <span style="font-weight: bold">{{ coin.token }}</span>
+              <span style="font-weight: bold">{{
+                removeUSDT(coin.token)
+              }}</span>
             </div>
-            <div class="d-flex flex-column">
+            <div class="d-flex flex-column align-items-end">
               <span style="font-weight: bold; color: black"
-                >${{ coin.closePrice | number : "1.2-2" }}</span
+                >${{ coin.closePrice }}</span
               >
               <span
                 style="font-weight: bold"
@@ -246,7 +261,7 @@
                   *ngIf="!positiveChange(coin.token)"
                   class="pi pi-caret-down me-1"
                 ></i>
-                {{ coin.changePercentage | number : "1.1-1" }}%</span
+                {{ coin.changePercentage | number : "1.1-2" }}%</span
               >
             </div>
           </div>

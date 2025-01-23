@@ -7,3 +7,5 @@ terraform.tfvars
 
 frontend/node_modules/
 frontend/.angular/
+
+backend/target/

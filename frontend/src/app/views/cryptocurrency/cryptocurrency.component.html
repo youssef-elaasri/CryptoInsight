@@ -8,7 +8,7 @@
             width="40"
             style="vertical-align: middle; margin-right: 10px"
           />
-          {{ coin.token }}
+          {{ removeUSDT(coin.token) }}
         </div>
         <div>
           <p-button
@@ -16,15 +16,15 @@
             icon="pi pi-chart-bar"
             [text]="true"
             [raised]="true"
-            [disabled]="chartType"
-            (onClick)="switchChart()"
+            [disabled]="!priceChart || chartType"
+            (onClick)="switchChartType()"
           />
           <p-button
             icon="pi pi-chart-line"
             [text]="true"
             [raised]="true"
-            [disabled]="!chartType"
-            (onClick)="switchChart()"
+            [disabled]="!priceChart || !chartType"
+            (onClick)="switchChartType()"
           /></div
       ></span>
     </div>
@@ -36,20 +36,62 @@
           class="mb-4 d-flex justify-content-between align-items-center"
           [ngStyle]="{ color: positiveChange ? 'green' : 'red' }"
         >
-          <span class="price">${{ coin.closePrice | number : "1.2-2" }}</span>
+          <span class="price">${{ coin.closePrice }}</span>
           <span
             ><i *ngIf="positiveChange" class="pi pi-caret-up me-1"></i>
             <i *ngIf="!positiveChange" class="pi pi-caret-down me-1"></i
-            >{{ changePercentage | number : "1.1-1" }}%</span
+            >{{ changePercentage | number : "1.1-2" }}%</span
           >
         </div>
-        <div class="underline-div mb-3 d-flex justify-content-between">
-          <span>Volume</span>
-          <span class="value">${{ coin.volume | number : "1.0-0" }}</span>
-        </div>
-        <div class="underline-div mb-3 d-flex justify-content-between">
+        <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Trades</span>
-          <span class="value">{{ coin.trades | number : "1.0-0" }}</span>
+          <span class="value">{{ tokenData["trades"] }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Volume</span>
+          <span class="value">{{
+            tokenData["volume"] | number : "1.1-2"
+          }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Trade Volume</span>
+          <span class="value"
+            >${{ format(tokenData["volume"] * tokenData["close_price"]) }}</span
+          >
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Market Cap</span>
+          <span class="value"
+            >${{ format(coin.closePrice * supply.maxSupply) }}</span
+          >
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Circulating supply</span>
+          <span class="value">{{
+            supply.circulatingSupply | number : "1.0-0"
+          }}</span>
+        </div>
+        <div class="underline-div mb-5 d-flex justify-content-between">
+          <span>Max supply</span>
+          <span class="value">{{ supply.maxSupply | number : "1.0-0" }}</span>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+          <p-button
+            class="me-2"
+            label="Price"
+            [rounded]="true"
+            [outlined]="!priceChart"
+            severity="contrast"
+            (onClick)="switchChart(true)"
+          />
+          <p-button
+            class="ms-2"
+            label="Confidence"
+            [rounded]="true"
+            [outlined]="priceChart"
+            severity="contrast"
+            (onClick)="switchChart(false)"
+          />
         </div>
       </div>
       <div #chartContainerRef class="chart-section"></div>

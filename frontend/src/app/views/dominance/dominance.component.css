@@ -1,0 +1,72 @@
+:host::ng-deep div.p-card.p-component {
+  background-color: rgb(248, 251, 255);
+  margin: 60px;
+  border-radius: 30px;
+  width: fit-content;
+}
+
+:host ::ng-deep p-button:nth-of-type(1) button {
+  border-radius: 8px; /* Default rounded corners */
+  border-top-right-radius: 0; /* Remove top-right corner radius */
+  border-bottom-right-radius: 0;
+}
+
+:host ::ng-deep p-button:nth-of-type(2) button {
+  border-radius: 8px; /* Default rounded corners */
+  border-top-left-radius: 0; /* Remove top-right corner radius */
+  border-bottom-left-radius: 0;
+}
+
+.title {
+  font-weight: bolder;
+  font-size: x-large;
+  color: #1d44c4;
+}
+
+.description {
+  text-align: center;
+  font-size: large;
+  color: black;
+}
+
+.card-title {
+  font-weight: bold;
+  color: black;
+}
+
+.loader {
+  width: 200px;
+  height: 200px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  color: #555;
+  font-family: "Arial", sans-serif;
+  letter-spacing: 1px;
+  animation: fadeIn 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

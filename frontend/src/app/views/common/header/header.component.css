@@ -37,3 +37,14 @@ a:hover {
   background-color: white;
   transition: all 0.5s ease;
 }
+
+.loading-alert {
+  background-color: #ffc107;
+  color: #000;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ffa000;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+}

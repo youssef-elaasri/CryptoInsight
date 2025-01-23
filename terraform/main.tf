@@ -9,6 +9,11 @@ terraform {
       version = ">= 2.0.1"
     }
   }
+  backend "gcs" {
+    bucket = "cryptoinsight-terraform-states"
+    prefix = "terraform/state"
+  }
+
 }
 
 provider "google" {

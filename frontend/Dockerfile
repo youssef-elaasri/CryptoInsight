@@ -1,15 +1,13 @@
-FROM node:latest
-
+# Stage 1: Build the Angular app
+FROM node:18 AS build
 WORKDIR /app
-
 COPY package*.json ./
-
-RUN npm install 
-
+RUN npm install
 COPY . .
+RUN npm run build -- --configuration=development
 
-RUN npm install -g @angular/cli
-
-EXPOSE 4200
-
-CMD ["ng", "serve", "--host", "0.0.0.0"]
+# Stage 2: Serve the app using Nginx
+FROM nginx:stable-alpine
+COPY --from=build /app/dist/cryptoinsight_frontend/browser /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

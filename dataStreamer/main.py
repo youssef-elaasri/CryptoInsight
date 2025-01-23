@@ -44,7 +44,7 @@ def on_open(ws):
     print("WebSocket connection opened")
     subscribe_message = {
         "method": "SUBSCRIBE",
-        "params": ["btcusdt@kline_1m"],
+        "params": ["btcusdt@kline_1m", "ethusdt@kline_1m", "bnbusdt@kline_1m", "solusdt@kline_1m", "avaxusdt@kline_1m", "xrpusdt@kline_1m", "adausdt@kline_1m", "dogeusdt@kline_1m", "dotusdt@kline_1m", "shibusdt@kline_1m"],
         "id": 1
     }
     ws.send(json.dumps(subscribe_message))
