@@ -1,27 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: dataops
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: dataops
   template:
     metadata:
       labels:
-        app: backend
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "80"
-        prometheus.io/path: "/metrics"
+        app: dataops
     spec:
       containers:
-        - name: backend
-          image: backend:latest
+        - name: dataops
+          image: superuserdo/cryptoinsight_dataops:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 80
+            - containerPort: 3002
           resources:
             limits:
               memory: "256Mi"
@@ -31,24 +28,13 @@ spec:
               cpu: "250m"
           readinessProbe:
             httpGet:
-              port: 80
+              # path: /health # Replace with your health check endpoint
+              port: 3002
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              port: 80
+              # path: /health # Replace with your health check endpoint
+              port: 3002
             initialDelaySeconds: 15
             periodSeconds: 20
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  type: LoadBalancer 
-  ports:
-    - port: 80
-      targetPort: 80
-  selector:
-    app: backend

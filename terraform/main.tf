@@ -102,3 +102,8 @@ provider "kubernetes" {
   }
 }
 
+resource "kubernetes_namespace" "sre" {
+  metadata {
+    name = "sre"
+  }
+}

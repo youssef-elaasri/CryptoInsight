@@ -17,11 +17,9 @@ spec:
         prometheus.io/port: "80"
         prometheus.io/path: "/metrics"
     spec:
-      nodeSelector:
-        role: slave
       containers:
         - name: backend
-          image: superuserdo/backend:latest
+          image: superuserdo/cryptoinsight_backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -34,13 +32,11 @@ spec:
               cpu: "250m"
           readinessProbe:
             httpGet:
-              path: /
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /
               port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
