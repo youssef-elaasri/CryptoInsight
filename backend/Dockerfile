@@ -1,4 +1,8 @@
 FROM openjdk:21-slim
-COPY ./target/*.jar app.jar
+RUN apt-get update && apt-get install -y maven
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean install
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/target/app.jar"]

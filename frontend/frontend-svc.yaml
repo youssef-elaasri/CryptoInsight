@@ -4,9 +4,9 @@ metadata:
   name: frontend-service
   namespace: default
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - port: 4002
-      targetPort: 4002
+    - port: 80
+      targetPort: 80
   selector:
     app: frontend

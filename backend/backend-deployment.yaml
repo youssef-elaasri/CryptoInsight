@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: superuserdo/backend:latest
-          imagePullPolicy: IfNotPresent
+          image: jihadhd/backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
