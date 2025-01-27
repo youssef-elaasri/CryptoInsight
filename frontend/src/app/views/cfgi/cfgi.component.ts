@@ -20,11 +20,10 @@ import { interval, filter, take } from "rxjs";
   templateUrl: "./cfgi.component.html",
   styleUrl: "./cfgi.component.css",
 })
-export class CfgiComponent implements AfterViewInit, OnDestroy {
+export class CfgiComponent implements AfterViewInit {
   @ViewChild("gaugeChart") gaugeChart!: ElementRef;
 
   private chart: any;
-  private updateInterval: any;
 
   constructor(private router: Router, private cfgiService: CfgiService) {}
 
@@ -45,12 +44,6 @@ export class CfgiComponent implements AfterViewInit, OnDestroy {
         });
     } else {
       this.initChart();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
     }
   }
 
