@@ -111,7 +111,7 @@ resource "kubernetes_manifest" "frontend_deployment" {
 }
 resource "kubernetes_manifest" "frontend_svc" {
   depends_on = [google_container_cluster.primary]
-  manifest   = yamldecode(file("../frontend/frontend-svc.yaml"))
+  manifest   = yamldecode(file("../frontend/frontend-service.yaml"))
 }
 
 resource "kubernetes_manifest" "hpa_backend" {
