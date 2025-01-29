@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from "@angular/core";
@@ -27,7 +28,9 @@ import { Router } from "@angular/router";
   templateUrl: "./cryptocurrency.component.html",
   styleUrl: "./cryptocurrency.component.css",
 })
-export class CryptocurrencyComponent implements OnInit, AfterViewInit {
+export class CryptocurrencyComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild("chartContainerRef") chartContainer!: ElementRef;
   private chartOptions = {
     layout: {
@@ -42,9 +45,12 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
   private chart!: IChartApi;
   private candlestickSeries!: ISeriesApi<any>;
   private priceAreaSeries!: ISeriesApi<any>;
-  private confidenceAreaSeries!: ISeriesApi<any>;
+  private confidenceLineSeries!: ISeriesApi<any>;
   chartType = true; // candlestick => true | area => false
   priceChart = true;
+
+  private updateIntervalPeriod: any;
+  private updateIntervalConfidence: any;
 
   coin: Coin = new Coin();
   tokenData: Record<string, number> = {};
@@ -72,12 +78,20 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
         this.tokenData = data;
         this.cryptocurrencyService
           .getCoinStream(this.cryptocurrencyService.selectedToken)
+          // .getCoinStream("BTCUSDT")
           .subscribe((result) => {
             this.coin = result.coin;
             this.supply = result.additionalData;
             this.update();
           });
       });
+    this.updateIntervalPeriod = setInterval(() => {
+      this.cryptocurrencyService
+        .getLastTwoPeriodsForToken(this.cryptocurrencyService.selectedToken)
+        .subscribe((data) => {
+          this.tokenData = data;
+        });
+    }, 60 * 60 * 1000); // Every hour
   }
 
   ngAfterViewInit() {
@@ -86,6 +100,16 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
       this.chartOptions as DeepPartial<TimeChartOptions>
     );
     this.initCandlestickChart();
+  }
+
+  ngOnDestroy(): void {
+    // Clear the interval when the component is destroyed to avoid memory leaks
+    if (this.updateIntervalPeriod) {
+      clearInterval(this.updateIntervalPeriod);
+    }
+    if (this.updateIntervalConfidence) {
+      clearInterval(this.updateIntervalConfidence);
+    }
   }
 
   initCandlestickChart() {
@@ -114,33 +138,32 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     this.cryptocurrencyService
       .findAllTokenData(this.coin.token)
       .subscribe((data) => {
-        this.priceAreaSeries.setData(this.convertToAreaChartData(data));
+        this.priceAreaSeries.setData(this.convertToPriceAreaChartData(data));
         this.chart.timeScale().fitContent;
       });
   }
 
-  initConfidenceAreaChart() {
-    this.confidenceAreaSeries = this.chart.addAreaSeries({
-      lineColor: "#7E57C2", // Purple
-      topColor: "#7E57C2", // Purple
-      bottomColor: "rgba(126, 87, 194, 0.28)", // Light Purple
+  initConfidenceLineChart() {
+    this.confidenceLineSeries = this.chart.addLineSeries({
+      color: "#7E57C2", // Purple
     });
 
-    const areaData = [
-      { value: 0, time: 1642425322 },
-      { value: 8, time: 1642511722 },
-      { value: 10, time: 1642598122 },
-      { value: 20, time: 1642684522 },
-      { value: 3, time: 1642770922 },
-      { value: 43, time: 1642857322 },
-      { value: 41, time: 1642943722 },
-      { value: 43, time: 1643030122 },
-      { value: 56, time: 1643116522 },
-      { value: 46, time: 1643202922 },
-    ];
+    this.cryptocurrencyService.getMci(this.coin.token).subscribe((data) => {
+      this.confidenceLineSeries.setData(
+        this.convertToConfidenceLineChartData(data)
+      );
+      this.chart.timeScale().fitContent;
+    });
 
-    this.confidenceAreaSeries.setData(areaData);
-    this.chart.timeScale().fitContent();
+    this.updateIntervalConfidence = setInterval(() => {
+      this.cryptocurrencyService.getMci(this.coin.token).subscribe((data) => {
+        this.confidenceLineSeries.setData(
+          this.convertToConfidenceLineChartData(data)
+        );
+        this.chart.timeScale().fitContent;
+      });
+      // }, 1 * 10 * 1000);
+    }, 2 * 60 * 1000); // Every 2 minutes
   }
 
   switchChartType() {
@@ -158,13 +181,13 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     if ((type && this.priceChart) || (!type && !this.priceChart)) return;
     this.priceChart = !this.priceChart;
     if (this.priceChart) {
-      this.chart.removeSeries(this.confidenceAreaSeries);
+      this.chart.removeSeries(this.confidenceLineSeries);
       if (this.chartType) this.initCandlestickChart();
       else this.initPriceAreaChart();
     } else {
       if (this.chartType) this.chart.removeSeries(this.candlestickSeries);
       else this.chart.removeSeries(this.priceAreaSeries);
-      this.initConfidenceAreaChart();
+      this.initConfidenceLineChart();
     }
   }
 
@@ -226,11 +249,20 @@ export class CryptocurrencyComponent implements OnInit, AfterViewInit {
     });
   }
 
-  convertToAreaChartData(backendData: any[]): any[] {
+  convertToPriceAreaChartData(backendData: any[]): any[] {
     return backendData.map((data) => {
       return {
         value: data.closePrice,
         time: Math.floor(new Date(data.startTime).getTime() / 1000), // Convert ISO string to Unix timestamp in seconds
+      };
+    });
+  }
+
+  convertToConfidenceLineChartData(backendData: any[]): any[] {
+    return backendData.map((data) => {
+      return {
+        value: data.ratio,
+        time: Math.floor(new Date(data._start).getTime() / 1000), // Convert ISO string to Unix timestamp in seconds
       };
     });
   }

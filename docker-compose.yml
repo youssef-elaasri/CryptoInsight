@@ -110,18 +110,6 @@ services:
     networks:
       - streaming
 
-  dataops:
-    build:
-      context: ./dataops
-    container_name: dataops
-    depends_on:
-      kafka:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-    networks:
-      - streaming
-
 networks:
   streaming:
     driver: bridge

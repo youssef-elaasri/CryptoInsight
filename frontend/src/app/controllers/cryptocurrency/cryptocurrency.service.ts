@@ -208,6 +208,14 @@ export class CryptocurrencyService {
     return this.http.get<Record<string, number>>(url, { params });
   }
 
+  getMci(token: string): Observable<Map<string, any>[]> {
+    const params = new HttpParams().set("token", token);
+
+    return this.http.get<Map<string, any>[]>(`${environment.apiUrl}mci`, {
+      params,
+    });
+  }
+
   public get selectedToken(): string {
     return this._selectedToken;
   }

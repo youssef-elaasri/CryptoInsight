@@ -1,17 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { interval } from "rxjs";
+import { interval, Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class DominanceService {
-  private apiUrl = "/api/v2/global/";
-
-  private _totalMarketCap: number | null = null;
-
-  _refresh!: number;
-
   constructor(private http: HttpClient) {
     this.fetchAndSetMarketCap();
 
@@ -21,18 +16,7 @@ export class DominanceService {
     });
   }
 
-  public fetchAndSetMarketCap() {
-    return this.http.get<any>(this.apiUrl);
-  }
-  //response?.data?.quotes?.USD?.total_market_cap || null;
-  public get totalMarketCap(): number | null {
-    return this._totalMarketCap;
-  }
-
-  public get refresh(): number {
-    return this._refresh;
-  }
-  public set refresh(value: number) {
-    this._refresh = value;
+  fetchAndSetMarketCap(): Observable<any> {
+    return this.http.get<any>(environment.apiUrl + "external");
   }
 }

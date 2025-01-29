@@ -10,7 +10,6 @@ import {
 import { CardModule } from "primeng/card";
 
 import { ChartModule } from "primeng/chart";
-import { CryptocurrencySimulationService } from "../../controllers/cryptocurrency-simulation/cryptocurrency-simulation.service";
 import { DominanceService } from "../../controllers/dominance/dominance.service";
 import { ButtonModule } from "primeng/button";
 import { CryptocurrencyService } from "../../controllers/cryptocurrency/cryptocurrency.service";

@@ -26,7 +26,7 @@ public class MciRepositoryImpl implements MciRepository {
 
     @Override
     public List<Map<String, Object>> getMci(String token) {
-        // Construire la requête Flux avec la logique mise à jour
+
         String fluxQuery = String.format(
             "mean_table = from(bucket: \"%s\") " +
             "|> range(start: time(v: \"2000-01-01T00:00:00Z\"), stop: time(v: \"2100-01-01T00:00:00Z\")) " +
@@ -80,28 +80,25 @@ public class MciRepositoryImpl implements MciRepository {
             bucket, token, bucket, token, bucket, token
         );
 
-        // Exécuter la requête Flux
+
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(fluxQuery);
 
-        // Stocker les résultats dans une liste
+
         List<Map<String, Object>> results = new ArrayList<>();
 
-        // Parcourir les tables retournées
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
                 Map<String, Object> row = new LinkedHashMap<>();
                 
-                // Ajouter toutes les colonnes à la Map
                 row.put("_start", record.getValueByKey("_start"));
                 row.put("_stop", record.getValueByKey("_stop"));
                 row.put("mean_volatility", record.getValueByKey("mean_volatility"));
                 row.put("sqrt_volatility", record.getValueByKey("sqrt_volatility"));
                 row.put("sum_volume", record.getValueByKey("sum_volume"));
                 row.put("ratio", record.getValueByKey("ratio"));
-                row.put("_time", record.getTime() != null ? record.getTime().toString() : null); // Ajouter le temps
+                row.put("_time", record.getTime() != null ? record.getTime().toString() : null); 
                 
-                // Ajouter la ligne à la liste des résultats
                 results.add(row);
             }
         }
