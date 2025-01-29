@@ -133,10 +133,10 @@ public class InfluxRepositoryImpl implements InfluxRepository {
         public List<FluxTable> getAllMarketData() {
                 String fluxQuery = String.format(
                                 "from(bucket: \"%s\") " +
-                                                "|> range(start: 0) " + // Récupère toutes les données depuis le début
-                                                "|> filter(fn: (r) => r[\"_measurement\"] == \"market_data\") " + // Filtrer
-                                                                                                                  // par
-                                                                                                                  // mesure
+                                                "|> range(start: 0) " + 
+                                                "|> filter(fn: (r) => r[\"_measurement\"] == \"market_data\") " + 
+                                                                                                                  
+                                                                                                                  
                                                 "|> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")",
                                 bucket);
                 QueryApi queryApi = influxDBClient.getQueryApi();

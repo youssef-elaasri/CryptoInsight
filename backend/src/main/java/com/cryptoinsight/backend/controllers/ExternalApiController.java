@@ -20,13 +20,11 @@ public class ExternalApiController {
 
     @GetMapping
     public ResponseEntity<Object> getGlobalData() {
-        // URL of the API
+
         String apiUrl = "https://api.alternative.me/v2/global/";
 
-        // Make the GET request
         ResponseEntity<Object> response = restTemplate.getForEntity(apiUrl, Object.class);
 
-        // Return the response from the external API
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 }

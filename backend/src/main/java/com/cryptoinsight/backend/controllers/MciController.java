@@ -17,11 +17,9 @@ public class MciController {
 
     @GetMapping("/mci")
     public List<Map<String, Object>> getMci(@RequestParam String token) {
-        // Appelle le service pour récupérer les sommes
 
         List<Map<String, Object>> mci = mciService.getMci(token);
 
-        // Convertit le Map en String pour l'affichage
         return mci;
     }
 }

@@ -18,7 +18,6 @@ public class KafkaController {
     private KafkaConsumerService kafkaConsumerService;
     
 
-    // Endpoint pour récupérer les messages consommés
     @GetMapping("/messages")
     public List<String> getMessages() {
         return kafkaConsumerService.getConsumedMessages();
