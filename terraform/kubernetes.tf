@@ -123,8 +123,3 @@ resource "kubernetes_manifest" "hpa_frontend" {
   depends_on = [google_container_cluster.primary]
   manifest   = yamldecode(file("../devops/hpa-frontend.yaml"))
 }
-
-resource "kubernetes_manifest" "ingress" {
-  depends_on = [google_container_cluster.primary]
-  manifest   = yamldecode(file("../devops/webapp_ingress_rules.yaml"))
-}

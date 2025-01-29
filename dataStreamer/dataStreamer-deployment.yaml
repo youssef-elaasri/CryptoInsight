@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: datastreaming
-          image: jihadhd/cryptoinsight-datastreaming:latest
+          image: jihadhd/datastream:latest
+          imagePullPolicy: Always
           resources:
             requests:
               cpu: "250m"
