@@ -65,14 +65,6 @@ spec:
           livenessProbe: # This checks if the application within a container is healthy. If the Liveness Probe fails, Kubernetes will restart the container
             tcpSocket:
               port: 9092
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 7
-            failureThreshold: 3
           readinessProbe: # This checks if the application within the container is ready to serve requests
             tcpSocket:
               port: 9092
-            initialDelaySeconds: 30
-            periodSeconds: 15
-            timeoutSeconds: 7
-            failureThreshold: 3
