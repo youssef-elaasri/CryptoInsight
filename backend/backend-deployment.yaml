@@ -27,8 +27,26 @@ spec:
             requests:
               memory: "512Mi"
               cpu: "250m"
-              ephemeral-storage: "1Gi"
+              ephemeral-storage: "4Gi"
             limits:
-              memory: "4Gi"
-              cpu: "500m"
-              ephemeral-storage: "2Gi"
+              memory: "6Gi"
+              cpu: "750m"
+              ephemeral-storage: "4Gi"
+          readinessProbe:
+                    httpGet:
+                      path: /
+                      port: 8080
+                    periodSeconds: 5
+                    timeoutSeconds: 60 
+                    successThreshold: 1
+                    failureThreshold: 3
+                    initialDelaySeconds: 70      
+          livenessProbe:
+                    httpGet:
+                      path: /
+                      port: 8080
+                    periodSeconds: 5
+                    timeoutSeconds: 60
+                    successThreshold: 1
+                    failureThreshold: 3          
+                    initialDelaySeconds: 70
