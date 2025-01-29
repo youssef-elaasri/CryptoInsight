@@ -13,6 +13,7 @@ spec:
       labels:
         app: monitoring-stack
     spec:
+      automountServiceAccountToken: true
       serviceAccountName: admin
       containers:
         - name: grafana
@@ -23,13 +24,15 @@ spec:
           resources:
             requests:
               cpu: "250m"
-              memory: "512Mi"
-              ephemeral-storage: "1Gi"
+              memory: "1Gi"
+              ephemeral-storage: "3Gi"
             limits:
               cpu: "500m"
-              memory: "1Gi"
-              ephemeral-storage: "2Gi"
-
+              memory: "4Gi"
+              ephemeral-storage: "4Gi"
+          volumeMounts:
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
         - name: prometheus
           image: prom/prometheus:latest
           args:
@@ -40,18 +43,17 @@ spec:
           resources:
             requests:
               cpu: "250m"
-              memory: "512Mi"
-              ephemeral-storage: "1Gi"
-            limits:
-              cpu: "500m"
               memory: "1Gi"
               ephemeral-storage: "2Gi"
+            limits:
+              cpu: "500m"
+              memory: "4Gi"
+              ephemeral-storage: "4Gi"
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
               mountPath: /prometheus/
-
         - name: kube-state-metrics
           image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.3.0
           ports:
@@ -62,13 +64,15 @@ spec:
           resources:
             requests:
               cpu: "250m"
-              memory: "512Mi"
-              ephemeral-storage: "1Gi"
+              memory: "2Gi"
+              ephemeral-storage: "3Gi"
             limits:
               cpu: "500m"
               memory: "4Gi"
               ephemeral-storage: "4Gi"
-
+          volumeMounts:
+            - name: kube-state-metrics-storage
+              mountPath: /data
       volumes:
         - name: grafana-datasources
           configMap:
