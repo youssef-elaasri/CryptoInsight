@@ -1,5 +1,5 @@
 .header {
-  background-color: #2b51ce;
+  background-color: #ff0000;
   padding-left: 100px;
   padding-right: 100px;
   padding-top: 15px;
@@ -16,13 +16,13 @@ span.title:nth-of-type(1) {
 }
 
 span.title:nth-of-type(2) {
-  color: #1d44c4;
+  color: #ff0000;
   -webkit-text-stroke: 1px white;
 }
 
 a {
   color: white;
-  background-color: #2b51ce;
+  background-color: #ff0000;
   font-weight: bold;
   font-size: 18px;
   text-decoration: none;
@@ -33,7 +33,7 @@ a {
 
 a:hover {
   cursor: pointer;
-  color: #1d44c4;
+  color: #ff0000;
   background-color: white;
   transition: all 0.5s ease;
 }
