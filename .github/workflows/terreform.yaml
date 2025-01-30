@@ -13,9 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Google Cloud SDK
+      - name: Install Google Cloud CLI
         run: |
-          sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+          sudo apt-get update && sudo apt-get install -y google-cloud-cli
+      
 
       - name: Authenticate with Google Cloud
         run: |
