@@ -13,6 +13,8 @@ export class CryptocurrencyService {
   private externalApi = "https://api.alternative.me/v2/ticker";
   private backendApi = "influxdb/";
 
+  private socketApi = "/backend/sockjs-websocket";
+
   private _selectedToken!: string;
   private tokenSlugMapping: Record<string, string> = {
     BTCUSDT: "bitcoin",
@@ -41,10 +43,7 @@ export class CryptocurrencyService {
     this.stompClient = new Client();
 
     this.stompClient.webSocketFactory = (): IStompSocket => {
-      // return new SockJS(
-      //   "http://localhost:8080/sockjs-websocket"
-      // ) as IStompSocket;
-      return new SockJS("/backend/sockjs-websocket") as IStompSocket;
+      return new SockJS(this.socketApi) as IStompSocket;
     };
 
     this.stompClient.onConnect = (frame: IFrame) => {
