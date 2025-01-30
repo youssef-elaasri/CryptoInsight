@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: jihadhd/frontend:latest # Replace with your actual frontend image name
+          image: ${var.region}-docker.pkg.dev/${var.project_id}/cryptoinsight-docker/frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

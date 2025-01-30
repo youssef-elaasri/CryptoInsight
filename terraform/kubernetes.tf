@@ -94,6 +94,7 @@ resource "kubernetes_manifest" "sre_cluster_role_prom_binding" {
 }
 
 resource "kubernetes_manifest" "sre_deployment" {
+  count = var.deploy_monitoring ? 1 : 0
   depends_on = [google_container_cluster.primary]
   manifest   = yamldecode(file("../sre/sre-deployment.yaml"))
 }
@@ -123,3 +124,4 @@ resource "kubernetes_manifest" "hpa_frontend" {
   depends_on = [google_container_cluster.primary]
   manifest   = yamldecode(file("../devops/hpa-frontend.yaml"))
 }
+

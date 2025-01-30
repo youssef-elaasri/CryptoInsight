@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: datastreaming
-          image: jihadhd/datastream:latest
+          image: ${var.region}-docker.pkg.dev/${var.project_id}/cryptoinsight-docker/datastreaming:latest
           imagePullPolicy: Always
           resources:
             requests:
