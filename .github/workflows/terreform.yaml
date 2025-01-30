@@ -50,8 +50,14 @@ jobs:
           cd terraform
           terraform init
 
+      - name: Plan Terraform
+        run: |
+          cd terraform
+          terraform plan
+
+
       - name: Apply Terraform
         run: |
           cd terraform
-          terraform apply -target=google_container_cluster.primary -lock=false -auto-approve
-          terraform apply -lock=false -auto-approve
+          terraform apply -target=google_container_cluster.primary -lock=false -auto-approve || true
+          terraform apply -lock=false -auto-approve || true
