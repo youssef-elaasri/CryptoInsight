@@ -17,3 +17,4 @@ variable "zone" {
   default     = "europe-west12-a"
 
 }
+

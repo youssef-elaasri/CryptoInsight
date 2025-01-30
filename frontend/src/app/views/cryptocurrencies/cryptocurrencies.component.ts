@@ -58,10 +58,12 @@ export class CryptocurrenciesComponent implements OnInit, OnDestroy {
     [];
 
   ngOnInit() {
+    console.log("HELLOOOOOOOOOOOOOOOOOO :>> ", "HELLOOOOOOOOOOOOOOOOOO");
     this.cryptocurrencyService.getLastTwoPeriods().subscribe((data) => {
       this.previousCoins = data as TokenDictionary;
     });
     this.cryptocurrencyService.getAllCoinsStream().subscribe((coins) => {
+      console.log(coins);
       this.coins = coins;
       this.calculateTopChanges();
       this.loading = false;

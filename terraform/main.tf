@@ -22,6 +22,53 @@ provider "google" {
   zone    = var.zone
 }
 
+# Enable required APIs
+resource "google_project_service" "artifact_registry" {
+  service            = "artifactregistry.googleapis.com"
+  disable_on_destroy = false
+}
+
+
+# Create Artifact Registry Repository
+resource "google_artifact_registry_repository" "docker_repo" {
+  location      = var.region
+  repository_id = "cryptoinsight-docker"
+  description   = "Docker repository for CryptoInsight application"
+  format        = "DOCKER"
+  depends_on    = [google_project_service.artifact_registry]
+}
+# Docker authentication
+resource "null_resource" "auth_docker" {
+  provisioner "local-exec" {
+    command = "gcloud auth configure-docker ${var.region}-docker.pkg.dev"
+  }
+  depends_on = [google_artifact_registry_repository.docker_repo]
+}
+
+# Build all images using docker-compose
+resource "null_resource" "build_images" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+  command = "cd ${path.module}/.. && docker-compose build"
+  }
+  depends_on = [null_resource.auth_docker]
+}
+
+# Push all images using docker-compose
+resource "null_resource" "push_images" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+  command = "cd ${path.module}/.. && docker-compose push"
+  }
+  depends_on = [null_resource.build_images]
+}
+
 # Get Google credentials - this needs to be before the kubernetes provider
 data "google_client_config" "default" {}
 

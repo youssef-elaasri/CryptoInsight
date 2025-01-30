@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jihadhd/backend:latest
+          image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
