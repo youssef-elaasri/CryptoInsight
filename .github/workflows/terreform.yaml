@@ -15,18 +15,19 @@ jobs:
 
       - name: Install Docker Compose
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin
-          docker compose version  # Verify installation
+          DOCKER_COMPOSE_VERSION=2.27.0  # Set the latest stable version
+          sudo curl -L "https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose version  # Verify installation
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u jihadhd --password-stdin
 
       - name: Build Docker Images
-        run: docker compose build
+        run: docker-compose build
 
       - name: Push Docker Images
-        run: docker compose push
+        run: docker-compose push
 
       - name: Authenticate with Google Cloud
         run: |
