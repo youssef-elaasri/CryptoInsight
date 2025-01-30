@@ -19,25 +19,25 @@ def stress_test(ip, num_requests):
     median_prices_times = []
     median_mci_times = []
     
-    # with open("request_times.txt", "w") as f:
-    #     for i in range(1, num_requests + 1):
-    #         # Use ThreadPoolExecutor to send requests concurrently
-    #         with ThreadPoolExecutor() as executor:
-    #             prices_times = list(executor.map(lambda _: send_request(ip, prices_url), range(i)))
-    #             mci_times = list(executor.map(lambda _: send_request(ip, mci_url), range(i)))
+    with open("request_times.txt", "w") as f:
+        for i in range(1, num_requests + 1):
+            # Use ThreadPoolExecutor to send requests concurrently
+            with ThreadPoolExecutor() as executor:
+                prices_times = list(executor.map(lambda _: send_request(ip, prices_url), range(i)))
+                mci_times = list(executor.map(lambda _: send_request(ip, mci_url), range(i)))
             
-    #         # Filter out None values (failed requests)
-    #         prices_times = [t for t in prices_times if t is not None]
-    #         mci_times = [t for t in mci_times if t is not None]
+            # Filter out None values (failed requests)
+            prices_times = [t for t in prices_times if t is not None]
+            mci_times = [t for t in mci_times if t is not None]
             
-    #         # Calculate the median response time for each set of requests
-    #         median_prices = statistics.median(prices_times) if prices_times else 0
-    #         median_mci = statistics.median(mci_times) if mci_times else 0
+            # Calculate the median response time for each set of requests
+            median_prices = statistics.median(prices_times) if prices_times else 0
+            median_mci = statistics.median(mci_times) if mci_times else 0
             
-    #         median_prices_times.append(median_prices)
-    #         median_mci_times.append(median_mci)
+            median_prices_times.append(median_prices)
+            median_mci_times.append(median_mci)
             
-    #         f.write(f"{i},{median_prices},{median_mci}\n")
+            f.write(f"{i},{median_prices},{median_mci}\n")
     
     plot_results(range(1, num_requests + 1), median_prices_times, median_mci_times)
 
