@@ -53,7 +53,7 @@ jobs:
       - name: Plan Terraform
         run: |
           cd terraform
-          terraform plan -lock=false -auto-approve
+          terraform plan -lock=false
 
 
       - name: Apply Terraform
