@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: influxdb
-          image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/influxdb:latest
+          image: jihadhd/influxdb:latest
           imagePullPolicy: Always
           resources:
             requests:

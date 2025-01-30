@@ -13,4 +13,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: admin
-    namespace: sre
+    namespace: default
