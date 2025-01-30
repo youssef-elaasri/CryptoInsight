@@ -18,13 +18,3 @@ variable "zone" {
 
 }
 
-variable "deploy_monitoring" {
-  description = "Deploy monitoring components (SRE, Grafana, Prometheus)"
-  type        = bool
-  default     = false
-}
-
-locals {
-    artifact_image_name = "${var.location}-docker.pkg.dev/my-project/my-repo/my-image:tag"
-    build_args          = "--build-arg key=value"
-}

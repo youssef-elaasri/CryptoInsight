@@ -52,10 +52,7 @@ resource "null_resource" "build_images" {
   }
 
   provisioner "local-exec" {
-    command = <<EOF
-      cd ${path.module}/.. && \
-      docker-compose build
-    EOF
+  command = "cd ${path.module}/.. && docker-compose build"
   }
   depends_on = [null_resource.auth_docker]
 }
@@ -67,10 +64,7 @@ resource "null_resource" "push_images" {
   }
 
   provisioner "local-exec" {
-    command = <<EOF
-      cd ${path.module}/.. && \
-      docker-compose push
-    EOF
+  command = "cd ${path.module}/.. && docker-compose push"
   }
   depends_on = [null_resource.build_images]
 }

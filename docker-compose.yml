@@ -1,96 +1,16 @@
 services:
   influxdb:
-    image: cryptoinsight/influxdb:latest
+    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/influxdb:latest
     build: ./database
-    container_name: database
-    restart: always
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=password
-      - DOCKER_INFLUXDB_INIT_ORG=cryptoinsight
-      - DOCKER_INFLUXDB_INIT_BUCKET=assets
-      - DOCKER_INFLUXDB_INIT_RETENTION=1w
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=XMNJXH1Pk03gvYMcA62sD-XWGKrU-DDDiawkTfwZh4_qEYyjohfG5D2DK0RNrq3Mas1uw9Bk-bEe32-GPz0xPA==
-      - KAFKA_BROKER=kafka:9092
-      - TOPIC=assets
-    ports:
-      - "8086:8086"
-    depends_on:
-      kafka:
-        condition: service_healthy
-    healthcheck:
-      test: "exit 0"
-    volumes:
-      - ./database/data:/var/lib/influxdb
-    networks:
-      - streaming
 
   datastreaming:
-    image: cryptoinsight/datastreaming:latest
-    build:
-      context: ./dataStreamer
-    container_name: datastreaming
-    depends_on:
-      kafka:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-    environment:
-      KAFKA_BROKER: "kafka:9092"
-      TOPIC: "assets"
-    networks:
-      - streaming
+    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/datastreaming:latest
+    build: ./dataStreamer
 
   backend:
-    image: cryptoinsight/backend:latest
-    build:
-      context: ./backend
-    container_name: backend
-    ports:
-      - "8080:8080"
-    depends_on:
-      kafka:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-    environment:
-      KAFKA_BROKER: "kafka:9092"
-      TOPIC: "assets"
-    networks:
-      - streaming
+    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/backend:latest
+    build: ./backend
 
-<<<<<<< HEAD
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   container_name: frontend
-  #   ports:
-  #     - "8000:80"
-  #   depends_on:
-  #     kafka:
-  #       condition: service_healthy
-  #     influxdb:
-  #       condition: service_healthy
-  #   networks:
-  #     - streaming
-=======
   frontend:
-    image: cryptoinsight/frontend:latest
-    build:
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "8000:80"
-    depends_on:
-      kafka:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-    networks:
-      - streaming
->>>>>>> 058e081 (push docker-compose to gcp)
-
-networks:
-  streaming:
-    driver: bridge
+    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/frontend:latest
+    build: ./frontend
