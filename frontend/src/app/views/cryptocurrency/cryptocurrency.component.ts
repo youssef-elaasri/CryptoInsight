@@ -163,7 +163,7 @@ export class CryptocurrencyComponent
         this.chart.timeScale().fitContent;
       });
       // }, 1 * 10 * 1000);
-    }, 2 * 60 * 1000); // Every 2 minutes
+    }, 120 * 60 * 1000); // Every 2 hours
   }
 
   switchChartType() {
@@ -199,12 +199,12 @@ export class CryptocurrencyComponent
           high: this.coin.highestPrice,
           low: this.coin.lowestPrice,
           close: this.coin.closePrice,
-          time: Math.floor(this.coin.startTime / 1_000_000_000),
+          time: Math.floor(this.coin.startTime / 1_000_000_000) + 3600,
         });
       } else {
         this.priceAreaSeries.update({
           value: this.coin.closePrice,
-          time: Math.floor(this.coin.startTime / 1_000_000_000),
+          time: Math.floor(this.coin.startTime / 1_000_000_000) + 3600,
         });
       }
     }
@@ -244,7 +244,7 @@ export class CryptocurrencyComponent
         high: data.highestPrice,
         low: data.lowestPrice,
         close: data.closePrice,
-        time: Math.floor(new Date(data.startTime).getTime() / 1000), // Convert ISO string to Unix timestamp in seconds
+        time: Math.floor(new Date(data.startTime).getTime() / 1000) + 3600, // Convert ISO string to Unix timestamp in seconds
       };
     });
   }
@@ -253,7 +253,7 @@ export class CryptocurrencyComponent
     return backendData.map((data) => {
       return {
         value: data.closePrice,
-        time: Math.floor(new Date(data.startTime).getTime() / 1000), // Convert ISO string to Unix timestamp in seconds
+        time: Math.floor(new Date(data.startTime).getTime() / 1000) + 3600, // Convert ISO string to Unix timestamp in seconds
       };
     });
   }
@@ -262,7 +262,7 @@ export class CryptocurrencyComponent
     return backendData.map((data) => {
       return {
         value: data.ratio,
-        time: Math.floor(new Date(data._start).getTime() / 1000), // Convert ISO string to Unix timestamp in seconds
+        time: Math.floor(new Date(data._start).getTime() / 1000) + 3600, // Convert ISO string to Unix timestamp in seconds
       };
     });
   }

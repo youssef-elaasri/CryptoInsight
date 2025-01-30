@@ -84,29 +84,17 @@ services:
     networks:
       - streaming
 
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "8000:80"
-    depends_on:
-      kafka:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-    networks:
-      - streaming
-
-  # proxy:
+  # frontend:
   #   build:
-  #     context: ./proxy
-  #   container_name: proxy
+  #     context: ./frontend
+  #   container_name: frontend
   #   ports:
   #     - "8000:80"
   #   depends_on:
-  #     - backend
-  #     - frontend
+  #     kafka:
+  #       condition: service_healthy
+  #     influxdb:
+  #       condition: service_healthy
   #   networks:
   #     - streaming
 

@@ -44,17 +44,17 @@
           >
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
-          <span>Trades</span>
+          <span>1H Trades</span>
           <span class="value">{{ tokenData["trades"] }}</span>
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
-          <span>Volume</span>
+          <span>1H Volume ({{ removeUSDT(coin.token) }})</span>
           <span class="value">{{
             tokenData["volume"] | number : "1.1-2"
           }}</span>
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
-          <span>Trade Volume</span>
+          <span>1H Trade Volume</span>
           <span class="value"
             >${{ format(tokenData["volume"] * tokenData["close_price"]) }}</span
           >
@@ -67,13 +67,19 @@
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Circulating supply</span>
-          <span class="value">{{
-            supply.circulatingSupply | number : "1.0-0"
-          }}</span>
+          <span class="value"
+            >{{ supply.circulatingSupply | number : "1.0-0" }} ({{
+              removeUSDT(coin.token)
+            }})</span
+          >
         </div>
         <div class="underline-div mb-5 d-flex justify-content-between">
           <span>Max supply</span>
-          <span class="value">{{ supply.maxSupply | number : "1.0-0" }}</span>
+          <span class="value"
+            >{{ supply.maxSupply | number : "1.0-0" }} ({{
+              removeUSDT(coin.token)
+            }})</span
+          >
         </div>
         <div class="d-flex justify-content-center mt-5">
           <p-button

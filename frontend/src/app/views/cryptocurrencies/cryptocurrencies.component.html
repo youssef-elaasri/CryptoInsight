@@ -37,22 +37,22 @@
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
-              <th pSortableColumn="token" style="width: 22%">
+              <th pSortableColumn="token" style="width: 15%">
                 Asset <p-sortIcon field="token" />
               </th>
-              <th pSortableColumn="closePrice" style="width: 22%">
+              <th pSortableColumn="closePrice" style="width: 18%">
                 Price <p-sortIcon field="closePrice" />
               </th>
-              <th pSortableColumn="trades" style="width: 22%">
-                Trades <p-sortIcon field="trades" />
+              <th pSortableColumn="trades" style="width: 18%">
+                1H Trades <p-sortIcon field="trades" />
               </th>
-              <th pSortableColumn="volume" style="width: 22%">
-                Volume <p-sortIcon field="volume" />
+              <th pSortableColumn="volume" style="width: 18%">
+                1H Volume <p-sortIcon field="volume" />
               </th>
-              <th pSortableColumn="trades" style="width: 22%">
-                Trade Volume <p-sortIcon field="trades" />
+              <th pSortableColumn="trades" style="width: 18%">
+                1H Trade Volume <p-sortIcon field="trades" />
               </th>
-              <th pSortableColumn="chage" style="width: 22%">Change</th>
+              <th pSortableColumn="chage" style="width: 22%">1H Change</th>
               <th style="width: 22%">Action</th>
             </tr>
           </ng-template>
@@ -76,6 +76,7 @@
               </td>
               <td>
                 {{ previousCoins[coin.token].volume | number : "1.1-2" }}
+                ({{ removeUSDT(coin.token) }})
               </td>
               <td style="color: green">
                 ${{
