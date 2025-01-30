@@ -1,16 +1,16 @@
 services:
   influxdb:
-    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/influxdb:latest
+    image: jihadhd/influxdb:latest
     build: ./database
 
   datastreaming:
-    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/datastreaming:latest
+    image: jihadhd/datastream:latest
     build: ./dataStreamer
 
   backend:
-    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/backend:latest
+    image: jihadhd/backend:latest
     build: ./backend
 
   frontend:
-    image: europe-west12-docker.pkg.dev/dev-guild-439910-e9/cryptoinsight-docker/frontend:latest
+    image: jihadhd/frontend:latest
     build: ./frontend
