@@ -13,14 +13,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+          docker compose version  # Verify installation
+
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u jihadhd --password-stdin
 
       - name: Build Docker Images
-        run: docker-compose build
+        run: docker compose build
 
       - name: Push Docker Images
-        run: docker-compose push
+        run: docker compose push
 
       - name: Authenticate with Google Cloud
         run: |
