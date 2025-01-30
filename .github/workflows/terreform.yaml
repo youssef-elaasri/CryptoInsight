@@ -39,10 +39,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Initialize Terraform
-        run: terraform init
+        run: cd terraform && terraform init
 
       - name: Apply Terraform (Cluster)
-        run: cd terraform | terraform apply -target=google_container_cluster.primary -lock=false -auto-approve
+        run: cd terraform && terraform apply -target=google_container_cluster.primary -lock=false -auto-approve
 
       - name: Apply Terraform (Full)
         run: terraform apply -lock=false -auto-approve
