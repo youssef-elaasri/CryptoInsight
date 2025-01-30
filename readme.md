@@ -1,6 +1,48 @@
+# Environment Selection
+
+Our application can run both **locally** using Docker Compose and in **Google Cloud Platform (GCP)**. To switch between these environments, the API URLs in the application need to be adjusted accordingly.
+
+To simplify this process, we provide the **`scope.sh`** script, which automatically applies the necessary configuration changes.
+
+## How to Use `scope.sh`
+
+1. **Grant execution permission to the script:**
+
+   ```sh
+   chmod +x scope.sh
+
+   ```
+
+2. **Run the script:**
+   ```sh
+   ./scope.sh
+   ```
+3. **Select the environment:**
+
+- You will be prompted to enter either local or remote.
+- The script will then configure the application for the chosen environment.
+
+# Working locally
+
+We use **Docker Compose** to run the application in a local environment.
+
+## Steps to Run Locally:
+
+1. **Execute the following command:**
+
+   ```sh
+   docker compose -f docker-compose-local.yml up -d
+
+   ```
+
+2. **Wait for the containers to start running.**
+
+3. **Once the setup is complete, open your browser and go to:**
+   http://localhost:8000
+
 # Working with GKE
 
-This project represents a cryptocurrency tracker platform. We use Google Kubernetes Engine (GKE) to deploy our application, and Terraform to manage the infrastructure and resources in the cloud.
+We use Google Kubernetes Engine (GKE) to deploy our application, and Terraform to manage the infrastructure and resources in the cloud.
 
 ## Execution Pipelines
 

@@ -98,18 +98,6 @@ services:
     networks:
       - streaming
 
-  # proxy:
-  #   build:
-  #     context: ./proxy
-  #   container_name: proxy
-  #   ports:
-  #     - "8000:80"
-  #   depends_on:
-  #     - backend
-  #     - frontend
-  #   networks:
-  #     - streaming
-
 networks:
   streaming:
     driver: bridge
