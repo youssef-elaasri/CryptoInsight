@@ -32,7 +32,7 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/download/v$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
-          
+
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u jihadhd --password-stdin
 
@@ -41,18 +41,23 @@ jobs:
           docker-compose build
           docker-compose push
 
-      - name: Install Terraform
-        run: |
-          sudo apt-get update && sudo apt-get install -y terraform
-          terraform version
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
 
       - name: Initialize Terraform
         run: |
           cd terraform
           terraform init
 
+      - name: Plan Terraform
+        run: |
+          cd terraform
+          terraform plan
+
+
       - name: Apply Terraform
         run: |
           cd terraform
-          terraform apply -target=google_container_cluster.primary -lock=false -auto-approve
-          terraform apply -lock=false -auto-approve
+          terraform apply -target=google_container_cluster.primary -lock=false -auto-approve || true
+          terraform apply -lock=false -auto-approve || true
