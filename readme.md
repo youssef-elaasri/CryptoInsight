@@ -50,9 +50,9 @@ Our pipeline consists of three main steps:
 
 1. **Build Docker Images:**
    - We use Docker Compose to build the images for our services.
-2. **Push Images to Artifact Directory:**
+2. **Push Images to Dockerhub**
 
-   - After building the images, they are pushed to an artifact directory that we have set up.
+   - After building the images, they are pushed to a dockerhub repo that we have set up.
 
 3. **Deploy Kubernetes Resources to GKE:**
    - Once the images are ready, we deploy the corresponding Kubernetes resources to GKE.
